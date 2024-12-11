@@ -1,4 +1,3 @@
-/* General Reset */
 body, h1, h2, h3, p, ul, li, a, img, button, input, textarea {
     margin: 0;
     padding: 0;
@@ -17,7 +16,6 @@ body {
     margin: auto;
 }
 
-/* Header Styles */
 .header {
     background: #333;
     color: #fff;
@@ -49,7 +47,6 @@ body {
     text-decoration: underline;
 }
 
-/* Hero Section */
 .hero {
     background: url('images/hero-bg.jpg') no-repeat center center/cover;
     color: #fff;
@@ -79,7 +76,6 @@ body {
     background: #d62839;
 }
 
-/* Products Section */
 .products {
     padding: 2rem 1rem;
     background: #f9f9f9;
@@ -124,7 +120,6 @@ body {
     background: #218838;
 }
 
-/* About Section */
 .about {
     padding: 2rem 1rem;
     background: #fff;
@@ -135,7 +130,6 @@ body {
     margin-bottom: 1rem;
 }
 
-/* Contact Section */
 .contact {
     padding: 2rem 1rem;
     background: #f9f9f9;
@@ -176,7 +170,6 @@ form button:hover {
     background: #0056b3;
 }
 
-/* Footer */
 .footer {
     background: #333;
     color: #fff;
@@ -184,7 +177,6 @@ form button:hover {
     padding: 1rem 0;
 }
 
-/* Modal Styles */
 .modal {
     position: fixed;
     top: 0;

@@ -1,5 +1,3 @@
-// JavaScript for StepIn Style
-
 document.addEventListener("DOMContentLoaded", () => {
     const cartModal = document.getElementById("cart-modal");
     const closeModalButton = document.querySelector(".close-button");
@@ -10,13 +8,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let cart = [];
 
-    // Function to toggle modal visibility
     const toggleModal = () => {
         cartModal.classList.toggle("hidden");
         cartModal.classList.toggle("visible");
     };
 
-    // Function to update the cart display
     const updateCartDisplay = () => {
         cartItems.innerHTML = "";
         let total = 0;
@@ -32,7 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
         cartTotal.textContent = total.toFixed(2);
     };
 
-    // Event listener for Add to Cart buttons
     addToCartButtons.forEach(button => {
         button.addEventListener("click", () => {
             const productName = button.getAttribute("data-product");
@@ -50,17 +45,14 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Event listener for modal close button
     closeModalButton.addEventListener("click", toggleModal);
 
-    // Event listener for cart icon (future enhancement for cart button)
     document.body.addEventListener("click", (event) => {
         if (event.target.matches(".cart-button")) {
             toggleModal();
         }
     });
 
-    // Event listener for Checkout button
     checkoutButton.addEventListener("click", () => {
         if (cart.length === 0) {
             alert("Your cart is empty!");
