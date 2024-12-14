@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
         cartModal.classList.toggle("hidden");
         cartModal.classList.toggle("visible");
     };
-
     const updateCartDisplay = () => {
         cartItems.innerHTML = "";
         let total = 0;
@@ -65,3 +64,33 @@ document.addEventListener("DOMContentLoaded", () => {
         toggleModal();
     });
 });
+document.getElementById('cart-button').addEventListener('click', function() {
+    // Toggle the cart list visibility
+    const cartContainer = document.getElementById('cart-container');
+    cartContainer.style.display = cartContainer.style.display === 'none' || cartContainer.style.display === '' ? 'block' : 'none';
+    
+    // Change the button color
+    this.classList.toggle('clicked');
+});
+
+// Handle "Add to Cart" button clicks
+document.querySelectorAll('.add-to-cart').forEach(button => {
+    button.addEventListener('click', function() {
+        // Change the button color when clicked
+        this.classList.toggle('clicked');
+        
+        // Add the item to the cart list
+        const itemName = this.getAttribute('data-item');
+        addToCart(itemName);
+    });
+});
+
+function addToCart(itemName) {
+    const cartList = document.getElementById('cart-list');
+    
+    // Create a new list item for the cart
+    const li = document.createElement('li');
+    li.textContent = itemName;
+    cartList.appendChild(li);
+}
+
