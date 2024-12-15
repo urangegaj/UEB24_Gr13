@@ -17,7 +17,7 @@ body {
 }
 
 .header {
-    background: #333;
+    background: #e63946;
     color: #fff;
     padding: 1rem 0;
 }
@@ -48,10 +48,16 @@ body {
 }
 
 .hero {
-    background: url('images/hero-bg.jpg') no-repeat center center/cover;
-    color: #fff;
+    background: url('images/sneakerbckg.jpg') no-repeat center center/cover;
+    color: #fff; /* Ensure the text contrasts well with the background */
     text-align: center;
     padding: 5rem 1rem;
+    height: 100vh; /* Full screen height */
+    display: flex; /* Center the content */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
 }
 
 .hero h2 {
@@ -171,7 +177,7 @@ form button:hover {
 }
 
 .footer {
-    background: #333;
+    background: #e63946;
     color: #fff;
     text-align: center;
     padding: 1rem 0;
