@@ -7,7 +7,7 @@ body, h1, h2, h3, p, ul, li, a, img, button, input, textarea {
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    color: #333;
+    color: #333333;
 }
 
 .container {
@@ -49,7 +49,7 @@ body {
 
 .hero {
     background: url('images/hero-bg.jpg') no-repeat center center/cover;
-    color: #000000;
+    color: #fff;
     text-align: center;
     padding: 5rem 1rem;
 }
