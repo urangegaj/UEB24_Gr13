@@ -109,24 +109,60 @@
         </div>
     </section>
 
-    <section id="contact" class="contact">
-        <div class="container">
-            <h2>Contact Us</h2>
-            <form id="contact-form">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-
-                <label for="message">Message:</label>
-                <textarea id="message" name="message" rows="5" required></textarea>
-
-                <button type="submit">Send</button>
-            </form>
+    <div class="container-wrapper">
+        <section id="contact" class="contact">
+            <div class="container">
+                <h2>Contact Us</h2>
+                <p>We'd love to hear from you! Please fill out the form below, and we'll get back to you as soon as possible.</p>
+                
+                <form id="contact-form" action="submit_form.php" method="POST">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" placeholder="Your Name" required>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" placeholder="Your Email" required>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="message">Message:</label>
+                        <textarea id="message" name="message" rows="5" placeholder="Your Message..." required></textarea>
+                    </div>
+        
+                    <button type="submit" class="submit-button">Send Message</button>
+                </form>
+        
+                <div class="contact-info">
+                    <h3>Other Ways to Reach Us</h3>
+                    <p><i class="fa fa-phone"></i> Phone: +383 41 234 567</p>
+                    <p><i class="fa fa-envelope"></i> Email: support@lacedlifestyle.com</p>
+                </div>
+            </div>
+        </section>
+    
+        <div class="sherbimet">
+            <div class="sherbimet-content">
+                <h2>Our services</h2>
+                <div class="row">
+                    <div class="sherbimi">
+                        <img src="images/truck-icon.png" alt="Truck Icon">
+                        <p class="p-sherbimi">Efficient transportation for our store includes secure packing, diverse shipping options, and real-time tracking to ensure timely deliveries. For every order, free shipping throughout Kosovo, while for orders in Albania, shipping is €5. </p>
+                    </div>
+                    <div class="sherbimi">
+                        <img src="images/card-payment.png" alt="Card Icon">
+                        <p class="p-sherbimi">Secure payments with VISA, MASTERCARD and StarCard cards, offering flexible options for online shopping. Enjoy an easy and fast experience, with the option to pay in up to 6 installments, which helps you manage your budget better.</p>
+                    </div>
+                    <div class="sherbimi">
+                        <img src="images/customer-service.png" alt="customer-service Icon">
+                        <p class="p-sherbimi">Customer support is vital for our store, offering 24/7 assistance via live chat, email, and phone to enhance the shopping experience. Efficient communication and support help reduce cart abandonment and boost customer satisfaction.</p>
+                    </div>
+                </div>
+            </div>
         </div>
-    </section>
-
+    </div>
+    
     <footer class="footer">
         <div class="container">
             <p>© 2024 Laced Lifestyle. All Rights Reserved.</p>
