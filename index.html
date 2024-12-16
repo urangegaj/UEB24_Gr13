@@ -26,32 +26,6 @@
         <div id="cart-container" class="cart-container">
             <ul id="cart-list"></ul>
         </div>
-
-        <div class="menu-icon" onclick="toggleMenu()">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-        </div>
-        <div id="menu" class="hidden">
-            <ul>
-                <li><a href="#categories">Categories</a></li>
-                <li><a href="#brands">Brands</a></li>
-                <li><a href="#sizes">Sizes</a></li>
-                
-            </ul>
-        </div>
-        <script>
-            function toggleMenu() {
-                var menu = document.getElementById("menu");
-                if (menu.classList.contains("hidden")) {
-                    menu.classList.remove("hidden");
-                    menu.style.display = "block"; 
-                } else {
-                    menu.classList.add("hidden");
-                    menu.style.display = "none"; 
-                }
-            }
-            </script>
     </header>
     
     
