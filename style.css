@@ -344,7 +344,6 @@ input[type=text]:focus, input[type=email]:focus, textarea:focus {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-
 .contact {
     flex: 1; 
     order: 2; 
