@@ -8,6 +8,10 @@ body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
     color: #333333;
+    overflow: auto;
+}
+body::-webkit-scrollbar {
+    display: none;
 }
 
 .container {
