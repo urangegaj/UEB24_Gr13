@@ -115,3 +115,38 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+document.addEventListener('DOMContentLoaded', () => {
+    const searchButton = document.getElementById('search-button');
+    const searchContainer = document.getElementById('search-container');
+    const searchInput = document.getElementById('search-input');
+
+    // Toggle visibility of search bar
+    searchButton.addEventListener('click', () => {
+        searchContainer.classList.toggle('hidden');
+        if (!searchContainer.classList.contains('hidden')) {
+            searchInput.focus(); // Focus input when visible
+        }
+    });
+
+    // Handle product search on "Enter" key press
+    searchInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            const query = searchInput.value.toLowerCase().trim();
+            if (query) {
+                // Navigate to product page or show alert if not found
+                const products = {
+                    "running shoes": "./Products.html#running-shoes",
+                    "casual sneakers": "./Products.html#casual-sneakers",
+                    "formal shoes": "./Products.html#formal-shoes"
+                };
+
+                if (products[query]) {
+                    window.location.href = products[query];
+                } else {
+                    alert('Product not found');
+                }
+            }
+        }
+    });
+});
+
