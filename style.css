@@ -357,6 +357,7 @@ input[type=text]:focus, input[type=email]:focus, textarea:focus {
 
 .container-wrapper {
     display: flex; 
+    flex-wrap: wrap;
     justify-content: space-between; 
     align-items: flex-start; 
     gap: 20px; 
