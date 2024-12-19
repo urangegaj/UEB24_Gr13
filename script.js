@@ -133,7 +133,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event.key === 'Enter') {
             const query = searchInput.value.toLowerCase().trim();
             if (query) {
-                // Navigate to product page or show alert if not found
                 const products = {
                     "running shoes": "./Products.html#running-shoes",
                     "casual sneakers": "./Products.html#casual-sneakers",
@@ -149,4 +148,44 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+document.addEventListener('DOMContentLoaded', () => {
+    const loginButton = document.getElementById('login-button');
+    const userAccount = document.getElementById('user-account');
+    const profileButton = document.getElementById('profile-button');
+    const accountDropdown = document.getElementById('account-dropdown');
+    const logoutButton = document.getElementById('logout-button');
 
+    let isLoggedIn = false;
+
+    function updateUserUI() {
+        if (isLoggedIn) {
+            loginButton.classList.add('hidden');
+            userAccount.classList.remove('hidden');
+        } else {
+            loginButton.classList.remove('hidden');
+            userAccount.classList.add('hidden');
+        }
+    }
+
+    loginButton.addEventListener('click', () => {
+        isLoggedIn = true;
+        updateUserUI();
+    });
+
+    logoutButton.addEventListener('click', () => {
+        isLoggedIn = false;
+        updateUserUI();
+    });
+
+    profileButton.addEventListener('click', () => {
+        accountDropdown.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!userAccount.contains(e.target) && !profileButton.contains(e.target)) {
+            accountDropdown.classList.add('hidden');
+        }
+    });
+
+    updateUserUI();
+});
