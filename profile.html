@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="User profile page">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>User Profile</title>
+    <header class="header">
+        <div class="container">
+            <div class="logo" >
+            <img src="images/logo.png" alt="Laced Lifestyle Logo">
+            <h1>Laced Lifestyle</h1>
+        </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="./index.html">Home</a></li>
+                    <li><a href="./Products.html">Products</a></li>
+                    <li><a href="./About.html">About</a></li>
+                    <li><a href="./Contact.html">Contact</a></li>
+                    
+                </ul>
+            </nav>
+        </div>
+        
+        <div id="user-account" class="user-account hidden">
+            <button id="profile-button" class="nav-button"> 
+                <i class="fa fa-user"></i> My Account 
+            </button>
+            <div id="account-dropdown" class="dropdown hidden">
+                <a href="orders.html"><u>My orders</u></a>
+                <button id="logout-button">Logout</button>
+            </div>
+        </div>
+        
+        <button id="login-button" class="nav-button">Login</button>
+    </header>
+    
+</head>
+<body>
+    <div class="container">
+        <h1>Your Profile</h1>
+        <div class="drag-drop-area" id="drag-drop-area">
+            <p>Drag & Drop your profile picture here</p>
+            <input type="file" id="file-input" style="display: none;">
+        </div>
+        <div class="user-info" id="user-info">
+            <h2>Profile Information</h2>
+            <div id="display-name"></div>
+            <div id="display-lastname"></div>
+            <div id="display-username"></div>
+            <div id="display-email"></div>
+            <div id="display-birthdate"></div>
+            <div id="display-gender"></div>
+        </div>
+        <img src="default-profile.png" alt="Profile Picture" class="profile-pic" id="profile-pic">
+        <form id="profile-form">
+            <div>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div>
+                <label for="lastname">Lastname:</label>
+                <input type="text" id="lastname" name="lastname" required>
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="text" id="password" name="password" required>
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div>
+                <label for="birthdate">Birthdate:</label>
+                <input type="date" id="birthdate" name="birthdate" required>
+            </div>
+            <div>
+                <label for="gender">Gender:</label>
+                <div class="gender">
+                    <div>
+                        <input type="radio" id="male" name="gender" value="male" required>
+                        <label for="male">Male</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="female" name="gender" value="female" required>
+                        <label for="female">Female</label>
+                    </div>
+                </div>
+            </div>
+            <button type="submit">Save</button>
+        </form>
+    </div>
+    <style>
+        .hidden{
+            display: none;
+        }
+        .profile-pic {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        }
+        .drag-drop-area {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        .drag-drop-area.dragover {
+            border-color: #000;
+        }
+        .dropdown {
+        position: absolute;
+        background-color: #fff;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        }
+        .dropdown a, .dropdown button {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+        .dropdown a:hover, .dropdown button:hover {
+            background-color: #ddd;
+        }
+        .gender{
+        display: flex;
+        flex-direction: column;
+        }
+        .gender div {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        }
+        .gender input[type="radio"] {
+        display: none;
+        }
+        .gender label {
+        position: relative;
+        padding-left: 30px;
+        cursor: pointer;
+        user-select: none;
+        }
+        .gender label::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        border: 2px solid #ccc;
+        border-radius: 50%;
+        background-color: #fff;
+        }
+        .gender input[type="radio"]:checked + label::before {
+        border-color: #007bff;
+        background-color: #007bff;
+        }
+        .gender input[type="radio"]:checked + label::after {
+        content: "";
+        position: absolute;
+        left: 7.5px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #fff;
+        }
+        .user-info {
+            margin-left: 20px;
+            flex: 1;
+        }
+        .user-info div {
+            margin-bottom: 10px;
+        }
+    </style>
+
+    <script>
+        const dragDropArea = document.getElementById('drag-drop-area');
+        const fileInput = document.getElementById('file-input');
+        const profilePic = document.getElementById('profile-pic');
+        const loginButton = document.getElementById('login-button');
+        const userAccount = document.getElementById('user-account');
+        const profileButton = document.getElementById('profile-button');
+        const accountDropdown = document.getElementById('account-dropdown');
+        const profileForm = document.getElementById('profile-form');
+        const userInfo = document.getElementById('user-info');
+
+        const isLoggedIn = true;
+
+        if (isLoggedIn) {
+            loginButton.classList.add('hidden');
+            userAccount.classList.remove('hidden');
+        } else {
+            loginButton.classList.remove('hidden');
+            userAccount.classList.add('hidden');
+        }
+
+        dragDropArea.addEventListener('click', () => fileInput.click());
+
+        dragDropArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dragDropArea.classList.add('dragover');
+        });
+
+        dragDropArea.addEventListener('dragleave', () => {
+            dragDropArea.classList.remove('dragover');
+        });
+
+        dragDropArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dragDropArea.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            handleFile(file);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            handleFile(file);
+        });
+
+        function handleFile(file) {
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    profilePic.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert('Please upload a valid image file.');
+            }
+        }
+
+        profileButton.addEventListener('click', () => {
+            console.log("My Account clicked!");
+            accountDropdown.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!profileButton.contains(e.target) && !accountDropdown.contains(e.target)) {
+                accountDropdown.classList.add('hidden');
+            }
+        });
+        profileForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            document.getElementById('display-name').innerText = `Name: ${document.getElementById('name').value}`;
+            document.getElementById('display-lastname').innerText = `Lastname: ${document.getElementById('lastname').value}`;
+            document.getElementById('display-username').innerText = `Username: ${document.getElementById('username').value}`;
+            document.getElementById('display-email').innerText = `Email: ${document.getElementById('email').value}`;
+            document.getElementById('display-birthdate').innerText = `Birthdate: ${document.getElementById('birthdate').value}`;
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+            document.getElementById('display-gender').innerText = `Gender: ${gender}`;
+        });
+    </script>
+</body>
+</html>

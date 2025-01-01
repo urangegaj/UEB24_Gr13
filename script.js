@@ -93,3 +93,4 @@ function addToCart(itemName) {
     cartList.appendChild(li);
 }
 
+
