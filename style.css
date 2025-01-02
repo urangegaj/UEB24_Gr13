@@ -91,8 +91,8 @@ body::-webkit-scrollbar {
 
 
 .hero {
-    position: relative; /* Ensures content stays on top of the video */
-    background: none; /* Remove the static background image */
+    position: relative; 
+    background: none;
     color: #fff;
     text-align: center;
     padding: 5rem 1rem;
@@ -101,7 +101,7 @@ body::-webkit-scrollbar {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    overflow: hidden; /* Ensures no overflow from the video */
+    overflow: hidden; 
 }
 
 .hero .background-video {
@@ -113,12 +113,12 @@ body::-webkit-scrollbar {
     min-height: 100%;
     width: auto;
     height: auto;
-    z-index: -1; /* Place the video behind the content */
-    object-fit: cover; /* Ensures the video fills the section */
+    z-index: -1; 
+    object-fit: cover; 
 }
 
 .hero .container {
-    position: relative; /* Ensures content is on top of the video */
+    position: relative; 
     z-index: 1;
 }
 
@@ -755,4 +755,14 @@ form textarea {
     .product-grid {
         grid-template-columns: 1fr;  
     }
+}
+
+.social-icons .icon {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.3s ease;
+}
+
+.social-icons .icon:hover {
+    transform: scale(1.2); 
 }
