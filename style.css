@@ -77,7 +77,7 @@ body::-webkit-scrollbar {
 }
 
 #cart-button:hover {
-    background-color: #555;
+    background-color: #555555;
 }
 
 .navbar-right {
@@ -139,7 +139,7 @@ body::-webkit-scrollbar {
 }
 
 .cta-button:hover {
-    background: #d62839;
+    background: #2a39e0;
 }
 
 .products {
