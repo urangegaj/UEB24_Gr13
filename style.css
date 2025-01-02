@@ -17,10 +17,12 @@ body::-webkit-scrollbar {
 .container {
     width: 90%;
     max-width: 1200px;
+    
     margin: auto;
 }
 
 .header {
+   
     background: #333;
     color: #fff;
     display: flex; 
@@ -39,6 +41,7 @@ body::-webkit-scrollbar {
 .logo img {
     height: 50px; 
     width: auto; 
+   
 }
 
 
@@ -408,17 +411,13 @@ input[type=text]:focus, input[type=email]:focus, textarea:focus {
     margin: 5px 0;
 }
 
-.map-container{
-    padding-left: 80px;
-}
-
 .container-wrapper {
     display: flex; 
     flex-wrap: wrap;
     justify-content: space-between; 
     align-items: flex-start; 
     gap: 20px; 
-    padding: 20px; 
+    padding: 20px;
 }
 
 .sherbimet {
@@ -510,18 +509,6 @@ form textarea {
     margin-bottom: 10px;
 }
 
-.social-icons .icon {
-    width: 30px;
-    height: 30px;
-    transition: transform 0.3s ease;
-}
-
-.social-icons .icon:hover {
-    transform: scale(1.2); /* Slightly enlarge on hover */
-}
-
-
-<<<<<<< HEAD
 .product-header {
     background-color: #f4f4f4;
     padding: 10px 0;
@@ -642,19 +629,6 @@ form textarea {
 }
 
 
-@media (max-width: 768px) {
-    .product-grid {
-        grid-template-columns: 1fr 1fr; 
-    }
-}
-
-@media (max-width: 480px) {
-    .product-grid {
-        grid-template-columns: 1fr;  
-    }
-}
-
-=======
 #search-container {
     display: flex;
     align-items: center;
@@ -673,7 +647,8 @@ form textarea {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
-#search-button{
+
+#search-button {
     border-radius: 10%;
     padding: 11px 20px;
     cursor: pointer;
@@ -682,10 +657,12 @@ form textarea {
     border: 1px solid white;
     margin-right: 3px;
 }
-#search-button:hover{
+
+#search-button:hover {
     background-color: rgb(127, 127, 127);
     color: white;
 }
+
 .user-account {
     position: relative;
 }
@@ -730,4 +707,16 @@ form textarea {
 .hidden {
     display: none;
 }
->>>>>>> 589f9b3b4457fef818fca2eeaf6f689c5c59126a
+
+
+@media (max-width: 768px) {
+    .product-grid {
+        grid-template-columns: 1fr 1fr; 
+    }
+}
+
+@media (max-width: 480px) {
+    .product-grid {
+        grid-template-columns: 1fr;  
+    }
+}
