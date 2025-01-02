@@ -5,8 +5,107 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="User profile page">
     <link rel="stylesheet" href="style.css">
+    <link rel="website icon" type="png" href="images/logo1.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>User Profile</title>
+    <title>Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .hidden{
+            display: none;
+        }
+        .profile-container{
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+        .profile-pic {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        }
+        .drag-drop-area {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        .drag-drop-area.dragover {
+            border-color: #000;
+        }
+        .dropdown {
+        position: absolute;
+        background-color: #fff;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        }
+        .dropdown a, .dropdown button {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+        .dropdown a:hover, .dropdown button:hover {
+            background-color: #ddd;
+        }
+        .gender{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        }
+        .gender div {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        }
+        .gender input[type="radio"] {
+        display: none;
+        }
+        .gender label {
+        position: relative;
+        padding-left: 30px;
+        cursor: pointer;
+        user-select: none;
+        }
+        .gender label::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        border: 2px solid #ccc;
+        border-radius: 50%;
+        background-color: #fff;
+        }
+        .gender input[type="radio"]:checked + label::before {
+        border-color: #007bff;
+        background-color: #007bff;
+        }
+        .gender input[type="radio"]:checked + label::after {
+        content: "";
+        position: absolute;
+        left: 7.5px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #fff;
+        }
+        .user-info {
+            flex: 1;
+        }
+        .user-info div {
+            margin-bottom: 10px;
+        }
+    </style>
     <header class="header">
         <div class="container">
             <div class="logo" >
@@ -19,7 +118,6 @@
                     <li><a href="./Products.html">Products</a></li>
                     <li><a href="./About.html">About</a></li>
                     <li><a href="./Contact.html">Contact</a></li>
-                    
                 </ul>
             </nav>
         </div>
@@ -69,7 +167,7 @@
             </div>
             <div>
                 <label for="password">Password:</label>
-                <input type="text" id="password" name="password" required>
+                <input type="text" id="password" name="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, and one number.">
             </div>
             <div>
                 <label for="email">Email:</label>
@@ -95,94 +193,6 @@
             <button type="submit">Save</button>
         </form>
     </div>
-    <style>
-        .hidden{
-            display: none;
-        }
-        .profile-pic {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        object-fit: cover;
-        }
-        .drag-drop-area {
-            border: 2px dashed #ccc;
-            padding: 20px;
-            margin-bottom: 20px;
-            cursor: pointer;
-        }
-        .drag-drop-area.dragover {
-            border-color: #000;
-        }
-        .dropdown {
-        position: absolute;
-        background-color: #fff;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        z-index: 1;
-        }
-        .dropdown a, .dropdown button {
-            color: #333;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            text-align: left;
-        }
-        .dropdown a:hover, .dropdown button:hover {
-            background-color: #ddd;
-        }
-        .gender{
-        display: flex;
-        flex-direction: column;
-        }
-        .gender div {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-        }
-        .gender input[type="radio"] {
-        display: none;
-        }
-        .gender label {
-        position: relative;
-        padding-left: 30px;
-        cursor: pointer;
-        user-select: none;
-        }
-        .gender label::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 20px;
-        height: 20px;
-        border: 2px solid #ccc;
-        border-radius: 50%;
-        background-color: #fff;
-        }
-        .gender input[type="radio"]:checked + label::before {
-        border-color: #007bff;
-        background-color: #007bff;
-        }
-        .gender input[type="radio"]:checked + label::after {
-        content: "";
-        position: absolute;
-        left: 7.5px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background-color: #fff;
-        }
-        .user-info {
-            margin-left: 20px;
-            flex: 1;
-        }
-        .user-info div {
-            margin-bottom: 10px;
-        }
-    </style>
 
     <script>
         const dragDropArea = document.getElementById('drag-drop-area');
