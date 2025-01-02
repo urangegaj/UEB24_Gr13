@@ -5,6 +5,113 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="custom-styles.css">
+    <script>
+function updateCartAndWishlist() {
+    const cartCount = document.querySelector("#cart-link span");
+    const wishlistCount = document.querySelector("#wishlist-link span");
+
+    const cartItemCount = parseInt(localStorage.getItem('cartCount')) || 0;
+    const wishlistItemCount = parseInt(localStorage.getItem('wishlistCount')) || 0;
+
+    cartCount.textContent = cartItemCount;
+    wishlistCount.textContent = wishlistItemCount;
+}
+
+function addToCart(button) {
+    let cartItemCount = parseInt(localStorage.getItem('cartCount')) || 0;
+    cartItemCount++;
+    localStorage.setItem('cartCount', cartItemCount);
+    button.textContent = 'Remove from Cart';
+    button.classList.add('in-cart');
+    updateCartAndWishlist();
+
+    const message = document.createElement('div');
+    message.classList.add('cart-message');
+    message.textContent = 'Item added to cart!';
+    document.body.appendChild(message);
+
+    setTimeout(() => {
+        message.remove();
+    }, 3000);
+}
+
+function removeFromCart(button) {
+    let cartItemCount = parseInt(localStorage.getItem('cartCount')) || 0;
+    if (cartItemCount > 0) {
+        cartItemCount--;
+        localStorage.setItem('cartCount', cartItemCount);
+        button.textContent = 'Add to Cart';
+        button.classList.remove('in-cart');
+        updateCartAndWishlist();
+
+        
+        const message = document.createElement('div');
+        message.classList.add('cart-message');
+        message.textContent = 'Item removed from cart!';
+        document.body.appendChild(message);
+
+        setTimeout(() => {
+            message.remove();
+        }, 3000);
+    }
+}
+
+function addToWishlist(heartButton) {
+    let wishlistItemCount = parseInt(localStorage.getItem('wishlistCount')) || 0;
+    if (!heartButton.classList.contains('selected')) {
+        heartButton.classList.add('selected');
+        wishlistItemCount++;
+        localStorage.setItem('wishlistCount', wishlistItemCount);
+        updateCartAndWishlist();
+    }
+}
+
+function removeFromWishlist(heartButton) {
+    let wishlistItemCount = parseInt(localStorage.getItem('wishlistCount')) || 0;
+    if (wishlistItemCount > 0 && heartButton.classList.contains('selected')) {
+        wishlistItemCount--;
+        localStorage.setItem('wishlistCount', wishlistItemCount);
+        heartButton.classList.remove('selected');
+        updateCartAndWishlist();
+    }
+}
+
+function resetCountsOnLoad() {
+    localStorage.setItem('cartCount', 0);
+    localStorage.setItem('wishlistCount', 0);
+    updateCartAndWishlist();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    resetCountsOnLoad();
+
+    updateCartAndWishlist();
+
+    const addToCartButtons = document.querySelectorAll('.add-to-cart');
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            if (button.classList.contains('in-cart')) {
+                removeFromCart(button);
+            } else {
+                addToCart(button);
+            }
+        });
+    });
+
+    const heartButtons = document.querySelectorAll('.heart-button');
+    heartButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            if (button.classList.contains('selected')) {
+                removeFromWishlist(button);
+            } else {
+                addToWishlist(button);
+            }
+        });
+    });
+});
+
+
+    </script>
     <title>Contact Us</title>
 </head>
 <body>
@@ -63,7 +170,7 @@
                 </button>
                 <h3>Speed Racer 2000</h3>
                 <p>$79.99</p>
-                <button>Add to Cart</button>
+                <button class="add-to-cart">Add to Cart</button>
             </div>
             
             
@@ -74,7 +181,7 @@
                 </button>
                 <h3>Runner X-Pro</h3>
                 <p>$89.99</p>
-                <button>Add to Cart</button>
+                <button class="add-to-cart">Add to Cart</button>
             </div>
 
             <div class="product">
@@ -84,7 +191,7 @@
                 </button>
                 <h3>Race Flex</h3>
                 <p>$85.99</p>
-                <button>Add to Cart</button>
+                <button class="add-to-cart">Add to Cart</button>
             </div>
 
             <div class="product">
@@ -94,7 +201,7 @@
                 </button>
                 <h3>Speed Goat</h3>
                 <p>$75.99</p>
-                <button>Add to Cart</button>
+                <button class="add-to-cart">Add to Cart</button>
             </div>
 
             <div class="product">
@@ -104,7 +211,7 @@
                 </button>
                 <h3>Ultraboost</h3>
                 <p>$69.99</p>
-                <button>Add to Cart</button>
+                <button class="add-to-cart">Add to Cart</button>
             </div>
 
             <div class="product">
@@ -114,7 +221,7 @@
                 </button>
                 <h3>Infinity Run</h3>
                 <p>$65.99</p>
-                <button>Add to Cart</button>
+                <button class="add-to-cart">Add to Cart</button>
             </div>
     
          
@@ -132,7 +239,7 @@
                 </button>
                 <h3>Urban Loafers</h3>
                 <p>$59.99</p>
-                <button>Add to Cart</button>
+                <button class="add-to-cart">Add to Cart</button>
             </div>
             
             <div class="product">
@@ -142,7 +249,7 @@
                 </button>
                 <h3>Easy Walk</h3>
                 <p>$49.99</p>
-                <button>Add to Cart</button>
+                <button class="add-to-cart">Add to Cart</button>
             </div>
 
               
@@ -153,7 +260,7 @@
                 </button>
                 <h3>Daily Flex</h3>
                 <p>$39.99</p>
-                <button>Add to Cart</button>
+                <button class="add-to-cart">Add to Cart</button>
             </div>
 
                  
@@ -164,7 +271,7 @@
                 </button>
                 <h3>Timeless Tread</h3>
                 <p>$59.99</p>
-                <button>Add to Cart</button>
+                <button class="add-to-cart">Add to Cart</button>
             </div>
 
                  
@@ -175,7 +282,7 @@
                 </button>
                 <h3>Heritage Step</h3>
                 <p>$59.99</p>
-                <button>Add to Cart</button>
+                <button class="add-to-cart">Add to Cart</button>
             </div>
 
                  
@@ -186,7 +293,7 @@
                 </button>
                 <h3>Prestige Glide</h3>
                 <p>$79.99</p>
-                <button>Add to Cart</button>
+                <button class="add-to-cart">Add to Cart</button>
             </div>
         </div>
     </section>
@@ -202,7 +309,7 @@
                 </button>
                 <h3>Executive Apex</h3>
                 <p>$119.99</p>
-                <button >Add to Cart</button>
+                <button class="add-to-cart">Add to Cart</button>
             </div>
            
             <div class="product">
@@ -212,7 +319,7 @@
                 </button>
                 <h3>Classic Brogue</h3>
                 <p>$129.99</p>
-                <button >Add to Cart</button>
+                <button class="add-to-cart">Add to Cart</button>
             </div>
 
             <div class="product">
@@ -222,7 +329,7 @@
                 </button>
                 <h3>Patent Leather</h3>
                 <p>$159.99</p>
-                <button>Add to Cart</button>
+                <button class="add-to-cart">Add to Cart</button>
             </div>
 
             
@@ -233,7 +340,7 @@
                 </button>
                 <h3>Classic Black</h3>
                 <p>$199.99</p>
-                <button >Add to Cart</button>
+                <button class="add-to-cart" >Add to Cart</button>
             </div>
 
             
@@ -244,7 +351,7 @@
                 </button>
                 <h3>Cognac Classic Oxford</h3>
                 <p>$124.99</p>
-                <button >Add to Cart</button>
+                <button class="add-to-cart">Add to Cart</button>
             </div>
 
             
@@ -255,7 +362,7 @@
                 </button>
                 <h3>Ebony Elegance Oxford</h3>
                 <p>$159.99</p>
-                <button >Add to Cart</button>
+                <button class="add-to-cart" >Add to Cart</button>
             </div>
         </div>
     </section>

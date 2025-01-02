@@ -22,8 +22,6 @@
 }
 
 
-
-
 .product-header .nav-links li a {
     text-decoration: none;
     color: #333;
@@ -143,17 +141,20 @@
     position: absolute;
     top: 10px;
     right: 10px;
+    cursor: pointer;
 }
 
 .product .heart-button svg{
     stroke: rgb(64,64,64);
     fill: none;
+    transition: all 0.3s ease;
 }
 
-.product .heart-button.active svg{
+.product .heart-button.selected svg{
     stroke: red;
     fill: red;
 }
+
 .product h3 {
     font-size: 1.2rem;
     margin-bottom: 10px;
@@ -182,7 +183,6 @@
     display: none;
 }
 
-
 @media (max-width: 768px) {
     .product-grid {
         grid-template-columns: 1fr 1fr; 
@@ -194,8 +194,6 @@
         grid-template-columns: 1fr;  
     }
 }
-
-
 
 #navbar-tools {
     display: flex;
@@ -210,8 +208,8 @@
     display: flex;
     place-items: center;
     text-decoration: none;
-
 }
+
 #navbar-tools svg path{
     fill: white;
 }
@@ -225,6 +223,7 @@
     transform: scale(1.1); 
     transition: transform 0.3s ease; 
 }
+
 #navbar-tools span {
     background-color: red;
     width: 17px;
@@ -238,11 +237,61 @@
     position: relative;
     bottom:8px;
     right: 10px;
-
 }
 
 #wishlist-link {
     margin-left: 15px;
 }
 
+button.add-to-cart {
+    background-color: #4CAF50; 
+    color: white;            
+    font-size: 16px;         
+    padding: 10px 20px;        
+    border: none;              
+    border-radius: 5px;        
+    cursor: pointer;          
+    transition: background-color 0.3s ease; 
+}
 
+button.add-to-cart:hover {
+    background-color: #45a049; 
+}
+
+button.in-cart {
+    background-color: #f44336; 
+    color: white;
+}
+
+button.in-cart:hover {
+    background-color: #e53935;
+}
+
+.heart-button.selected {
+    background-color: rgba(255, 0, 0, 0.1);
+    color: red; 
+    border-color: red;
+}
+
+button:not(.in-cart) {
+    background-color: #4CAF50; 
+    color: white;
+}
+
+button.in-cart:not(.remove) {
+    background-color: #f44336;
+}
+
+.cart-message {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #3ba9b1;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
