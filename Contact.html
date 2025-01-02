@@ -5,6 +5,141 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Contact Us</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .background-section {
+            position: relative;
+            height: 60vh;
+            background: url('images/sneakershopshop.jpeg') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: left;
+        }
+
+        .background-section h1 {
+            color: white;
+            font-size: 3rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            padding: 40px;
+        }
+
+        .grid-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-content {
+            max-width: 500px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .section-content h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #0056b3;
+        }
+
+        .section-content p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #0056b3;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #003d80;
+        }
+
+        .contact-form {
+            display: none;
+            max-width: 600px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        textarea {
+            height: 100px;
+            resize: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #0056b3;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #003d80;
+        }
+
+        .thank-you-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            margin: 30px auto;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            font-size: 18px;
+            max-width: 600px;
+        }
+    </style>
 </head>
 <body>
     <header class="header">
@@ -24,18 +159,95 @@
         </div>
     </header>
 
-   
+    <div class="background-section">
+        <h1>WE ARE WHERE YOU ARE</h1>
+    </div>
 
+    <div class="grid-container">
+        <div class="section-content">
+            <h2>With Around 5400 Stores Worldwide</h2>
+            <p>We strive to be where you are. Visit your country site for contact options or reach out to us directly.</p>
+            <a href="#" class="btn" onclick="showContactForm()">Contact Us</a>
+        </div>
+        <img src="images/sneakershopshop.jpeg" alt="Store">
+    </div>
 
+    <div class="grid-container" style="background-color: #f0f0f0;">
+        <img src="images/sneakershopshop.jpeg" alt="Office">
+        <div class="section-content">
+            <h2>BERN</h2>
+            <p>
+                International Corporation<br>
+                Wölflistrasse 2<br>
+                CH-3006 Bern<br>
+                Switzerland
+            </p>
+        </div>
+    </div>
 
+    <div class="contact-form" id="contactForm">
+        <h2>Contact Us</h2>
+        <form id="form">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Your Name" required>
+            </div>
 
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Your Email" required>
+            </div>
 
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" placeholder="Your Message" required></textarea>
+            </div>
 
-  <footer class="footer">
+            <button type="submit">Send Message</button>
+        </form>
+    </div>
+
+    <div class="thank-you-message" id="thankYouMessage">
+        Thank you! Your message has been successfully sent.
+    </div>
+
+    <footer class="footer">
         <div class="container">
             <p>© 2024 Laced Lifestyle. All Rights Reserved.</p>
         </div>
     </footer>
+
+    <script>
+        function showContactForm() {
+            const contactForm = document.getElementById('contactForm');
+            contactForm.style.display = 'block';
+            window.scrollTo({ top: contactForm.offsetTop, behavior: 'smooth' });
+        }
+
+        document.getElementById('form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            console.log('Name:', name);
+            console.log('Email:', email);
+            console.log('Message:', message);
+
+            const thankYouMessage = document.getElementById('thankYouMessage');
+            thankYouMessage.style.display = 'block';
+            window.scrollTo({ top: thankYouMessage.offsetTop, behavior: 'smooth' });
+
+            document.getElementById('form').reset();
+
+            setTimeout(() => {
+                thankYouMessage.style.display = 'none';
+                const contactForm = document.getElementById('contactForm');
+                contactForm.style.display = 'none';
+            }, 4000);
+        });
+    </script>
 
 
 </body>
