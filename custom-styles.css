@@ -593,3 +593,89 @@ form textarea {
         grid-template-columns: 1fr;  
     }
 }
+.body-background {
+    margin: 0;
+    height: 100%;
+    background-color: rgb(255, 255, 255);
+}
+
+
+
+.image-display {
+    display: block;
+    -webkit-user-select: none;
+    margin-top: 100px;
+    cursor: zoom-in;
+    background-color: hsl(30, 4%, 80%);
+    width: 981px;
+    height: 399px;
+}
+.E{
+    text-align: center;
+     background-color: rgba(255, 255, 255, 0); 
+     --desktop-text-color: #000000; 
+     --mobile-text-color: #000000;
+      border-color: rgb(0, 0, 0);
+       align-items: center;
+        width: 65%;
+         margin:150px auto;
+
+}
+.AspectRatio{
+    margin-top: 0;
+    padding-bottom: 40%
+
+}
+
+.OurStoryPage__core-principles-image-container {
+    display: flex;
+    justify-content: center;  
+    align-items: center;      
+    height: 180vh;           
+  }
+  
+ 
+  .OurStoryPage__core-principles-illustration {
+    max-width: 100%;  
+    height: auto;     
+  }
+  
+  
+
+/* Each .yy item styling */
+.Grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 50px;  /* Push the entire grid container up */
+    padding-top: 0;     /* Ensure no extra padding at the top */
+}
+
+.yy {
+    flex: 1;
+    padding: 70px;
+    margin: 0 8px;
+    margin-top: 20;  /* Ensure no margin at the top of each .yy */
+}
+
+.ff {
+    font-size: 16px;
+    line-height: 2.0;
+    margin-bottom: 16px;
+    color: #333;
+}
+
+@media screen and (max-width: 768px) {
+    .Grid {
+        flex-direction: column;
+    }
+
+    .yy {
+        width: 100%;
+        margin-bottom: 16px;
+    }
+}
+ 
+
+
+  
