@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="custom-styles.css">
+    <title>Contact Us</title>
+    <style>
+        /* General container settings */
+       /* General Button Styles */
+/* General Input Styles */
+input[type="text"], input[type="tel"], select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
+    transition: border 0.3s ease;
+}
+
+/* Focus effect for input fields */
+input[type="text"]:focus, input[type="tel"]:focus, select:focus {
+    border-color: #28a745; /* Green color for focus */
+    outline: none;
+}
+
+/* Label styles for better alignment */
+label {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #333;
+    display: block;
+}
+
+/* Payment Method Dropdown */
+.payment-methods select {
+    background-color: #f9f9f9;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+/* Payment Method Select Hover */
+.payment-methods select:hover {
+    border-color: #28a745;
+}
+
+/* Country Dropdown */
+select#billing_country {
+    background-color: #f9f9f9;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+/* Button Styling */
+button {
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-block;
+    text-align: center;
+}
+
+/* Checkout Button */
+#checkout-btn {
+    background-color: #28a745; /* Green color */
+    color: #fff;
+    width: auto;
+}
+
+#checkout-btn:hover {
+    background-color: #218838; /* Darker green for hover */
+    transform: translateY(-3px); /* Slight hover lift effect */
+}
+
+/* Remove Button */
+.remove-from-cart {
+    background-color: #dc3545; /* Red color */
+    color: #fff;
+    padding: 6px 12px; /* Smaller padding */
+    margin-top: 10px;
+    width: auto;
+}
+
+.remove-from-cart:hover {
+    background-color: #c82333; /* Darker red for hover */
+    transform: translateY(-3px); /* Slight hover lift effect */
+}
+
+/* Cart Image Size Adjustment */
+.cart-item img {
+    width: 100px; /* Smaller size for images */
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+/* Button Styling for Small Screens */
+@media screen and (max-width: 768px) {
+    #checkout-btn {
+        font-size: 13px;
+        padding: 6px 12px;
+    }
+
+    .remove-from-cart {
+        font-size: 13px;
+        padding: 5px 10px;
+    }
+
+    .cart-item img {
+        width: 90px; /* Adjust image size for smaller screens */
+        height: 90px;
+    }
+}
+
+
+
+
+    </style>
+
+
+
+
+</head>
+<body>
+   
+    <body>
+        <header class="header">
+            <div class="container">
+                <div class="logo">
+                    <img src="images/logo.png" alt="Laced Lifestyle Logo">
+                    <h1>Laced Lifestyle</h1>
+                </div>
+                <nav>
+                    <ul class="nav-links">
+                        <li><a href="./index.html">Home</a></li>
+                        <li><a href="./Products.html">Products</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="./Contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+    
+        <div class="main-content">
+            <div class="container">
+                <!-- Billing Details Section -->
+                <div class="billing-details">
+                    <form name="checkout" method="post" class="checkout-form" action="shoeshop" enctype="multipart/form-data">
+                        <h3>Billing Details</h3>
+    
+                        <div class="billing-fields">
+                            <p class="form-field">
+                                <label for="billing_first_name">Name <abbr class="required">*</abbr></label>
+                                <input type="text" name="billing_first_name" id="billing_first_name" placeholder="Name" aria-required="true">
+                            </p>
+                            <p class="form-field">
+                                <label for="billing_last_name">Last Name <abbr class="required">*</abbr></label>
+                                <input type="text" name="billing_last_name" id="billing_last_name" placeholder="Last Name" aria-required="true">
+                            </p>
+                            <p class="form-field">
+                                <label for="billing_country">Country <abbr class="required">*</abbr></label>
+                                <select name="billing_country" id="billing_country" aria-required="true">
+                                    <option value="">Select a country</option>
+                                    <option value="AL">Albania</option>
+                                    <option value="XK">Kosovo</option>
+                                    <option value="MK">North Macedonia</option>
+                                </select>
+                            </p>
+                            <p class="form-field">
+                                <label for="billing_city">City <abbr class="required">*</abbr></label>
+                                <input type="text" name="billing_city" id="billing_city" placeholder="City" aria-required="true">
+                            </p>
+                            <p class="form-field">
+                                <label for="billing_address_1">Address <abbr class="required">*</abbr></label>
+                                <input type="text" name="billing_address_1" id="billing_address_1" placeholder="Address" aria-required="true">
+                            </p>
+                            <p class="form-field">
+                                <label for="billing_number">Phone Number <abbr class="required">*</abbr></label>
+                                <input type="tel" name="billing_number" id="billing_number" placeholder="Phone Number" aria-required="true">
+                            </p>
+                            <div class="payment-methods">
+                                <p class="form-field">
+                                    <label for="payment_method">Payment Method <abbr class="required">*</abbr></label>
+                                    <select name="payment_method" id="payment_method" aria-required="true" onchange="toggleCardInput()">
+                                        <option value="">Select a payment method</option>
+                                        <option value="cash">Cash</option>
+                                        <option value="debit_card">Debit Card</option>
+                                    </select>
+                                </p>
+                            
+                                <!-- Debit Card Information -->
+                                <div id="debit_card_fields" style="display:none;">
+                                    <p class="form-field">
+                                        <label for="card_number">Debit Card Number <abbr class="required">*</abbr></label>
+                                        <input type="text" name="card_number" id="card_number" placeholder="Debit Card Number" aria-required="true">
+                                    </p>
+                            
+                                    <p class="form-field">
+                                        <label for="expiry_date">Expiration Date <abbr class="required">*</abbr></label>
+                                        <input type="text" name="expiry_date" id="expiry_date" placeholder="MM/YY" aria-required="true">
+                                    </p>
+                            
+                                    <p class="form-field">
+                                        <label for="cvv">CVV <abbr class="required">*</abbr></label>
+                                        <input type="text" name="cvv" id="cvv" placeholder="CVV" aria-required="true">
+                                    </p>
+                                </div>
+                            </div>
+                        
+                        </div>
+                    </form>
+                </div>
+                
+    
+                <!-- Cart Section -->
+                <div id="cart-items-container">
+                    <h1>Your Cart</h1>
+                    <ul id="cart-items"></ul>
+                    <p id="total-price"></p>
+                    <p id="empty-cart-message" style="display: none;">Your cart is empty!</p>
+                    <button id="checkout-btn">Checkout</button>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const cartItemsContainer = document.getElementById('cart-items');
+                const totalPriceElement = document.getElementById('total-price');
+                const emptyCartMessage = document.getElementById('empty-cart-message');
+    
+                function updateCart() {
+                    const cartItems = localStorage.getItem('cartItems') || '';
+                    const productsArray = cartItems.split(';').filter(Boolean);
+                    let totalPrice = 0;
+    
+                    cartItemsContainer.innerHTML = '';
+    
+                    if (productsArray.length === 0) {
+                        emptyCartMessage.style.display = 'block';
+                        totalPriceElement.style.display = 'none';
+                        return;
+                    }
+    
+                    emptyCartMessage.style.display = 'none';
+    
+                    productsArray.forEach((item, index) => {
+                        const [productId, productName, productPrice, productImage] = item.split(',');
+                        const price = parseFloat(productPrice.replace('$', ''));
+    
+                        const cartItem = document.createElement('li');
+                        cartItem.className = 'cart-item';
+    
+                        cartItem.innerHTML = `
+                            <img src="${productImage}" alt="${productName}">
+                            <div class="cart-item-details">
+                                <h3>${productName}</h3>
+                                <p class="price">$<span>${price.toFixed(2)}</span></p>
+                            </div>
+                            <button class="remove-from-cart" data-Id="${productId}">Remove</button>
+                        `;
+    
+                        cartItemsContainer.appendChild(cartItem);
+                        totalPrice += price;
+                    });
+    
+                    totalPriceElement.textContent = `Total Price: $${totalPrice.toFixed(2)}`;
+                    totalPriceElement.style.display = 'block';
+                }
+    
+                cartItemsContainer.addEventListener('click', (event) => {
+                    if (event.target.classList.contains('remove-from-cart')) {
+                        const productId = event.target.getAttribute('data-Id');
+                        let cartItems = localStorage.getItem('cartItems') || '';
+                        const productsArray = cartItems.split(';').filter(Boolean);
+                        const updatedCartItems = productsArray.filter(item => !item.startsWith(productId)).join(';');
+                        localStorage.setItem('cartItems', updatedCartItems);
+                        updateCart();
+                    }
+                });
+    
+                document.getElementById('checkout-btn').addEventListener('click', () => {
+                    alert('Proceeding to checkout...');
+                });
+    
+                updateCart();
+            });
+            function toggleCardInput() {
+        var paymentMethod = document.getElementById('payment_method').value;
+        var debitCardFields = document.getElementById('debit_card_fields');
+        
+        // Show debit card fields only when 'debit_card' is selected
+        if (paymentMethod === 'debit_card') {
+            debitCardFields.style.display = 'block';
+        } else {
+            debitCardFields.style.display = 'none';
+        }
+    }
+        </script>
+    
+    </body>
+            
+
+        
+
+
+        <footer class="footer">
+            <div class="container">
+                <p>© 2024 Laced Lifestyle. All Rights Reserved.</p>
+            </div>
+        </footer>
+    
+    
+    </body>
+    </html>
