@@ -187,6 +187,10 @@ body::-webkit-scrollbar {
     margin-bottom: 1rem;
 }
 
+.map-container{
+    padding-left: 80px ;
+}
+
 .contact {
     padding: 2rem 1rem;
     background: #f9f9f9;
