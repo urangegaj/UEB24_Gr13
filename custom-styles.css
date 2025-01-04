@@ -410,14 +410,14 @@
 }
 .body-background {
     display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center;    /* Center vertically */
+    justify-content: center;
+    align-items: center;    
     height: 50vh;  
 }
 .foto{
     display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center;    /* Center vertically */
+    justify-content: center; 
+    align-items: center;    
     height: 80vh;  
 }
 
@@ -441,10 +441,12 @@
         width: 65%;
          margin:100px auto;
 
+
 }
 .AspectRatio{
     margin-top: 0;
     padding-bottom: 40%
+   
 
 }
 
@@ -481,12 +483,12 @@
     border: 2px solid black;
     border-radius: 15px;
     padding: 20px;
-    transition: transform 0.3s ease, border 0.3s ease; /* Smooth transition for zoom effect */
+    transition: transform 0.3s ease, border 0.3s ease; 
 }
 
 .yy:hover {
-    transform: scale(1.05); /* Slight zoom effect on hover */
-    border-width: 4px; /* Increase border thickness on hover for a stronger zoom effect */
+    transform: scale(1.05); 
+    border-width: 4px; 
 }
 
 .ff {
@@ -508,29 +510,30 @@
     }
 }
 .Gridy {
-    text-align: center;    /* Aligns the text in the center */
-    padding: 100px;        /* Adds spacing around the text */
-    max-width: 800px;      /* Sets a maximum width to ensure wrapping occurs */
-    margin: 0 auto;        /* Centers the element horizontally */
+    text-align: center;    
+    padding: 100px;        
+    background-color: rgb(205, 225, 240); 
+    width: 100vw;         
+    margin: 0;            
+    box-sizing: border-box; 
 }
 
 h2 {
-    font-size: 2rem;       /* Adjust font size */
-    font-weight: bold;     /* Ensures the bold text style */
-    line-height: 1.5;      /* Adjusts line spacing */
-    color: #000;           /* Black text color */
-    margin: 0;             /* Removes extra margin around the heading */
-    word-wrap: break-word; /* Allows long words to break and wrap onto the next line */
+    font-size: 2rem;       
+    font-weight: bold;    
+    line-height: 1.5;      
+    color: #000;           
+    margin: 0;             
+    word-wrap: break-word; 
 }
 .row {
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap; /* Allow wrapping for smaller screens */
-  }
+    flex-wrap: wrap; }
   
   .cell {
-    width: 32%; /* Adjust to your design. For full-width, use 100%. */
-    margin-bottom: 20px; /* Space between rows on smaller screens */
+    width: 32%; 
+    margin-bottom: 20px; 
     box-sizing: border-box;
   }
   
@@ -541,7 +544,7 @@ h2 {
   .aspect-ratio {
     position: relative;
     width: 100%;
-    padding-bottom: 64.615%; /* Aspect ratio: 16:9, adjust this percentage as necessary for your image */
+    padding-bottom: 64.615%; 
   }
   
   .card-image {
@@ -550,12 +553,12 @@ h2 {
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensures the image covers the area without stretching */
-    transition: transform 0.3s ease; /* Smooth transition for zoom effect */
+    object-fit: cover; 
+    transition: transform 0.3s ease; 
   }
   
   .card-image:hover {
-    transform: scale(1.1); /* Scales the image to 110% of its size */
+    transform: scale(1.1); 
   }
   
   .card-title {
@@ -570,11 +573,10 @@ h2 {
     color: #555;
   }
   
-  /* Responsive design: stacks elements on smaller screens */
+ 
   @media (max-width: 768px) {
     .cell {
-      width: 100%; /* Stacks the cards in a column on smaller screens */
-    }
+      width: 100%;}
   }
   .container {
     width: 80%;
@@ -584,57 +586,112 @@ h2 {
     text-align: center;
   }
 
-  /* Style for the list */
+  
   .advantages-list {
     list-style-type: none;
     padding: 0;
   }
 
-  /* Style for each advantage item */
+  
   .advantage-item {
-    margin: 20px 0; /* Space between items */
+    margin: 20px 0; 
   }
 
-  /* Style for each advantage box */
+  
   .advantage-box {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #ccc; /* Border around each item */
+    border: 1px solid #ccc; 
     padding: 20px;
     margin: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     background-color: #f9f9f9;
-    transition: transform 0.3s ease, display 0.3s ease, border-bottom 0.3s ease; /* Add transition for border-bottom */
-  }
+    transition: transform 0.3s ease, display 0.3s ease, border-bottom 0.3s ease;}
   
-  /* Hover effect to add a black bottom border */
+
  
 
-  /* Hover effect to move the box to a new line */
+ 
   .advantage-item:hover .advantage-box {
-    display: block; /* Forces the box to be displayed as a block element, causing it to break to a new line */
+    display: block;
     transform: translateY(10px);
-    border-bottom: 3px solid black; /* Slightly move the box down for a better visual effect */
+    border-bottom: 3px solid black; 
   }
 
-  /* Style for the image */
+  
   .advantage-image img {
     margin-right: 15px;
   }
 
-  /* Style for the text */
+  
   .advantage-text h5 {
     font-size: 18px;
     font-weight: bold;
-    margin: 0; /* Remove margin for better alignment */
+    margin: 0; 
   }
 
   .advantage-text p {
     font-size: 14px;
-    margin: 5px 0 0 0; /* Adjust margin for spacing */
+    margin: 5px 0 0 0; 
   }
+  
+ 
+.rating-container {
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    gap: 10px; 
+  }
+  
+  
+  input[type="radio"] {
+    display: none;
+  }
+  
+  
+  .emoji-label {
+    font-size: 50px;
+    cursor: pointer;
+    display: inline-block; 
+    color: #ccc;
+    transition: color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+ 
+  .emoji-button:hover .emoji-label,
+  .emoji-button:hover .emoji-label:hover {
+    color: #f39c12; 
+    transform: scale(1.15); 
+    box-shadow: 0 0 15px rgba(243, 156, 18, 0.8); 
+  }
+  
+  
+  .emoji-button input:checked ~ .emoji-label {
+    color: #f39c12; 
+  }
+  
+  
+  .emoji-label:before {
+    content: '★'; 
+    font-family: "Arial", sans-serif;
+    font-weight: bold;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.2); 
+  }
+  
+ 
+  input[type="radio"]:focus + .emoji-label {
+    outline: 3px solid #f39c12;
+    transform: scale(1.1); 
+  }
+  
+ 
+  .emoji-label:hover, .emoji-label:active {
+    transform: scale(1.2);
+    transition: transform 0.2s ease;
+  }
+  
   
 
 #navbar-tools {
