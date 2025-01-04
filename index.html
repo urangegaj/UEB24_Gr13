@@ -18,11 +18,10 @@
         </div>
             <nav>
                 <ul class="nav-links">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="./Products.html">Products</a></li>
-                    <li><a href="./About.html">About</a></li>
-                    <li><a href="./Contact.html">Contact</a></li>
-                    
+                    <li><a href="#home" title="Go to Homepage">Home</a></li>
+                    <li><a href="./Products.html" title="View Products">Products</a></li>
+                    <li><a href="./About.html" title="Learn About Us">About</a></li>
+                    <li><a href="./Contact.html" title="Contact Us">Contact</a></li>
                 </ul>
             </nav>
         </div>
@@ -54,7 +53,7 @@
             <span id="close-modal" class="close">&times;</span>
             <div id="login-form" class="form">
                 <h2>Login</h2>
-                <form action="login.php" method="POST">
+                <form action="index.html" >
                     <div class="form-group">
                         <label for="username">Username:</label>
                         <input type="text" id="username" name="username" placeholder="Enter your username" required>
@@ -70,7 +69,7 @@
 
             <div id="sign-up-form" class="form hidden">
                 <h2>Sign Up</h2>
-                <form action="signup.php" method="POST">
+                <form action="./profile.html" >
                     <div class="form-group">
                         <label for="new-username">Username:</label>
                         <input type="text" id="new-username" name="new-username" placeholder="Create a username" required>
@@ -89,39 +88,6 @@
             </div>
         </div>
     </div>
-    <script>
-    const modal = document.getElementById('login-modal');
-        const loginButton = document.getElementById('login-button');
-        const closeModalButton = document.getElementById('close-modal');
-        const signUpLink = document.getElementById('sign-up-link');
-        const loginLink = document.getElementById('login-link');
-        const loginForm = document.getElementById('login-form');
-        const signUpForm = document.getElementById('sign-up-form');
-
-        loginButton.onclick = function() {
-            modal.style.display = 'block';
-        }
-
-        closeModalButton.onclick = function() {
-            modal.style.display = 'none';
-        }
-
-        window.onclick = function(event) {
-            if (event.target === modal) {
-                modal.style.display = 'none';
-            }
-        }
-
-        signUpLink.onclick = function() {
-            loginForm.classList.add('hidden');
-            signUpForm.classList.remove('hidden');
-        }
-
-        loginLink.onclick = function() {
-            signUpForm.classList.add('hidden');
-            loginForm.classList.remove('hidden');
-        }
-    </script>
 
     <section id="home" class="hero">
         <video autoplay loop muted playsinline class="background-video">

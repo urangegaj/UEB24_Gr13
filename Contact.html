@@ -139,6 +139,9 @@
             font-size: 18px;
             max-width: 600px;
         }
+        header, footer {
+        font-family: Arial, sans-serif; 
+        }
         @font-face {
         font-family: 'Custom Font';
         src: url('Montserrat-Italic-VariableFont_wght.ttf') format('woff'),
@@ -160,10 +163,10 @@
         </div>
             <nav>
                 <ul class="nav-links">
-                    <li><a href="./index.html">Home</a></li>
-                    <li><a href="./Products.html">Products</a></li>
-                    <li><a href="./About.html">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="./index.html" title="Go to Homepage">Home</a></li>
+                    <li><a href="./Products.html" title="View Products">Products</a></li>
+                    <li><a href="./About.html" title="Learn About Us">About</a></li>
+                    <li><a href="#contactForm" title="Contact Us">Contact</a></li>
                 </ul>
             </nav>
         </div>
@@ -177,7 +180,7 @@
         <div class="section-content">
             <h2>With Around 5400 Stores Worldwide</h2>
             <p>We strive to be where you are. Visit your country site for contact options or reach out to us directly.</p>
-            <a href="#" class="btn" onclick="showContactForm()">Contact Us</a>
+            <a href="javascript:void(0);" class="btn" onclick="showContactForm()">Contact Us</a>
         </div>
         <img src="images/sneakersneakers.avif" alt="Store">
     </div>
@@ -235,36 +238,48 @@
     </footer>
 
     <script>
-        function showContactForm() {
-            const contactForm = document.getElementById('contactForm');
-            contactForm.style.display = 'block';
-            window.scrollTo({ top: contactForm.offsetTop, behavior: 'smooth' });
-        }
+    function showContactForm() {
+        const contactForm = document.getElementById('contactForm');
+        contactForm.style.display = 'block';
+        window.scrollTo({ top: contactForm.offsetTop, behavior: 'smooth' });
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        const contactForm = document.getElementById('contactForm');
+        const contactLinks = document.querySelectorAll('a[href="#contactForm"]');
 
-        document.getElementById('form').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
-
-            console.log('Name:', name);
-            console.log('Email:', email);
-            console.log('Message:', message);
-
-            const thankYouMessage = document.getElementById('thankYouMessage');
-            thankYouMessage.style.display = 'block';
-            window.scrollTo({ top: thankYouMessage.offsetTop, behavior: 'smooth' });
-
-            document.getElementById('form').reset();
-
-            setTimeout(() => {
-                thankYouMessage.style.display = 'none';
-                const contactForm = document.getElementById('contactForm');
-                contactForm.style.display = 'none';
-            }, 4000);
+        contactLinks.forEach(link => {
+            link.addEventListener('click', event => {
+                event.preventDefault(); 
+                contactForm.style.display = 'block'; 
+                window.scrollTo({ top: contactForm.offsetTop, behavior: 'smooth' });
+            });
         });
-    </script>
+    });
+
+    document.getElementById('form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const message = document.getElementById('message').value;
+
+        console.log('Name:', name);
+        console.log('Email:', email);
+        console.log('Message:', message);
+
+        const thankYouMessage = document.getElementById('thankYouMessage');
+        thankYouMessage.style.display = 'block';
+        window.scrollTo({ top: thankYouMessage.offsetTop, behavior: 'smooth' });
+
+        document.getElementById('form').reset();
+
+        setTimeout(() => {
+            thankYouMessage.style.display = 'none';
+            const contactForm = document.getElementById('contactForm');
+            contactForm.style.display = 'none';
+        }, 4000);
+    });
+</script>
 
 
 </body>
