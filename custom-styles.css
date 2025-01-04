@@ -7,7 +7,7 @@
 
 .product-container {
     margin: 0 auto;
-    padding: 0;
+    padding: 8px ;
     width: 90%;
     max-width: 1200px;
     box-sizing: border-box;
@@ -34,7 +34,22 @@
     color: #9aa5b0;
 }
 
+.product-details {
+    margin-bottom: 16px;
+}
 
+.product-details h3 {
+    font-size: 18px;
+    margin: 0;
+    color: #333;
+}
+
+.product-details .price {
+    font-size: 16px;
+    font-weight: bold;
+    color: #28a745;
+    margin: 8px 0 0;
+}
 #running-shoes {
     background-color: #d6e0e6;  
     border-radius: 10px;  
