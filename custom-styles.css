@@ -807,17 +807,6 @@ button.in-cart:not(.remove) {
     margin-bottom: 10px;
 }
 
-
-.buy-button {
-    background-color: green;
-    color: white;
-    padding: 10px 20px;
-    margin-top: 20px;
-    cursor: pointer;
-}
-
-.buy-button:hover {
-    background-color: darkgreen;
 }
 
   

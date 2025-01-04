@@ -7,9 +7,7 @@
     <link rel="stylesheet" href="custom-styles.css">
     <title>Contact Us</title>
     <style>
-        /* General container settings */
-       /* General Button Styles */
-/* General Input Styles */
+      
 input[type="text"], input[type="tel"], select {
     width: 100%;
     padding: 10px;
@@ -20,13 +18,13 @@ input[type="text"], input[type="tel"], select {
     transition: border 0.3s ease;
 }
 
-/* Focus effect for input fields */
+
 input[type="text"]:focus, input[type="tel"]:focus, select:focus {
     border-color: #28a745; /* Green color for focus */
     outline: none;
 }
 
-/* Label styles for better alignment */
+
 label {
     font-size: 16px;
     font-weight: 600;
@@ -35,26 +33,26 @@ label {
     display: block;
 }
 
-/* Payment Method Dropdown */
+
 .payment-methods select {
     background-color: #f9f9f9;
     color: #333;
     border: 1px solid #ddd;
 }
 
-/* Payment Method Select Hover */
+
 .payment-methods select:hover {
     border-color: #28a745;
 }
 
-/* Country Dropdown */
+
 select#billing_country {
     background-color: #f9f9f9;
     color: #333;
     border: 1px solid #ddd;
 }
 
-/* Button Styling */
+
 button {
     font-size: 14px;
     font-weight: 600;
@@ -67,7 +65,7 @@ button {
     text-align: center;
 }
 
-/* Checkout Button */
+
 #checkout-btn {
     background-color: #28a745; /* Green color */
     color: #fff;
@@ -109,19 +107,37 @@ button {
     }
 
     .remove-from-cart {
-        font-size: 13px;
-        padding: 5px 10px;
+        background-color: #dc3545; /* Red color */
+        color: #fff;
+        padding: 6px 12px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .remove-from-cart:hover {
+        background-color: #c82333; /* Darker red on hover */
     }
 
     .cart-item img {
         width: 90px; /* Adjust image size for smaller screens */
         height: 90px;
     }
+
+    .confirmation-message {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 50px;
+            padding: 20px;
+            border: 1px solid #28a745;
+            background-color: #f8f9fa;
+            color: #28a745;
+        }
+        .confirmation-message p {
+            margin: 10px 0;
+        }
 }
-
-
-
-
     </style>
 
 
@@ -150,6 +166,7 @@ button {
     
         <div class="main-content">
             <div class="container">
+           
                 <!-- Billing Details Section -->
                 <div class="billing-details">
                     <form name="checkout" method="post" class="checkout-form" action="shoeshop" enctype="multipart/form-data">
@@ -164,6 +181,12 @@ button {
                                 <label for="billing_last_name">Last Name <abbr class="required">*</abbr></label>
                                 <input type="text" name="billing_last_name" id="billing_last_name" placeholder="Last Name" aria-required="true">
                             </p>
+
+                            <p class="form-field">
+                                <label for="billing_email">Email <abbr class="required">*</abbr></label>
+                                <input type="email" name="billing_email" id="billing_email" placeholder="Email" aria-required="true" required>
+                            </p>
+                            
                             <p class="form-field">
                                 <label for="billing_country">Country <abbr class="required">*</abbr></label>
                                 <select name="billing_country" id="billing_country" aria-required="true">
@@ -213,97 +236,177 @@ button {
                                     </p>
                                 </div>
                             </div>
+
+
                         
                         </div>
                     </form>
                 </div>
+
+                       <!-- Cart Section -->
+                       <div id="cart-items-container">
+                        <h1>Your Cart</h1>
+                        <ul id="cart-items"></ul>
+                        <p id="total-price"></p>
+                        <p id="empty-cart-message" style="display: none;">Your cart is empty!</p>
+                        <button id="checkout-btn">Checkout</button>
+                    </div>
                 
     
-                <!-- Cart Section -->
-                <div id="cart-items-container">
-                    <h1>Your Cart</h1>
-                    <ul id="cart-items"></ul>
-                    <p id="total-price"></p>
-                    <p id="empty-cart-message" style="display: none;">Your cart is empty!</p>
-                    <button id="checkout-btn">Checkout</button>
+                <div id="confirmation-message" class="confirmation-message" style="display: none;">
+                    <p>Congratulations! Your order has been completed.</p>
+                    <p>An email confirmation has been sent to <span id="user-email"></span>.</p>
+                    <p>Your order will be delivered to <span id="user-address"></span> in 2-5 days.</p>
                 </div>
             </div>
         </div>
-        
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                const cartItemsContainer = document.getElementById('cart-items');
-                const totalPriceElement = document.getElementById('total-price');
-                const emptyCartMessage = document.getElementById('empty-cart-message');
-    
-                function updateCart() {
-                    const cartItems = localStorage.getItem('cartItems') || '';
-                    const productsArray = cartItems.split(';').filter(Boolean);
-                    let totalPrice = 0;
-    
-                    cartItemsContainer.innerHTML = '';
-    
-                    if (productsArray.length === 0) {
-                        emptyCartMessage.style.display = 'block';
-                        totalPriceElement.style.display = 'none';
-                        return;
-                    }
-    
-                    emptyCartMessage.style.display = 'none';
-    
-                    productsArray.forEach((item, index) => {
-                        const [productId, productName, productPrice, productImage] = item.split(',');
-                        const price = parseFloat(productPrice.replace('$', ''));
-    
-                        const cartItem = document.createElement('li');
-                        cartItem.className = 'cart-item';
-    
-                        cartItem.innerHTML = `
-                            <img src="${productImage}" alt="${productName}">
-                            <div class="cart-item-details">
-                                <h3>${productName}</h3>
-                                <p class="price">$<span>${price.toFixed(2)}</span></p>
-                            </div>
-                            <button class="remove-from-cart" data-Id="${productId}">Remove</button>
-                        `;
-    
-                        cartItemsContainer.appendChild(cartItem);
-                        totalPrice += price;
-                    });
-    
-                    totalPriceElement.textContent = `Total Price: $${totalPrice.toFixed(2)}`;
-                    totalPriceElement.style.display = 'block';
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const cartItemsContainer = document.getElementById('cart-items');
+    const totalPriceElement = document.getElementById('total-price');
+    const emptyCartMessage = document.getElementById('empty-cart-message');
+    const checkoutBtn = document.getElementById('checkout-btn');
+    const confirmationMessage = document.getElementById('confirmation-message');
+    const userEmailElement = document.getElementById('user-email');
+    const userAddressElement = document.getElementById('user-address');
+
+    // Function to validate the form before checkout
+    function validateForm() {
+        const firstName = document.getElementById('billing_first_name').value;
+        const lastName = document.getElementById('billing_last_name').value;
+        const email = document.getElementById('billing_email').value;
+        const country = document.getElementById('billing_country').value;
+        const city = document.getElementById('billing_city').value;
+        const address = document.getElementById('billing_address_1').value;
+        const phone = document.getElementById('billing_number').value;
+        const paymentMethod = document.getElementById('payment_method').value;
+
+        // Enable checkout button only when all required fields are filled
+        if (firstName && lastName && email && country && city && address && phone && paymentMethod) {
+            // If payment method is debit card, ensure card details are filled
+            if (paymentMethod === "debit_card") {
+                const cardNumber = document.getElementById('card_number').value;
+                const expiryDate = document.getElementById('expiry_date').value;
+                const cvv = document.getElementById('cvv').value;
+                if (cardNumber && expiryDate && cvv) {
+                    checkoutBtn.disabled = false;
+                } else {
+                    checkoutBtn.disabled = true;
                 }
-    
-                cartItemsContainer.addEventListener('click', (event) => {
-                    if (event.target.classList.contains('remove-from-cart')) {
-                        const productId = event.target.getAttribute('data-Id');
-                        let cartItems = localStorage.getItem('cartItems') || '';
-                        const productsArray = cartItems.split(';').filter(Boolean);
-                        const updatedCartItems = productsArray.filter(item => !item.startsWith(productId)).join(';');
-                        localStorage.setItem('cartItems', updatedCartItems);
-                        updateCart();
-                    }
-                });
-    
-                document.getElementById('checkout-btn').addEventListener('click', () => {
-                    alert('Proceeding to checkout...');
-                });
-    
-                updateCart();
-            });
-            function toggleCardInput() {
-        var paymentMethod = document.getElementById('payment_method').value;
-        var debitCardFields = document.getElementById('debit_card_fields');
-        
-        // Show debit card fields only when 'debit_card' is selected
-        if (paymentMethod === 'debit_card') {
+            } else {
+                checkoutBtn.disabled = false;
+            }
+        } else {
+            checkoutBtn.disabled = true;
+        }
+    }
+
+    // Watch form fields for input changes to enable/disable checkout button
+    document.getElementById('billing_first_name').addEventListener('input', validateForm);
+    document.getElementById('billing_last_name').addEventListener('input', validateForm);
+    document.getElementById('billing_email').addEventListener('input', validateForm);
+    document.getElementById('billing_country').addEventListener('change', validateForm);
+    document.getElementById('billing_city').addEventListener('input', validateForm);
+    document.getElementById('billing_address_1').addEventListener('input', validateForm);
+    document.getElementById('billing_number').addEventListener('input', validateForm);
+    document.getElementById('payment_method').addEventListener('change', validateForm);
+
+    // Function to toggle the visibility of debit card fields
+    function toggleCardInput() {
+        const paymentMethod = document.getElementById('payment_method').value;
+        const debitCardFields = document.getElementById('debit_card_fields');
+        if (paymentMethod === "debit_card") {
             debitCardFields.style.display = 'block';
         } else {
             debitCardFields.style.display = 'none';
         }
     }
-        </script>
+
+    // Call toggleCardInput when the payment method changes
+    document.getElementById('payment_method').addEventListener('change', toggleCardInput);
+
+    function updateCart() {
+        const cartItems = localStorage.getItem('cartItems') || '';
+        const productsArray = cartItems.split(';').filter(Boolean);
+        let totalPrice = 0;
+
+        cartItemsContainer.innerHTML = '';
+
+        if (productsArray.length === 0) {
+            emptyCartMessage.style.display = 'block';
+            totalPriceElement.style.display = 'none';
+            checkoutBtn.style.display = 'none'; // Hide checkout button if cart is empty
+            return;
+        }
+
+        emptyCartMessage.style.display = 'none';
+
+        productsArray.forEach((item, index) => {
+            const [productId, productName, productPrice, productImage] = item.split(',');
+            const price = parseFloat(productPrice.replace('$', ''));
+
+            const cartItem = document.createElement('li');
+            cartItem.className = 'cart-item';
+
+            cartItem.innerHTML = `
+                <img src="${productImage}" alt="${productName}">
+                <div class="cart-item-details">
+                    <h3>${productName}</h3>
+                    <p class="price">$<span>${price.toFixed(2)}</span></p>
+                </div>
+                <button class="remove-from-cart" data-id="${productId}">Remove</button>
+            `;
+
+            cartItemsContainer.appendChild(cartItem);
+            totalPrice += price;
+
+            // Add event listener to remove button
+            cartItem.querySelector('.remove-from-cart').addEventListener('click', function() {
+                removeFromCart(productId);
+            });
+        });
+
+        totalPriceElement.textContent = `Total Price: $${totalPrice.toFixed(2)}`;
+        totalPriceElement.style.display = 'block';
+        checkoutBtn.style.display = 'inline-block'; // Show checkout button when cart has items
+    }
+
+    function removeFromCart(productId) {
+        let cartItems = localStorage.getItem('cartItems') || '';
+        const cartArray = cartItems.split(';').filter(Boolean);
+
+        const updatedCartArray = cartArray.filter(item => !item.startsWith(productId));
+        localStorage.setItem('cartItems', updatedCartArray.join(';'));
+        updateCart(); // Re-render the cart after removal
+    }
+
+    // Checkout button click event
+    checkoutBtn.addEventListener('click', () => {
+        const firstName = document.getElementById('billing_first_name').value;
+        const lastName = document.getElementById('billing_last_name').value;
+        const email = document.getElementById('billing_email').value;
+        const address = document.getElementById('billing_address_1').value;
+
+        // Validate the form inputs
+        if (!firstName || !lastName || !email || !address) {
+            alert('Please complete all required fields.');
+            return;
+        }
+
+        // Show the confirmation message
+        confirmationMessage.style.display = 'block';
+        userEmailElement.textContent = email;
+        userAddressElement.textContent = address;
+
+        // Hide cart and billing form after checkout
+        cartItemsContainer.style.display = 'none';
+    });
+
+    updateCart(); // Initial cart update when page loads
+});
+</script>
+            
     
     </body>
             
