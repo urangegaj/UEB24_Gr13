@@ -26,21 +26,19 @@
                 </ul>
             </nav>
         </div>
-        
+        <button id="login-button" class="nav-button">Login</button>
         <div id="user-account" class="user-account hidden">
-            <button id="profile-button" class="nav-button"> 
-                <i class="fa fa-user"></i> My Account 
-            </button>
+            <a href="profile.html">
+                <button id="profile-button" class="nav-button"> 
+                <i class="fa fa-user"></i> My Account </button>
+            </a>
             <div id="account-dropdown" class="dropdown hidden">
                 <a href="profile.html">Profile</a>
                 <a href="orders.html">My Orders</a>
                 <button id="logout-button">Logout</button>
             </div>
         </div>
-        
-        <button id="login-button" class="nav-button">Login</button>
-        
-        
+            
         <button id="search-button"><i class="fa fa-search"></i></button>
         <div id="search-container" class="hidden">
         <input type="text" id="search-input" placeholder="Search for a product..." />
@@ -54,25 +52,80 @@
     <div id="login-modal" class="modal">
         <div class="modal-content">
             <span id="close-modal" class="close">&times;</span>
-            <h2>Login</h2>
-            <form id="login-form" action="login.php" method="POST">
-                <div class="form-group">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                </div>
-                <button type="submit" class="submit-button">Login</button>
-            </form>
+            <div id="login-form" class="form">
+                <h2>Login</h2>
+                <form action="login.php" method="POST">
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="submit-button">Login</button>
+                    <p class="toggle-form">Don't have an account? <a href="#" id="sign-up-link">Sign Up</a></p>
+                </form>
+            </div>
+
+            <div id="sign-up-form" class="form hidden">
+                <h2>Sign Up</h2>
+                <form action="signup.php" method="POST">
+                    <div class="form-group">
+                        <label for="new-username">Username:</label>
+                        <input type="text" id="new-username" name="new-username" placeholder="Create a username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-email">Email:</label>
+                        <input type="email" id="new-email" name="new-email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-password">Password:</label>
+                        <input type="password" id="new-password" name="new-password" placeholder="Create a password" required>
+                    </div>
+                    <button type="submit" class="submit-button">Sign Up</button>
+                    <p class="toggle-form">Already have an account? <a href="#" id="login-link">Login</a></p>
+                </form>
+            </div>
         </div>
     </div>
+    <script>
+    const modal = document.getElementById('login-modal');
+        const loginButton = document.getElementById('login-button');
+        const closeModalButton = document.getElementById('close-modal');
+        const signUpLink = document.getElementById('sign-up-link');
+        const loginLink = document.getElementById('login-link');
+        const loginForm = document.getElementById('login-form');
+        const signUpForm = document.getElementById('sign-up-form');
+
+        loginButton.onclick = function() {
+            modal.style.display = 'block';
+        }
+
+        closeModalButton.onclick = function() {
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        signUpLink.onclick = function() {
+            loginForm.classList.add('hidden');
+            signUpForm.classList.remove('hidden');
+        }
+
+        loginLink.onclick = function() {
+            signUpForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+        }
+    </script>
 
     <section id="home" class="hero">
         <video autoplay loop muted playsinline class="background-video">
             <source src="images/videoplayback.mp4" type="video/mp4">
-            Your browser does not support the video tag.
         </video>
         <div class="container">
             <h2>Find Your Perfect Pair</h2>
