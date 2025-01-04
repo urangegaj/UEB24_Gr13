@@ -168,7 +168,89 @@
             </ul>
           </div>
           
-          
+          <div class="rating-container">
+            <div class="emoji-button">
+              <input type="radio" id="star1" name="rating" value="1">
+              <label for="star1" class="emoji-label"></label>
+            </div>
+            <div class="emoji-button">
+              <input type="radio" id="star2" name="rating" value="2">
+              <label for="star2" class="emoji-label"></label>
+            </div>
+            <div class="emoji-button">
+              <input type="radio" id="star3" name="rating" value="3">
+              <label for="star3" class="emoji-label"></label>
+            </div>
+            <div class="emoji-button">
+              <input type="radio" id="star4" name="rating" value="4">
+              <label for="star4" class="emoji-label"></label>
+            </div>
+            <div class="emoji-button">
+              <input type="radio" id="star5" name="rating" value="5">
+              <label for="star5" class="emoji-label"></label>
+            </div>
+            <div id="message-container" style="text-align: center;"></div>
+          </div>
+
+
+         <script>
+          const stars = document.querySelectorAll('input[name="rating"]');
+const labels = document.querySelectorAll('.emoji-label');
+const messageContainer = document.getElementById('message-container');
+
+
+function showRatingMessage(rating) {
+  let message;
+
+  
+  if (rating === 5) {
+    message = "Thank you for your 5-star rating! We're thrilled you loved it!";
+  } else if (rating === 4) {
+    message = "Thank you for your 4-star rating! We appreciate your feedback.";
+  } else if (rating === 3) {
+    message = "Thank you for your 3-star rating! We're glad you liked it.";
+  } else if (rating === 2) {
+    message = "Thank you for your 2-star rating! We're sorry it wasn't perfect.";
+  } else {
+    message = "Thank you for your 1-star rating! We'll strive to improve!";
+  }
+
+  
+  messageContainer.innerHTML = message;
+  messageContainer.style.color = 'green';
+  messageContainer.style.fontSize = '1.2em';
+  messageContainer.style.marginTop = '20px';
+  messageContainer.style.textAlign = 'center'; 
+}
+
+
+function disableRatingAndFillStars(rating) {
+  stars.forEach((star, index) => {
+    
+    star.disabled = true;
+
+   
+    if (index < rating) {
+      labels[index].style.color = '#f39c12'; 
+    } else {
+      labels[index].style.color = '#ccc';     
+    }
+  });
+}
+
+
+stars.forEach(star => {
+  star.addEventListener('change', () => {
+    const rating = Number(star.value); 
+
+    
+    showRatingMessage(rating);
+
+    
+    disableRatingAndFillStars(rating);
+  });
+});
+         </script>
 
 
 
