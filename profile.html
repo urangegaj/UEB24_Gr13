@@ -105,6 +105,24 @@
         .user-info div {
             margin-bottom: 10px;
         }
+        #profile-button {
+        transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        #profile-button:hover {
+        background-color: #909395;
+        color: #fff;
+        border-radius: 10px;
+        }
+        @media (max-width: 768px) {
+        .profile-container {
+            flex-direction: column;
+            align-items: center;
+        }
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+        }
+        }
     </style>
     <header class="header">
         <div class="container">
@@ -114,10 +132,10 @@
         </div>
             <nav>
                 <ul class="nav-links">
-                    <li><a href="./index.html">Home</a></li>
-                    <li><a href="./Products.html">Products</a></li>
-                    <li><a href="./About.html">About</a></li>
-                    <li><a href="./Contact.html">Contact</a></li>
+                    <li><a href="./index.html" title="Go to Homepage">Home</a></li>
+                    <li><a href="./Products.html" tile="View Products">Products</a></li>
+                    <li><a href="./About.html" title="Learn About Us">About</a></li>
+                    <li><a href="./Contact.html" title="Contact Us">Contact</a></li>
                 </ul>
             </nav>
         </div>
