@@ -8,6 +8,7 @@
     <script defer src="script.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="website icon" type="png" href="images/logo1.png">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <header class="header">
@@ -25,6 +26,7 @@
                 </ul>
             </nav>
         </div>
+        
         <button id="login-button" class="nav-button">Login</button>
         <div id="user-account" class="user-account hidden">
             <a href="profile.html">
@@ -43,10 +45,6 @@
         <input type="text" id="search-input" placeholder="Search for a product..." />
         </div>
 
-        <!-- <button id="cart-button" aria-label="View Cart"><i class="fa fa-shopping-cart"></i></button>
-        <div id="cart-container" class="cart-container">
-            <ul id="cart-list"></ul>
-        </div> -->
     </header>
     <div id="login-modal" class="modal">
         <div class="modal-content">
@@ -208,5 +206,10 @@
             <p>© 2024 Laced Lifestyle. All Rights Reserved.</p>
         </div>
     </footer>
+
+    <button id="scrollToTop" style="display:none; position:fixed; bottom:20px; right:20px; width:50px; 
+    height:50px; background-color:rgba(188, 188, 188, 0.7); color:#000000; border: none; border-radius:50%; 
+    cursor:pointer; font-size:30px; text-align:center; line-height:5px; font-weight:bold;">&#8593;</button>
+
 </body>
 </html>
