@@ -110,6 +110,9 @@
             font-size: 18px;
             cursor: pointer;
             border-radius: 5px;
+            text-align: center;
+            display: inline-block;
+            margin-top: 20px;
         }
 
         #checkout-btn:hover {
@@ -122,16 +125,80 @@
             color: #777;
         }
 
-        @media (max-width: 768px) {
-            .cart-item {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .quantity-control {
-                justify-content: center;
-            }
+        #continue-shopping-btn {
+            padding: 15px 30px;
+            background-color: #f5f5f5;
+            color: #333;
+            font-size: 18px;
+            cursor: pointer;
+            border: 2px solid #ccc;
+            border-radius: 2px;
+            text-transform: uppercase;
+            transition: background-color 0.3s, border-color 0.3s;
+            box-sizing: border-box;
         }
+        
+        #continue-shopping-btn:hover {
+            background-color: #add1db;
+            border-color: #888;
+        }
+       
+        #cart-actions {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #navbar-tools {
+           display: flex;
+           align-items: center;
+           justify-content: flex-end;
+           width: 100%;
+         }
+
+        #navbar-tools a{
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             text-decoration: none;
+}
+
+        #navbar-tools svg path{
+            fill: white;
+}
+
+        #navbar-tools a:hover svg path {
+             fill: #7e7776; 
+             transition: fill 0.3s ease;
+}
+
+#navbar-tools a:hover {
+    transform: scale(1.05); 
+    transition: transform 0.3s ease; 
+}
+
+#navbar-tools span {
+    background-color: red;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    color: white;
+    font-size: 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    place-items: center;
+    position: relative;
+    bottom:8px;
+    right: 10px;
+}
+
+#wishlist-link {
+    margin-left: 15px;
+}
+
+#cart-link {
+    margin-left: 15px;
+}
     </style>
 </head>
 
@@ -146,9 +213,23 @@
                 <ul class="nav-links">
                     <li><a href="./index.html">Home</a></li>
                     <li><a href="./Products.html">Products</a></li>
-                    <li><a href="#about">About</a></li>
+                    <li><a href="/About.html">About</a></li>
                     <li><a href="./Contact.html">Contact</a></li>
                 </ul>
+                <div id="navbar-tools">
+                    <a id="cart-link" href="cart.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
+                            <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
+                          </svg>
+                          <span>0</span>
+                    </a>
+                    <a id="wishlist-link" href="wishlist.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                            <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+                          </svg>
+                              <span>0</span>
+                    </a>
+                </div>
             </nav>
         </div>
         
@@ -159,116 +240,123 @@
         <h1>Your Cart</h1>
         <div id="cart-container">
             <ul id="cart-items"></ul>
-            <div id="empty-cart-message" style="display: none;">Your cart is empty.</div>
+            <div id="empty-cart-message" style="display: none;">
+                Your cart is empty. 
+                <br>
+                <button id="continue-shopping-btn" onclick="window.location.href='Products.html';">
+                    Continue Shopping
+                </button>
+            </div>
         </div>
-        <div id="total-price"></div>
+        <div id="total-price">Total Price: $0.00</div>
         <div id="cart-actions">
-            <button id="checkout-btn" onclick="window.location.href='bin.html';">
-                Proceed to Checkout
-            </button>
+            <button id="checkout-btn">Proceed to Checkout</button>
         </div>
     </main>
 
    
     
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
             const cartItemsContainer = document.getElementById('cart-items');
             const totalPriceElement = document.getElementById('total-price');
             const emptyCartMessage = document.getElementById('empty-cart-message');
-    
+            const checkoutBtn = document.getElementById('checkout-btn');
+
             function updateCart() {
                 const cartItems = localStorage.getItem('cartItems') || '';
                 const productsArray = cartItems.split(';').filter(Boolean);
                 let totalPrice = 0;
-    
+
                 cartItemsContainer.innerHTML = '';
-    
+
                 if (productsArray.length === 0) {
                     emptyCartMessage.style.display = 'block';
-                    totalPriceElement.style.display = 'none';
+                    checkoutBtn.style.display = 'none';  
+                    totalPriceElement.textContent = `Total Price: $0.00`;
                     return;
                 }
-    
+
                 emptyCartMessage.style.display = 'none';
-    
-                productsArray.forEach((item, index) => {
-                    const [productId, productName, productPrice, productImage] = item.split(',');
-                    const price = parseFloat(productPrice.replace('$', ''));
-                    const quantity = 1; 
-    
+                checkoutBtn.style.display = 'inline-block'; 
+                productsArray.forEach((item) => {
+                    const [productId, productName, productPrice, productImage, quantity] = item.split(',');
+                    const price = parseFloat(productPrice.replace('$', '')) * (quantity || 1);
+
                     const cartItem = document.createElement('li');
                     cartItem.className = 'cart-item';
-    
+
                     cartItem.innerHTML = `
                         <img src="${productImage}" alt="${productName}">
                         <div class="cart-item-details">
                             <h3>${productName}</h3>
                             <p class="price">$<span id="price-${productId}">${price.toFixed(2)}</span></p>
                             <div class="quantity-control">
-                                <button class="decrement" data-Id="${productId}">-</button>
-                                <span id="quantity-${productId}" data-Id="${productId}">${quantity}</span>
-                                <button class="increment" data-Id="${productId}">+</button>
+                                <button class="decrement" data-id="${productId}">-</button>
+                                <span id="quantity-${productId}">${quantity || 1}</span>
+                                <button class="increment" data-id="${productId}">+</button>
                             </div>
                         </div>
-                        <button class="remove-from-cart" data-Id="${productId}">Remove</button>
+                        <button class="remove-from-cart" data-id="${productId}">Remove</button>
                     `;
-    
+
                     cartItemsContainer.appendChild(cartItem);
                     totalPrice += price;
                 });
-    
+
                 totalPriceElement.textContent = `Total Price: $${totalPrice.toFixed(2)}`;
-                totalPriceElement.style.display = 'block';
             }
-    
+
             function changeQuantity(productId, delta) {
                 const quantitySpan = document.getElementById(`quantity-${productId}`);
                 const priceSpan = document.getElementById(`price-${productId}`);
                 let quantity = parseInt(quantitySpan.textContent);
-                const originalPrice = parseFloat(priceSpan.textContent) / quantity;
-    
-               
+                const pricePerItem = parseFloat(priceSpan.textContent) / quantity;
+
                 quantity = Math.max(1, quantity + delta);
                 quantitySpan.textContent = quantity;
-    
-                
-                priceSpan.textContent = (originalPrice * quantity).toFixed(2);
-    
-              
-                let totalPrice = 0;
-                document.querySelectorAll('.cart-item').forEach((item) => {
-                    const itemPrice = parseFloat(item.querySelector('.price span').textContent);
-                    totalPrice += itemPrice;
+
+                const newPrice = pricePerItem * quantity;
+                priceSpan.textContent = newPrice.toFixed(2);
+
+                const cartItems = localStorage.getItem('cartItems').split(';');
+                const updatedItems = cartItems.map(item => {
+                    if (item.startsWith(productId)) {
+                        const [id, name, price, image] = item.split(',');
+                        return `${id},${name},${price},${image},${quantity}`;
+                    }
+                    return item;
                 });
-                totalPriceElement.textContent = `Total Price: $${totalPrice.toFixed(2)}`;
+
+                localStorage.setItem('cartItems', updatedItems.join(';'));
+                updateCart();
             }
-    
+
             cartItemsContainer.addEventListener('click', (event) => {
-                if (event.target.classList.contains('increment')) {
-                    const productId = event.target.getAttribute('data-Id');
+                const target = event.target;
+
+                if (target.classList.contains('increment')) {
+                    const productId = target.getAttribute('data-id');
                     changeQuantity(productId, 1);
                 }
-    
-                if (event.target.classList.contains('decrement')) {
-                    const productId = event.target.getAttribute('data-Id');
+
+                if (target.classList.contains('decrement')) {
+                    const productId = target.getAttribute('data-id');
                     changeQuantity(productId, -1);
                 }
-    
-                if (event.target.classList.contains('remove-from-cart')) {
-                    const productId = event.target.getAttribute('data-Id');
-                    let cartItems = localStorage.getItem('cartItems') || '';
-                    const productsArray = cartItems.split(';').filter(Boolean);
-                    const updatedCartItems = productsArray.filter(item => !item.startsWith(productId)).join(';');
-                    localStorage.setItem('cartItems', updatedCartItems);
+
+                if (target.classList.contains('remove-from-cart')) {
+                    const productId = target.getAttribute('data-id');
+                    const cartItems = localStorage.getItem('cartItems').split(';').filter(item => !item.startsWith(productId));
+                    localStorage.setItem('cartItems', cartItems.join(';'));
                     updateCart();
                 }
             });
-    
-            document.getElementById('checkout-btn').addEventListener('click', () => {
-                alert('Proceeding to checkout...');
+
+            checkoutBtn.addEventListener('click', () => {
+                window.location.href = 'bin.html';
             });
-    
+
             updateCart();
         });
     </script>
