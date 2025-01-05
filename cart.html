@@ -126,19 +126,22 @@
         }
 
         #continue-shopping-btn {
-            margin-top: 10px;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
+            padding: 15px 30px;
+            background-color: #f5f5f5;
+            color: #333;
+            font-size: 18px;
             cursor: pointer;
-            border-radius: 5px;
+            border: 2px solid #ccc;
+            border-radius: 2px;
+            text-transform: uppercase;
+            transition: background-color 0.3s, border-color 0.3s;
+            box-sizing: border-box;
         }
-
+        
         #continue-shopping-btn:hover {
-            background-color: #0056b3;
+            background-color: #add1db;
+            border-color: #888;
         }
-
        
         #cart-actions {
             text-align: center;
@@ -210,7 +213,7 @@
                 <ul class="nav-links">
                     <li><a href="./index.html">Home</a></li>
                     <li><a href="./Products.html">Products</a></li>
-                    <li><a href="#about">About</a></li>
+                    <li><a href="/About.html">About</a></li>
                     <li><a href="./Contact.html">Contact</a></li>
                 </ul>
                 <div id="navbar-tools">
@@ -260,7 +263,6 @@
             const emptyCartMessage = document.getElementById('empty-cart-message');
             const checkoutBtn = document.getElementById('checkout-btn');
 
-            // Function to update the cart items display
             function updateCart() {
                 const cartItems = localStorage.getItem('cartItems') || '';
                 const productsArray = cartItems.split(';').filter(Boolean);
@@ -270,14 +272,13 @@
 
                 if (productsArray.length === 0) {
                     emptyCartMessage.style.display = 'block';
-                    checkoutBtn.style.display = 'none';  // Hide the checkout button when cart is empty
+                    checkoutBtn.style.display = 'none';  
                     totalPriceElement.textContent = `Total Price: $0.00`;
                     return;
                 }
 
                 emptyCartMessage.style.display = 'none';
-                checkoutBtn.style.display = 'inline-block'; // Show checkout button when cart is not empty
-
+                checkoutBtn.style.display = 'inline-block'; 
                 productsArray.forEach((item) => {
                     const [productId, productName, productPrice, productImage, quantity] = item.split(',');
                     const price = parseFloat(productPrice.replace('$', '')) * (quantity || 1);
@@ -306,7 +307,6 @@
                 totalPriceElement.textContent = `Total Price: $${totalPrice.toFixed(2)}`;
             }
 
-            // Function to change the item quantity
             function changeQuantity(productId, delta) {
                 const quantitySpan = document.getElementById(`quantity-${productId}`);
                 const priceSpan = document.getElementById(`price-${productId}`);
@@ -353,9 +353,8 @@
                 }
             });
 
-            // Add event listener for the checkout button
             checkoutBtn.addEventListener('click', () => {
-                window.location.href = 'bin.html'; // Ensure correct path to bin.html
+                window.location.href = 'bin.html';
             });
 
             updateCart();
