@@ -574,6 +574,13 @@ h2 {
     padding: 20px;
     text-align: center;
   }
+  
+  .container1 {
+    width: 90%;
+    max-width: 1200px;
+    
+    margin: auto;
+}
 
   
   .advantages-list {
