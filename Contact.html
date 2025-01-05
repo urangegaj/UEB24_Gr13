@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="website icon" type="png" href="images/logo1.png">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Contact Us</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -279,6 +282,15 @@
             contactForm.style.display = 'none';
         }, 4000);
     });
+         // jQuery selektor dhe event qe e ndryshon ngjyren e backgroundit te h2 kur klikohet
+         $(document).ready(function () {
+        $("h2").click(function () {
+            $(this).css("background-color", "#f0f8ff");
+            $(this).css("border", "1px solid black");
+            $(this).css("border-radius", "5px");
+        });
+    });
+
 </script>
 
 

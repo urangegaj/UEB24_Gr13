@@ -43,3 +43,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+$(document).ready(function () {
+    //event
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 100) {
+            //efekt
+            $("#scrollToTop").fadeIn();
+        } else {
+            $("#scrollToTop").fadeOut();
+        }
+    });
+    $("#scrollToTop").click(function () {
+        //animation
+        $("html, body").animate({ scrollTop: 0 }, "slow");
+    }); 
+    });
+
+    $(document).ready(function () {
+        //show/hide
+        $("#search-button").click(function () {
+            $("#search-container").fadeToggle();
+            
+        });
+    });
+    
