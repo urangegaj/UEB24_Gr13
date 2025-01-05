@@ -443,6 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
    
     function validateForm() {
+    try {
         const fields = {
             "First Name": document.getElementById('billing_first_name').value,
             "Last Name": document.getElementById('billing_last_name').value,
@@ -457,52 +458,43 @@ document.addEventListener('DOMContentLoaded', () => {
         const missingFields = Object.keys(fields).filter(field => !fields[field]);
 
         if (missingFields.length > 0) {
-            formWarningMessage.textContent = `Please fill in the following fields: ${missingFields.join(', ')}`;
-            formWarningMessage.classList.add('show');
-            return false;
+            throw new Error(`Please fill in the following fields: ${missingFields.join(', ')}`);
         }
 
         if (!validateEmail(fields["Email"])) {
-            formWarningMessage.textContent = "Please enter a valid email address!";
-            formWarningMessage.classList.add('show');
-            return false;
+            throw new Error("Invalid email address!");
         }
 
         const phone = fields["Phone Number"];
         if (!validatePhoneNumber(phone)) {
-            formWarningMessage.textContent = "Please enter a valid phone number for Albania, Kosovo, or North Macedonia!";
-            formWarningMessage.classList.add('show');
-            return false;
+            throw new Error("Invalid phone number! Must be for Albania, Kosovo, or North Macedonia.");
         }
+
         if (fields["Payment Method"] === "debit_card") {
             const cardNumber = document.getElementById('card_number').value;
             const expiryDate = document.getElementById('expiry_date').value;
             const cvv = document.getElementById('cvv').value;
 
             if (!validateCardNumber(cardNumber)) {
-                formWarningMessage.textContent = "Please enter a valid debit card number!";
-                formWarningMessage.classList.add('show');
-                return false;
+                throw new Error("Invalid debit card number!");
             }
 
             if (!validateExpiryDate(expiryDate)) {
-                formWarningMessage.textContent = "Please enter a valid expiration date!";
-                formWarningMessage.classList.add('show');
-                return false;
+                throw new Error("Invalid expiration date!");
             }
 
             if (!cvv || cvv.length !== 3) {
-                formWarningMessage.textContent = "Please enter a valid CVV!";
-                formWarningMessage.classList.add('show');
-                return false;
+                throw new Error("Invalid CVV!");
             }
         }
 
-     
         return true;
+    } catch (error) {
+        formWarningMessage.textContent = error.message;
+        formWarningMessage.classList.add('show');
+        return false;
     }
-
-
+}
     checkoutBtn.addEventListener('click', (event) => {
        
         formWarningMessage.classList.remove('show');
@@ -514,7 +506,7 @@ document.addEventListener('DOMContentLoaded', () => {
             formWarningMessage.classList.add('show');
             setTimeout(() => {
                 formWarningMessage.classList.remove('show');
-            }, 3000);
+            }, 2000);
         } else {
             const email = document.getElementById('billing_email').value;
             const address = document.getElementById('billing_address_1').value;
@@ -535,8 +527,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     });
 
-   
     function updateCart() {
+    try {
         const cartItems = localStorage.getItem('cartItems') || '';
         const productsArray = cartItems.split(';').filter(Boolean);
         let totalPrice = 0;
@@ -579,7 +571,13 @@ document.addEventListener('DOMContentLoaded', () => {
         totalPriceElement.textContent = `Total Price: $${totalPrice.toFixed(2)}`;
         totalPriceElement.style.display = 'block';
         checkoutBtn.style.display = 'inline-block';
+    } catch (error) {
+        console.error("Error updating the cart:", error.message);
+        emptyCartMessage.textContent = "An error occurred while updating the cart.";
+        emptyCartMessage.style.display = 'block';
     }
+}
+
 
 
     function removeFromCart(productId) {
