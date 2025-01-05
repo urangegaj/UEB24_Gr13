@@ -347,7 +347,6 @@ button.add-to-cart:hover {
             `;
             wishlistContainer.appendChild(li);
 
-            // Update the button state based on the item's presence in the cart
             const addToCartButton = li.querySelector('.add-to-cart');
             if (isInCart(productId)) {
                 addToCartButton.textContent = 'Remove from Cart';
@@ -356,19 +355,19 @@ button.add-to-cart:hover {
     }
 }
 
-// Remove product from wishlist
+
 function removeFromWishlist(button) {
     const productId = button.getAttribute('data-id');
     let wishlistItems = localStorage.getItem('wishlistItems') || '';
     let productsArray = wishlistItems.split(';').filter(Boolean);
 
-    // Remove the product from the wishlist
+
     productsArray = productsArray.filter(item => !item.startsWith(productId));
     localStorage.setItem('wishlistItems', productsArray.join(';'));
     updateWishlist();
 }
 
-// Add/Remove product from cart
+
 function toggleCart(button) {
     const productId = button.getAttribute('data-id');
     const productName = button.getAttribute('data-name');
@@ -378,47 +377,45 @@ function toggleCart(button) {
     let cartItems = localStorage.getItem('cartItems') || '';
     let cartArray = cartItems.split(';').filter(Boolean);
 
-    // Check if product is already in cart
+
     const productIndex = cartArray.findIndex(item => item.startsWith(productId));
 
     if (productIndex > -1) {
-        // Product is in the cart, remove it
-        cartArray.splice(productIndex, 1); // Remove product from cart array
+       
+        cartArray.splice(productIndex, 1); 
         localStorage.setItem('cartItems', cartArray.join(';'));
         button.textContent = 'Add to Cart';
         showCartMessage(`${productName} has been removed from the cart.`, true);
     } else {
-        // Product is not in cart, add it
+        
         const newProduct = `${productId},${productName},${productPrice},${productImage}`;
-        cartArray.push(newProduct); // Add product to cart array
+        cartArray.push(newProduct); 
         localStorage.setItem('cartItems', cartArray.join(';'));
         button.textContent = 'Remove from Cart';
         showCartMessage(`${productName} has been added to the cart.`, false);
     }
 }
 
-// Check if product is in the cart
+
 function isInCart(productId) {
     const cartItems = localStorage.getItem('cartItems') || '';
     const cartArray = cartItems.split(';').filter(Boolean);
     return cartArray.some(item => item.startsWith(productId));
 }
 
-// Show message for cart actions (added/removed)
+
 function showCartMessage(message, isError) {
     const cartMessage = document.getElementById('cart-message');
     cartMessage.textContent = message;
-    cartMessage.className = 'cart-message'; // Reset class
-    if (isError) cartMessage.classList.add('error'); // Add error class if needed
+    cartMessage.className = 'cart-message'; 
+    if (isError) cartMessage.classList.add('error'); 
     cartMessage.style.display = 'block';
 
-    // Hide message after 3 seconds
     setTimeout(() => {
         cartMessage.style.display = 'none';
     }, 3000);
 }
 
-// On DOM Load
 document.addEventListener('DOMContentLoaded', () => {
     updateWishlist();
 });
