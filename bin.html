@@ -213,8 +213,7 @@
     .order-details strong {
         color: #333;
     }
-    
-    /* Slide-up animation */
+   
     @keyframes slide-up {
         from {
             transform: translateY(30px);
@@ -227,12 +226,12 @@
     }
     
     .form-warning-message {
-        display: none; /* Initially hidden */
+        display: none; 
         position: fixed;
         top: 20px;
         left: 50%;
         transform: translateX(-50%);
-        background-color: #f44336; /* Red color for warning */
+        background-color: #f44336;
         color: white;
         padding: 15px;
         border-radius: 5px;
@@ -386,156 +385,225 @@
             </div>
     
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const cartItemsContainer = document.getElementById('cart-items');
-        const totalPriceElement = document.getElementById('total-price');
-        const emptyCartMessage = document.getElementById('empty-cart-message');
-        const checkoutBtn = document.getElementById('checkout-btn');
-        const confirmationMessage = document.getElementById('confirmation-message');
-        const userEmailElement = document.getElementById('user-email');
-        const userAddressElement = document.getElementById('user-address');
-        const closeBtn = document.getElementById('close-btn'); // Close button for the popup
-        const formWarningMessage = document.getElementById('form-warning-message'); // The warning message div
+document.addEventListener('DOMContentLoaded', () => {
+    const cartItemsContainer = document.getElementById('cart-items');
+    const totalPriceElement = document.getElementById('total-price');
+    const emptyCartMessage = document.getElementById('empty-cart-message');
+    const checkoutBtn = document.getElementById('checkout-btn');
+    const confirmationMessage = document.getElementById('confirmation-message');
+    const userEmailElement = document.getElementById('user-email');
+    const userAddressElement = document.getElementById('user-address');
+    const closeBtn = document.getElementById('close-btn');
+    const formWarningMessage = document.getElementById('form-warning-message');
+    const debitCardFields = document.getElementById('debit_card_fields'); 
+
     
-       
-        function validateForm() {
-            const firstName = document.getElementById('billing_first_name').value;
-            const lastName = document.getElementById('billing_last_name').value;
-            const email = document.getElementById('billing_email').value;
-            const country = document.getElementById('billing_country').value;
-            const city = document.getElementById('billing_city').value;
-            const address = document.getElementById('billing_address_1').value;
-            const phone = document.getElementById('billing_number').value;
-            const paymentMethod = document.getElementById('payment_method').value;
-    
-            let allValid = firstName && lastName && email && country && city && address && phone && paymentMethod;
-    
-            if (paymentMethod === "debit_card") {
-                const cardNumber = document.getElementById('card_number').value;
-                const expiryDate = document.getElementById('expiry_date').value;
-                const cvv = document.getElementById('cvv').value;
-    
-                allValid = allValid && cardNumber && expiryDate && cvv;
-            }
-    
-            return allValid;
+    function validatePhoneNumber(phone) {
+        const albaniaPhoneRegex = /^\+355\d{8}$/;
+        const kosovoPhoneRegex = /^\+383\d{8}$/;
+        const macedoniaPhoneRegex = /^\+389\d{7}$/;
+        return albaniaPhoneRegex.test(phone) || kosovoPhoneRegex.test(phone) || macedoniaPhoneRegex.test(phone);
+    }
+
+    function validateEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
+   
+    function validateExpiryDate(expiryDate) {
+        const [month, year] = expiryDate.split('/').map(num => parseInt(num, 10));
+        if (isNaN(month) || isNaN(year) || month < 1 || month > 12) {
+            return false;
         }
-    
-        function toggleCardInput() {
-            const paymentMethod = document.getElementById('payment_method').value;
-            const debitCardFields = document.getElementById('debit_card_fields');
-    
-            if (paymentMethod === "debit_card") {
-                debitCardFields.style.display = 'block';
-            } else {
-                debitCardFields.style.display = 'none';
-            }
-            validateForm();
+
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear() % 100;
+        const currentMonth = currentDate.getMonth() + 1;
+
+        return year > currentYear || (year === currentYear && month >= currentMonth);
+    }
+
+  
+    function validateCardNumber(cardNumber) {
+        const cardNumberRegex = /^\d{16}$/; 
+        return cardNumberRegex.test(cardNumber);
+    }
+
+   
+    function toggleCardInput() {
+        const paymentMethod = document.getElementById('payment_method').value;
+        if (paymentMethod === "debit_card") {
+            debitCardFields.style.display = 'block';
+        } else {
+            debitCardFields.style.display = 'none';
         }
-    
-        // Event listeners for real-time form validation
-        document.getElementById('billing_first_name').addEventListener('input', validateForm);
-        document.getElementById('billing_last_name').addEventListener('input', validateForm);
-        document.getElementById('billing_email').addEventListener('input', validateForm);
-        document.getElementById('billing_country').addEventListener('change', validateForm);
-        document.getElementById('billing_city').addEventListener('input', validateForm);
-        document.getElementById('billing_address_1').addEventListener('input', validateForm);
-        document.getElementById('billing_number').addEventListener('input', validateForm);
-        document.getElementById('payment_method').addEventListener('change', toggleCardInput);
-        document.getElementById('card_number').addEventListener('input', validateForm);
-        document.getElementById('expiry_date').addEventListener('input', validateForm);
-        document.getElementById('cvv').addEventListener('input', validateForm);
-    
-        checkoutBtn.addEventListener('click', (event) => {
-            const isValid = validateForm();
-    
-            if (!isValid) {
-                
-                event.preventDefault();
-    
-          
+    }
+
+   
+    function validateForm() {
+        const fields = {
+            "First Name": document.getElementById('billing_first_name').value,
+            "Last Name": document.getElementById('billing_last_name').value,
+            "Email": document.getElementById('billing_email').value,
+            "Country": document.getElementById('billing_country').value,
+            "City": document.getElementById('billing_city').value,
+            "Address": document.getElementById('billing_address_1').value,
+            "Phone Number": document.getElementById('billing_number').value,
+            "Payment Method": document.getElementById('payment_method').value,
+        };
+
+        const missingFields = Object.keys(fields).filter(field => !fields[field]);
+
+        if (missingFields.length > 0) {
+            formWarningMessage.textContent = `Please fill in the following fields: ${missingFields.join(', ')}`;
+            formWarningMessage.classList.add('show');
+            return false;
+        }
+
+        if (!validateEmail(fields["Email"])) {
+            formWarningMessage.textContent = "Please enter a valid email address!";
+            formWarningMessage.classList.add('show');
+            return false;
+        }
+
+        const phone = fields["Phone Number"];
+        if (!validatePhoneNumber(phone)) {
+            formWarningMessage.textContent = "Please enter a valid phone number for Albania, Kosovo, or North Macedonia!";
+            formWarningMessage.classList.add('show');
+            return false;
+        }
+        if (fields["Payment Method"] === "debit_card") {
+            const cardNumber = document.getElementById('card_number').value;
+            const expiryDate = document.getElementById('expiry_date').value;
+            const cvv = document.getElementById('cvv').value;
+
+            if (!validateCardNumber(cardNumber)) {
+                formWarningMessage.textContent = "Please enter a valid debit card number!";
                 formWarningMessage.classList.add('show');
-    
-             
-                setTimeout(() => {
-                    formWarningMessage.classList.remove('show');
-                }, 5000);
-            } else {
-                const email = document.getElementById('billing_email').value;
-                const address = document.getElementById('billing_address_1').value;
-    
-                confirmationMessage.style.display = 'flex'; 
-                userEmailElement.textContent = email;
-                userAddressElement.textContent = address;
-    
-                cartItemsContainer.style.display = 'none'; 
-                localStorage.removeItem('cartItems');
+                return false;
             }
-        });
-    
-        closeBtn.addEventListener('click', () => {
-            confirmationMessage.style.display = 'none'; 
+
+            if (!validateExpiryDate(expiryDate)) {
+                formWarningMessage.textContent = "Please enter a valid expiration date!";
+                formWarningMessage.classList.add('show');
+                return false;
+            }
+
+            if (!cvv || cvv.length !== 3) {
+                formWarningMessage.textContent = "Please enter a valid CVV!";
+                formWarningMessage.classList.add('show');
+                return false;
+            }
+        }
+
+     
+        return true;
+    }
+
+
+    checkoutBtn.addEventListener('click', (event) => {
+       
+        formWarningMessage.classList.remove('show');
+        
+        const isValid = validateForm();
+
+        if (!isValid) {
+            event.preventDefault();
+            formWarningMessage.classList.add('show');
             setTimeout(() => {
-                window.location.href = '/index.html'; 
-            }, 1000); 
-        });
-    
-        function updateCart() {
-            const cartItems = localStorage.getItem('cartItems') || '';
-            const productsArray = cartItems.split(';').filter(Boolean);
-            let totalPrice = 0;
-    
-            cartItemsContainer.innerHTML = '';
-    
-            if (productsArray.length === 0) {
-                emptyCartMessage.style.display = 'block';
-                totalPriceElement.style.display = 'none';
-                checkoutBtn.style.display = 'none';
-                return;
-            }
-    
-            emptyCartMessage.style.display = 'none';
-    
-            productsArray.forEach((item, index) => {
-                const [productId, productName, productPrice, productImage] = item.split(',');
-                const price = parseFloat(productPrice.replace('$', ''));
-    
-                const cartItem = document.createElement('li');
-                cartItem.className = 'cart-item';
-    
-                cartItem.innerHTML = `
-                    <img src="${productImage}" alt="${productName}">
-                    <div class="cart-item-details">
-                        <h3>${productName}</h3>
-                        <p class="price">$<span>${price.toFixed(2)}</span></p>
-                    </div>
-                    <button class="remove-from-cart" data-id="${productId}">Remove</button>
-                `;
-    
-                cartItemsContainer.appendChild(cartItem);
-                totalPrice += price;
-    
-                cartItem.querySelector('.remove-from-cart').addEventListener('click', function() {
-                    removeFromCart(productId);
-                });
-            });
-    
-            totalPriceElement.textContent = `Total Price: $${totalPrice.toFixed(2)}`;
-            totalPriceElement.style.display = 'block';
-            checkoutBtn.style.display = 'inline-block';
+                formWarningMessage.classList.remove('show');
+            }, 3000);
+        } else {
+            const email = document.getElementById('billing_email').value;
+            const address = document.getElementById('billing_address_1').value;
+
+            confirmationMessage.style.display = 'flex';
+            userEmailElement.textContent = email;
+            userAddressElement.textContent = address;
+
+            cartItemsContainer.style.display = 'none';
+            localStorage.removeItem('cartItems');
         }
-    
-        function removeFromCart(productId) {
-            let cartItems = localStorage.getItem('cartItems') || '';
-            const cartArray = cartItems.split(';').filter(Boolean);
-    
-            const updatedCartArray = cartArray.filter(item => !item.startsWith(productId));
-            localStorage.setItem('cartItems', updatedCartArray.join(';'));
-            updateCart();
-        }
-    
-        updateCart();
     });
+
+    closeBtn.addEventListener('click', () => {
+        confirmationMessage.style.display = 'none';
+        setTimeout(() => {
+            window.location.href = '/index.html';
+        }, 1000);
+    });
+
+   
+    function updateCart() {
+        const cartItems = localStorage.getItem('cartItems') || '';
+        const productsArray = cartItems.split(';').filter(Boolean);
+        let totalPrice = 0;
+
+        cartItemsContainer.innerHTML = '';
+
+        if (productsArray.length === 0) {
+            emptyCartMessage.style.display = 'block';
+            totalPriceElement.style.display = 'none';
+            checkoutBtn.style.display = 'none';
+            return;
+        }
+
+        emptyCartMessage.style.display = 'none';
+
+        productsArray.forEach((item, index) => {
+            const [productId, productName, productPrice, productImage] = item.split(',');
+            const price = parseFloat(productPrice.replace('$', ''));
+
+            const cartItem = document.createElement('li');
+            cartItem.className = 'cart-item';
+
+            cartItem.innerHTML = `
+                <img src="${productImage}" alt="${productName}">
+                <div class="cart-item-details">
+                    <h3>${productName}</h3>
+                    <p class="price">$<span>${price.toFixed(2)}</span></p>
+                </div>
+                <button class="remove-from-cart" data-id="${productId}">Remove</button>
+            `;
+
+            cartItemsContainer.appendChild(cartItem);
+            totalPrice += price;
+
+            cartItem.querySelector('.remove-from-cart').addEventListener('click', function () {
+                removeFromCart(productId);
+            });
+        });
+
+        totalPriceElement.textContent = `Total Price: $${totalPrice.toFixed(2)}`;
+        totalPriceElement.style.display = 'block';
+        checkoutBtn.style.display = 'inline-block';
+    }
+
+
+    function removeFromCart(productId) {
+        let cartItems = localStorage.getItem('cartItems') || '';
+        const cartArray = cartItems.split(';').filter(Boolean);
+
+        const updatedCartArray = cartArray.filter(item => !item.startsWith(productId));
+        localStorage.setItem('cartItems', updatedCartArray.join(';'));
+        updateCart();
+    }
+
+    updateCart();
+
+    document.getElementById('billing_first_name').addEventListener('input', validateForm);
+    document.getElementById('billing_last_name').addEventListener('input', validateForm);
+    document.getElementById('billing_email').addEventListener('input', validateForm);
+    document.getElementById('billing_country').addEventListener('change', validateForm);
+    document.getElementById('billing_city').addEventListener('input', validateForm);
+    document.getElementById('billing_address_1').addEventListener('input', validateForm);
+    document.getElementById('billing_number').addEventListener('input', validateForm);
+    document.getElementById('payment_method').addEventListener('change', toggleCardInput);
+    document.getElementById('card_number').addEventListener('input', validateForm);
+    document.getElementById('expiry_date').addEventListener('input', validateForm);
+    document.getElementById('cvv').addEventListener('input', validateForm);
+});
     
     </script>
               
