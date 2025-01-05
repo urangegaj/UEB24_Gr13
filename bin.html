@@ -20,7 +20,7 @@ input[type="text"], input[type="tel"], select {
 
 
 input[type="text"]:focus, input[type="tel"]:focus, select:focus {
-    border-color: #28a745; /* Green color for focus */
+    border-color: #28a745; 
     outline: none;
 }
 
@@ -67,39 +67,39 @@ button {
 
 
 #checkout-btn {
-    background-color: #28a745; /* Green color */
+    background-color: #28a745; 
     color: #fff;
     width: auto;
 }
 
 #checkout-btn:hover {
-    background-color: #218838; /* Darker green for hover */
-    transform: translateY(-3px); /* Slight hover lift effect */
+    background-color: #218838; 
+    transform: translateY(-3px); 
 }
 
-/* Remove Button */
+
 .remove-from-cart {
-    background-color: #dc3545; /* Red color */
+    background-color: #dc3545; 
     color: #fff;
-    padding: 6px 12px; /* Smaller padding */
+    padding: 6px 12px; 
     margin-top: 10px;
     width: auto;
 }
 
 .remove-from-cart:hover {
-    background-color: #c82333; /* Darker red for hover */
-    transform: translateY(-3px); /* Slight hover lift effect */
+    background-color: #c82333; 
+    transform: translateY(-3px); 
 }
 
-/* Cart Image Size Adjustment */
+
 .cart-item img {
-    width: 100px; /* Smaller size for images */
+    width: 100px; 
     height: 100px;
     object-fit: cover;
     border-radius: 5px;
 }
 
-/* Button Styling for Small Screens */
+
 @media screen and (max-width: 768px) {
     #checkout-btn {
         font-size: 13px;
@@ -107,7 +107,7 @@ button {
     }
 
     .remove-from-cart {
-        background-color: #dc3545; /* Red color */
+        background-color: #dc3545; 
         color: #fff;
         padding: 6px 12px;
         border: none;
@@ -117,11 +117,11 @@ button {
     }
 
     .remove-from-cart:hover {
-        background-color: #c82333; /* Darker red on hover */
+        background-color: #c82333; 
     }
 
     .cart-item img {
-        width: 90px; /* Adjust image size for smaller screens */
+        width: 90px; 
         height: 90px;
     }
 
@@ -167,7 +167,7 @@ button {
         <div class="main-content">
             <div class="container">
            
-                <!-- Billing Details Section -->
+              
                 <div class="billing-details">
                     <form name="checkout" method="post" class="checkout-form" action="shoeshop" enctype="multipart/form-data">
                         <h3>Billing Details</h3>
@@ -218,7 +218,7 @@ button {
                                     </select>
                                 </p>
                             
-                                <!-- Debit Card Information -->
+                              
                                 <div id="debit_card_fields" style="display:none;">
                                     <p class="form-field">
                                         <label for="card_number">Debit Card Number <abbr class="required">*</abbr></label>
@@ -243,7 +243,7 @@ button {
                     </form>
                 </div>
 
-                       <!-- Cart Section -->
+                       
                        <div id="cart-items-container">
                         <h1>Your Cart</h1>
                         <ul id="cart-items"></ul>
@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const userEmailElement = document.getElementById('user-email');
     const userAddressElement = document.getElementById('user-address');
 
-    // Function to validate the form before checkout
+    
     function validateForm() {
         const firstName = document.getElementById('billing_first_name').value;
         const lastName = document.getElementById('billing_last_name').value;
@@ -282,9 +282,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const phone = document.getElementById('billing_number').value;
         const paymentMethod = document.getElementById('payment_method').value;
 
-        // Enable checkout button only when all required fields are filled
+        
         if (firstName && lastName && email && country && city && address && phone && paymentMethod) {
-            // If payment method is debit card, ensure card details are filled
+           
             if (paymentMethod === "debit_card") {
                 const cardNumber = document.getElementById('card_number').value;
                 const expiryDate = document.getElementById('expiry_date').value;
@@ -302,7 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Watch form fields for input changes to enable/disable checkout button
+    
     document.getElementById('billing_first_name').addEventListener('input', validateForm);
     document.getElementById('billing_last_name').addEventListener('input', validateForm);
     document.getElementById('billing_email').addEventListener('input', validateForm);
@@ -312,7 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('billing_number').addEventListener('input', validateForm);
     document.getElementById('payment_method').addEventListener('change', validateForm);
 
-    // Function to toggle the visibility of debit card fields
+    
     function toggleCardInput() {
         const paymentMethod = document.getElementById('payment_method').value;
         const debitCardFields = document.getElementById('debit_card_fields');
@@ -323,7 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Call toggleCardInput when the payment method changes
+    
     document.getElementById('payment_method').addEventListener('change', toggleCardInput);
 
     function updateCart() {
@@ -336,7 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (productsArray.length === 0) {
             emptyCartMessage.style.display = 'block';
             totalPriceElement.style.display = 'none';
-            checkoutBtn.style.display = 'none'; // Hide checkout button if cart is empty
+            checkoutBtn.style.display = 'none'; 
             return;
         }
 
@@ -361,7 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cartItemsContainer.appendChild(cartItem);
             totalPrice += price;
 
-            // Add event listener to remove button
+          
             cartItem.querySelector('.remove-from-cart').addEventListener('click', function() {
                 removeFromCart(productId);
             });
@@ -369,7 +369,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         totalPriceElement.textContent = `Total Price: $${totalPrice.toFixed(2)}`;
         totalPriceElement.style.display = 'block';
-        checkoutBtn.style.display = 'inline-block'; // Show checkout button when cart has items
+        checkoutBtn.style.display = 'inline-block'; 
     }
 
     function removeFromCart(productId) {
@@ -378,32 +378,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const updatedCartArray = cartArray.filter(item => !item.startsWith(productId));
         localStorage.setItem('cartItems', updatedCartArray.join(';'));
-        updateCart(); // Re-render the cart after removal
+        updateCart(); 
     }
 
-    // Checkout button click event
+    
     checkoutBtn.addEventListener('click', () => {
         const firstName = document.getElementById('billing_first_name').value;
         const lastName = document.getElementById('billing_last_name').value;
         const email = document.getElementById('billing_email').value;
         const address = document.getElementById('billing_address_1').value;
 
-        // Validate the form inputs
+       
         if (!firstName || !lastName || !email || !address) {
             alert('Please complete all required fields.');
             return;
         }
 
-        // Show the confirmation message
+        
         confirmationMessage.style.display = 'block';
         userEmailElement.textContent = email;
         userAddressElement.textContent = address;
 
-        // Hide cart and billing form after checkout
+       
         cartItemsContainer.style.display = 'none';
     });
 
-    updateCart(); // Initial cart update when page loads
+    updateCart(); 
 });
 </script>
             
