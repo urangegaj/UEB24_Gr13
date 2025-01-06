@@ -168,72 +168,6 @@ button.add-to-cart:hover {
             border-top: 1px solid #ddd;
             margin: 20px 0; 
         }
-        
-        #navbar-tools {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    width: 100%;
-}
-
-#navbar-tools a{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-}
-
-#navbar-tools svg path{
-    fill: white;
-}
-
-#navbar-tools a:hover svg path {
-    fill: #7e7776; 
-    transition: fill 0.3s ease;
-}
-
-#navbar-tools a:hover {
-    transform: scale(1.05); 
-    transition: transform 0.3s ease; 
-}
-
-#navbar-tools span {
-    background-color: red;
-    width: 17px;
-    height: 17px;
-    border-radius: 50%;
-    color: white;
-    font-size: 13px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    place-items: center;
-    position: relative;
-    bottom:8px;
-    right: 10px;
-}
-
-#wishlist-link {
-    margin-left: 15px;
-}
-
-#cart-link {
-    margin-left: 15px;
-
-    
-.cart-message {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #3ba9b1;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 16px;
-    z-index: 1000;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-}
 
 }
             </style>
@@ -288,6 +222,9 @@ button.add-to-cart:hover {
                     <p>No items have been added to your Favourites yet.</p>
                 </div>
             </main>
+            <div class="cart-message" style="display:none;"></div>
+
+            
         
         
         
@@ -306,6 +243,7 @@ button.add-to-cart:hover {
     const wishlistArray = wishlistItems.split(';').filter(Boolean);
     const wishlistContainer = document.querySelector('#wishlist-items');
     const noFavoritesMessage = document.getElementById('no-favorites-message');
+    const cartMessage = document.getElementById('cart-message');
 
     wishlistContainer.innerHTML = '';
 
@@ -352,6 +290,10 @@ function removeFromWishlist(button) {
     productsArray = productsArray.filter(item => !item.startsWith(productId));
     localStorage.setItem('wishlistItems', productsArray.join(';'));
     updateWishlist();
+
+
+    const productName = button.closest('.product-card').querySelector('h3').textContent;
+    showMessage(`${productName} has been removed from your Favourites.`);
 }
 
 
@@ -364,22 +306,24 @@ function toggleCart(button) {
     let cartItems = localStorage.getItem('cartItems') || '';
     let cartArray = cartItems.split(';').filter(Boolean);
 
-
     const productIndex = cartArray.findIndex(item => item.startsWith(productId));
 
     if (productIndex > -1) {
-       
+      
         cartArray.splice(productIndex, 1); 
         localStorage.setItem('cartItems', cartArray.join(';'));
         button.textContent = 'Add to Cart';
-        showCartMessage(`${productName} has been removed from the cart.`, true);
+
+   
+        showMessage(`${productName} has been removed from the cart.`);
     } else {
-        
+      
         const newProduct = `${productId},${productName},${productPrice},${productImage}`;
         cartArray.push(newProduct); 
         localStorage.setItem('cartItems', cartArray.join(';'));
         button.textContent = 'Remove from Cart';
-        showCartMessage(`${productName} has been added to the cart.`, false);
+
+        showMessage(`${productName} has been added to the cart.`);
     }
 }
 
@@ -391,17 +335,17 @@ function isInCart(productId) {
 }
 
 
-function showCartMessage(message, isError) {
-    const cartMessage = document.getElementById('cart-message');
-    cartMessage.textContent = message;
-    cartMessage.className = 'cart-message'; 
-    if (isError) cartMessage.classList.add('error'); 
-    cartMessage.style.display = 'block';
-
-    setTimeout(() => {
-        cartMessage.style.display = 'none';
-    }, 3000);
-}
+function showMessage(messageText) {
+            const message = document.createElement('div');
+            message.classList.add('cart-message');
+            message.textContent = messageText;
+            document.body.appendChild(message);
+    
+            setTimeout(() => {
+                message.remove();
+            }, 3000);
+        }
+    
 
 document.addEventListener('DOMContentLoaded', () => {
     updateWishlist();

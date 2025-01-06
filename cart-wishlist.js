@@ -29,16 +29,7 @@ function updateLocalStorage(type, productString, action) {
     localStorage.setItem(type, productsArray.join(';'));
 }
 
-function showMessage(messageText) {
-    const message = document.createElement('div');
-    message.classList.add('cart-message');
-    message.textContent = messageText;
-    document.body.appendChild(message);
 
-    setTimeout(() => {
-        message.remove();
-    }, 3000);
-}
 
 document.addEventListener('DOMContentLoaded', () => {
     updateCartAndWishlist();
@@ -50,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const productId = button.getAttribute('data-Id');
                 updateLocalStorage('cartItems', `${productId},`, 'remove');
                 updateCartAndWishlist();
-                showMessage('Item removed from cart!');
+               
             });
         });
     }
@@ -62,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const productId = button.getAttribute('data-Id');
                 updateLocalStorage('wishlistItems', `${productId},`, 'remove');
                 updateCartAndWishlist();
-                showMessage('Item removed from favourites!');
+               
             });
         });
     }

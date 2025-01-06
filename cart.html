@@ -152,57 +152,6 @@
             margin-top: 20px;
         }
 
-        #navbar-tools {
-           display: flex;
-           align-items: center;
-           justify-content: flex-end;
-           width: 100%;
-         }
-
-        #navbar-tools a{
-             display: flex;
-             align-items: center;
-             justify-content: center;
-             text-decoration: none;
-}
-
-        #navbar-tools svg path{
-            fill: white;
-}
-
-        #navbar-tools a:hover svg path {
-             fill: #7e7776; 
-             transition: fill 0.3s ease;
-}
-
-#navbar-tools a:hover {
-    transform: scale(1.05); 
-    transition: transform 0.3s ease; 
-}
-
-#navbar-tools span {
-    background-color: red;
-    width: 17px;
-    height: 17px;
-    border-radius: 50%;
-    color: white;
-    font-size: 13px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    place-items: center;
-    position: relative;
-    bottom:8px;
-    right: 10px;
-}
-
-#wishlist-link {
-    margin-left: 15px;
-}
-
-#cart-link {
-    margin-left: 15px;
-}
     </style>
 </head>
 
@@ -257,7 +206,7 @@
             <button id="checkout-btn">Proceed to Checkout</button>
         </div>
     </main>
-
+    <div id="cart-message" class="cart-message" style="display:none;"></div>
    
     
     <script>
@@ -266,6 +215,7 @@
             const totalPriceElement = document.getElementById('total-price');
             const emptyCartMessage = document.getElementById('empty-cart-message');
             const checkoutBtn = document.getElementById('checkout-btn');
+            const cartMessage = document.getElementById('cart-message');
 
             function updateCart() {
                 const cartItems = localStorage.getItem('cartItems') || '';
@@ -336,6 +286,15 @@
                 updateCart();
             }
 
+            function showMessage(message) {
+        cartMessage.textContent = message;
+        cartMessage.style.display = 'block';
+
+        setTimeout(() => {
+            cartMessage.style.display = 'none';
+        }, 3000);
+    }
+
             cartItemsContainer.addEventListener('click', (event) => {
                 const target = event.target;
 
@@ -354,6 +313,8 @@
                     const cartItems = localStorage.getItem('cartItems').split(';').filter(item => !item.startsWith(productId));
                     localStorage.setItem('cartItems', cartItems.join(';'));
                     updateCart();
+
+                    showMessage('Item removed from cart');
                 }
             });
 
