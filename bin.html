@@ -544,9 +544,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         emptyCartMessage.style.display = 'none';
 
-        productsArray.forEach((item, index) => {
-            const [productId, productName, productPrice, productImage] = item.split(',');
-            const price = parseFloat(productPrice.replace('$', ''));
+        productsArray.forEach((item) => {
+            const [productId, productName, productPrice, productImage, quantity] = item.split(',');
+            const pricePerItem = parseFloat(productPrice.replace('$', ''));
+            const itemQuantity = parseInt(quantity || '1', 10); 
+            const totalItemPrice = pricePerItem * itemQuantity;
 
             const cartItem = document.createElement('li');
             cartItem.className = 'cart-item';
@@ -555,14 +557,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 <img src="${productImage}" alt="${productName}">
                 <div class="cart-item-details">
                     <h3>${productName}</h3>
-                    <p class="price">$<span>${price.toFixed(2)}</span></p>
+                    <p class="price">$<span>${totalItemPrice.toFixed(2)}</span> (${itemQuantity} x $${pricePerItem.toFixed(2)})</p>
                 </div>
                 <button class="remove-from-cart" data-id="${productId}">Remove</button>
             `;
 
             cartItemsContainer.appendChild(cartItem);
-            totalPrice += price;
+            totalPrice += totalItemPrice;
 
+        
             cartItem.querySelector('.remove-from-cart').addEventListener('click', function () {
                 removeFromCart(productId);
             });
@@ -577,6 +580,7 @@ document.addEventListener('DOMContentLoaded', () => {
         emptyCartMessage.style.display = 'block';
     }
 }
+
 
 
 
