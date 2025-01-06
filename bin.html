@@ -384,6 +384,8 @@
                         </div>
                 </div>
             </div>
+
+            <audio id="success-audio" src="audio.wav" type="audio/wav"></audio>
     
     <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -518,6 +520,9 @@ document.addEventListener('DOMContentLoaded', () => {
             cartItemsContainer.style.display = 'none';
             localStorage.removeItem('cartItems');
         }
+
+        const successAudio = document.getElementById('success-audio');
+        successAudio.play();
     });
 
     closeBtn.addEventListener('click', () => {
