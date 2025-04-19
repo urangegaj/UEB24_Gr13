@@ -1,3 +1,8 @@
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -252,13 +257,137 @@
     }
         </style>
     
+    <?php
+    class BillingDetails {
+    private $firstName;
+    private $lastName;
+    private $email;
+    private $country;
+    private $city;
+    private $address;
+    private $phoneNumber;
+    private $paymentMethod;
+
     
+    public function __construct($firstName, $lastName, $email, $country, $city, $address, $phoneNumber, $paymentMethod) {
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->email = $email;
+        $this->country = $country;
+        $this->city = $city;
+        $this->address = $address;
+        $this->phoneNumber = $phoneNumber;
+        $this->paymentMethod = $paymentMethod;
+    }
+    public function getFirstName() {
+        return $this->firstName;
+    }
     
+    public function getLastName() {
+        return $this->lastName;
+    }
+
+    public function getEmail() {
+        return $this->email;
+    }
+
+    public function getCountry() {
+        return $this->country;
+    }
+
+    public function getCity() {
+        return $this->city;
+    }
+
+    public function getAddress() {
+        return $this->address;
+    }
+
+    public function getPhoneNumber() {
+        return $this->phoneNumber;
+    }
+
+    public function getPaymentMethod() {
+        return $this->paymentMethod;
+    }
+
+
+    public function setFirstName($firstName) {
+        $this->firstName = $firstName;
+    }
+
+    public function setLastName($lastName) {
+        $this->lastName = $lastName;
+    }
+
+    public function setEmail($email) {
+        $this->email = $email;
+    }
+
+    public function setCountry($country) {
+        $this->country = $country;
+    }
+
+    public function setCity($city) {
+        $this->city = $city;
+    }
+
+    public function setAddress($address) {
+        $this->address = $address;
+    }
+
+    public function setPhoneNumber($phoneNumber) {
+        $this->phoneNumber = $phoneNumber;
+    }
+
+    public function setPaymentMethod($paymentMethod) {
+        $this->paymentMethod = $paymentMethod;
+    }
+    
+    public function getBillingInfo() {
+        return [
+            'First Name' => $this->firstName,
+            'Last Name' => $this->lastName,
+            'Email' => $this->email,
+            'Country' => $this->country,
+            'City' => $this->city,
+            'Address' => $this->address,
+            'Phone Number' => $this->phoneNumber,
+            'Payment Method' => $this->paymentMethod
+        ];
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $firstName = $_POST['billing_first_name'];
+    $lastName = $_POST['billing_last_name'];
+    $email = $_POST['billing_email'];
+    $country = $_POST['billing_country'];
+    $city = $_POST['billing_city'];
+    $address = $_POST['billing_address_1'];
+    $phoneNumber = $_POST['billing_number'];
+    $paymentMethod = $_POST['payment_method'];
+
+    // Krijo instancën e klasës BillingDetails
+    $billingDetails = new BillingDetails($firstName, $lastName, $email, $country, $city, $address, $phoneNumber, $paymentMethod);
+    
+    // Përdor metodën getBillingInfo për të marrë informacionin e faturimit
+    $billingInfo = $billingDetails->getBillingInfo();
+    
+    // Shfaq informacionin e faturimit
+    echo "<h2>Billing Information:</h2>";
+    echo "<ul>";
+    foreach ($billingInfo as $key => $value) {
+        echo "<li><strong>$key:</strong> $value</li>";
+    }
+    echo "</ul>";
+}
+?>
     
     </head>
     <body>
        
-        <body>
+        
             <header class="header">
                 <div class="container1">
                     <div class="logo">
@@ -281,7 +410,7 @@
                
                   
                     <div class="billing-details">
-                        <form name="checkout" method="post" class="checkout-form" action="shoeshop" enctype="multipart/form-data">
+                        <form name="checkout" method="post" class="checkout-form" action="bin.php" enctype="multipart/form-data">
                             <h3>Billing Details</h3>
         
                             <div class="billing-fields">
@@ -435,12 +564,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
    
     function toggleCardInput() {
-        const paymentMethod = document.getElementById('payment_method').value;
-        if (paymentMethod === "debit_card") {
-            debitCardFields.style.display = 'block';
-        } else {
-            debitCardFields.style.display = 'none';
-        }
+        debitCardFields.style.display = document.getElementById('payment_method').value === "debit_card" ? 'block' : 'none';
     }
 
    
@@ -600,24 +724,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateCart();
 
-    document.getElementById('billing_first_name').addEventListener('input', validateForm);
-    document.getElementById('billing_last_name').addEventListener('input', validateForm);
-    document.getElementById('billing_email').addEventListener('input', validateForm);
-    document.getElementById('billing_country').addEventListener('change', validateForm);
-    document.getElementById('billing_city').addEventListener('input', validateForm);
-    document.getElementById('billing_address_1').addEventListener('input', validateForm);
-    document.getElementById('billing_number').addEventListener('input', validateForm);
-    document.getElementById('payment_method').addEventListener('change', toggleCardInput);
-    document.getElementById('card_number').addEventListener('input', validateForm);
-    document.getElementById('expiry_date').addEventListener('input', validateForm);
-    document.getElementById('cvv').addEventListener('input', validateForm);
+document.getElementById('billing_first_name').addEventListener('input', validateForm);
+document.getElementById('billing_last_name').addEventListener('input', validateForm);
+document.getElementById('billing_email').addEventListener('input', validateForm);
+document.getElementById('billing_country').addEventListener('change', validateForm);
+document.getElementById('billing_city').addEventListener('input', validateForm);
+document.getElementById('billing_address_1').addEventListener('input', validateForm);
+document.getElementById('billing_number').addEventListener('input', validateForm);
+document.getElementById('payment_method').addEventListener('change', toggleCardInput);
+document.getElementById('card_number').addEventListener('input', validateForm);
+document.getElementById('expiry_date').addEventListener('input', validateForm);
+document.getElementById('cvv').addEventListener('input', validateForm);
+
+
 });
     
     </script>
               
             
     
-    </body>
+    
 
 
         <footer class="footer">
