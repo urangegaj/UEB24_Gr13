@@ -228,6 +228,7 @@
             </ul>
           </div>
           <h3>Rate your experience with us:</h3>
+          <form method="POST" action="">
           <div class="rating-container">
             <div class="emoji-button">
               <input type="radio" id="star1" name="rating" value="1">
@@ -251,6 +252,8 @@
             </div>
             <div id="message-container" style="text-align: center;"></div>
           </div>
+
+        </form>
 
 
          <script>
@@ -281,8 +284,8 @@ function showRatingMessage(rating) {
   messageContainer.style.fontSize = '1.2em';
   messageContainer.style.marginTop = '20px';
   messageContainer.style.textAlign = 'center'; 
-}
 
+}
 
 function disableRatingAndFillStars(rating) {
   stars.forEach((star, index) => {
