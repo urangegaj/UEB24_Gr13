@@ -1,3 +1,29 @@
+<?php
+session_start();
+
+require_once 'productData.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['add_to_cart'])) {
+        $id = $_POST['product_id'];
+        $_SESSION['cartItems'][$id] = true;
+        $_SESSION['message'] = "Item added to cart!";
+        header("Location: wishlist.php");
+        exit();
+    }
+
+    if (isset($_POST['remove'])) {
+        $id = $_POST['product_id'];
+        unset($_SESSION['wishlistItems'][$id]); 
+        header("Location: wishlist.php");
+        exit();
+    }
+}
+
+$wishlistIds = array_keys($_SESSION['wishlistItems'] ?? []);
+$wishlistItems = array_filter($products, fn($p) => in_array($p->id, $wishlistIds));
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +32,6 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="custom-styles.css">
     <link rel="website icon" type="png" href="images/logo1.png">
-    <script src="cart-wishlist.js"></script>
     <title>Favourites</title>
     <style>
         
@@ -188,17 +213,17 @@ button.add-to-cart:hover {
                             <li><a href="./Contact.html">Contact</a></li>
                         </ul>
                         <div id="navbar-tools">
-                            <a id="cart-link" href="cart.html">
+                            <a id="cart-link" href="cart.php">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
                                     <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
                                   </svg>
-                                  <span>0</span>
+                                  <span><?php echo count($_SESSION['cartItems'] ?? []); ?></span>
                             </a>
-                            <a id="wishlist-link" href="wishlist.html">
+                            <a id="wishlist-link" href="wishlist.php">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
                                     <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
                                   </svg>
-                                      <span>0</span>
+                                  <span><?php echo count($_SESSION['wishlistItems'] ?? []); ?></span>
                             </a>
                         </div>
                     </nav>
@@ -207,6 +232,7 @@ button.add-to-cart:hover {
         
         
             <main>
+<<<<<<< HEAD:wishlist.html
                 <h1>Favourites</h1>
                 <p>SAVE YOUR FAVOURITE ITEMS</p>
                 <p>Want to save the items that you love? Just click on the heart symbol beside the item and it will appear here.</p>
@@ -223,137 +249,84 @@ button.add-to-cart:hover {
                 </div>
             </main>
             <div class="cart-message" style="display:none;"></div>
+=======
+            <h1>Favourites</h1>
+    <p>SAVE YOUR FAVOURITE ITEMS</p>
+    <p>Want to save the items that you love? Just click on the heart symbol beside the item and it will appear here.</p>
+>>>>>>> deeba08300a494b89ebb5a9755c5d706468bd497:wishlist.php
 
-            
+    <?php if (empty($wishlistItems)): ?>
+        <button id="explore-btn" onclick="window.location.href='./Products.php';">Explore Now</button>
+    <?php endif; ?>
+
+    <hr class="divider">
+
+    <?php if (isset($_SESSION['message'])): ?>
+    <div id="mesazhi" class="cart-message">
+        <?= $_SESSION['message']; ?>
+    </div>
+    <?php unset($_SESSION['message']); ?>
+<?php endif; ?>
+
+
+    <h2>Your Saved Favourites</h2>
+    <ul id="wishlist-items">
+        <?php
+        if (!empty($wishlistItems)) {
+            foreach ($wishlistItems as $item) {
+                echo "
+                <li class='wishlist-item'>
+                    <div class='product-card'>
+                        <div class='product-image'>
+                            <img src='{$item->image}' alt='{$item->name}'>
+                            <p class='price'>{$item->price}</p>
+                        </div>
+                        <div class='product-info'>
+                            <h3>{$item->name}</h3>
+                            <form method='post'>
+                                <input type='hidden' name='product_id' value='{$item->id}'>
+                                <button class='button remove-from-wishlist' name='remove'>Remove from Favourites</button>
+                            </form>
+                            <form method='post'>
+                                <input type='hidden' name='product_id' value='{$item->id}'>
+                                <button class='button add-to-cart' name='add_to_cart'>Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                </li>";
+            }
+        } else {
+            echo "<div class='no-favorites-message'><p>No items have been added to your Favourites yet.</p></div>";
+        }
+        ?>
+    </ul>
+
+
+ </main>
         
-        
-        
-        
-        
+
         
             <footer class="footer">
                 <div class="container">
                     <p>© 2024 Laced Lifestyle. All Rights Reserved.</p>
                 </div>
             </footer>
-        
+            
+
             <script>
-  function updateWishlist() {
-    const wishlistItems = localStorage.getItem('wishlistItems') || '';
-    const wishlistArray = wishlistItems.split(';').filter(Boolean);
-    const wishlistContainer = document.querySelector('#wishlist-items');
-    const noFavoritesMessage = document.getElementById('no-favorites-message');
-    const cartMessage = document.getElementById('cart-message');
+                setTimeout(() => {
+                    const mesazhi = document.getElementById('mesazhi');
+                    if(mesazhi){
+                        mesazhi.style.opacity='0';
+                        setTimeout(() => {
+                            mesazhi.remove();
+                            
+                        }, 500);
+                    }
+                    
+                }, 2500);
+                </script>
 
-    wishlistContainer.innerHTML = '';
-
-    if (wishlistArray.length === 0) {
-        noFavoritesMessage.style.display = 'block';
-    } else {
-        noFavoritesMessage.style.display = 'none';
-
-        wishlistArray.forEach(itemString => {
-            const [productId, productName, productPrice, productImage] = itemString.split(',');
-
-            const li = document.createElement('li');
-            li.classList.add('wishlist-item');
-            li.innerHTML = `
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="${productImage}" alt="${productName}">
-                        <p class="price">${productPrice}</p>
-                    </div>
-                    <div class="product-info">
-                        <h3>${productName}</h3>
-                        <button class="button remove-from-wishlist" data-id="${productId}" onclick="removeFromWishlist(this)">Remove from Favourites</button>
-                        <button class="button add-to-cart" data-id="${productId}" data-name="${productName}" data-price="${productPrice}" data-image="${productImage}" onclick="toggleCart(this)">Add to Cart</button>
-                    </div>
-                </div>
-            `;
-            wishlistContainer.appendChild(li);
-
-            const addToCartButton = li.querySelector('.add-to-cart');
-            if (isInCart(productId)) {
-                addToCartButton.textContent = 'Remove from Cart';
-            }
-        });
-    }
-}
-
-
-function removeFromWishlist(button) {
-    const productId = button.getAttribute('data-id');
-    let wishlistItems = localStorage.getItem('wishlistItems') || '';
-    let productsArray = wishlistItems.split(';').filter(Boolean);
-
-
-    productsArray = productsArray.filter(item => !item.startsWith(productId));
-    localStorage.setItem('wishlistItems', productsArray.join(';'));
-    updateWishlist();
-
-
-    const productName = button.closest('.product-card').querySelector('h3').textContent;
-    showMessage(`${productName} has been removed from your Favourites.`);
-}
-
-
-function toggleCart(button) {
-    const productId = button.getAttribute('data-id');
-    const productName = button.getAttribute('data-name');
-    const productPrice = button.getAttribute('data-price');
-    const productImage = button.getAttribute('data-image');
-    
-    let cartItems = localStorage.getItem('cartItems') || '';
-    let cartArray = cartItems.split(';').filter(Boolean);
-
-    const productIndex = cartArray.findIndex(item => item.startsWith(productId));
-
-    if (productIndex > -1) {
-      
-        cartArray.splice(productIndex, 1); 
-        localStorage.setItem('cartItems', cartArray.join(';'));
-        button.textContent = 'Add to Cart';
-
-   
-        showMessage(`${productName} has been removed from the cart.`);
-    } else {
-      
-        const newProduct = `${productId},${productName},${productPrice},${productImage}`;
-        cartArray.push(newProduct); 
-        localStorage.setItem('cartItems', cartArray.join(';'));
-        button.textContent = 'Remove from Cart';
-
-        showMessage(`${productName} has been added to the cart.`);
-    }
-}
-
-
-function isInCart(productId) {
-    const cartItems = localStorage.getItem('cartItems') || '';
-    const cartArray = cartItems.split(';').filter(Boolean);
-    return cartArray.some(item => item.startsWith(productId));
-}
-
-
-function showMessage(messageText) {
-            const message = document.createElement('div');
-            message.classList.add('cart-message');
-            message.textContent = messageText;
-            document.body.appendChild(message);
-    
-            setTimeout(() => {
-                message.remove();
-            }, 3000);
-        }
-    
-
-document.addEventListener('DOMContentLoaded', () => {
-    updateWishlist();
-});
-
-
-
-            </script>
 </body>
 
 

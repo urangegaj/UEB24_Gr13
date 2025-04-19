@@ -156,6 +156,77 @@
         body {
         font-family: 'Custom Font', sans-serif;
         }
+        .recent-submissions {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .submission-item {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+        }
+
+        .submission-item:last-child {
+            border-bottom: none;
+        }
+
+        .submission-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .submission-name {
+            font-weight: bold;
+            color: #0056b3;
+        }
+
+        .submission-date {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .submission-message {
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .location-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .location-info h3 {
+            color: #0056b3;
+            margin-bottom: 10px;
+        }
+
+        .location-contact {
+            margin-top: 15px;
+        }
+
+        .location-contact p {
+            margin: 5px 0;
+        }
+
+        .location-contact a {
+            color: #0056b3;
+            text-decoration: none;
+        }
+
+        .location-contact a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -182,31 +253,14 @@
 
     <div class="grid-container">
         <div class="section-content">
-            <h2>With Around 5400 Stores Worldwide</h2>
+            <h2>With Around <span id="storeCount">5400</span> Stores Worldwide</h2>
             <p>We strive to be where you are. Visit your country site for contact options or reach out to us directly.</p>
             <a href="javascript:void(0);" class="btn" onclick="showContactForm()">Contact Us</a>
         </div>
         <img src="images/sneakersneakers.avif" alt="Store">
     </div>
 
-    <div class="grid-container" style="background-color: #f0f0f0;">
-        <img src="images/sneakershopshop.jpeg" alt="Office">
-        <div class="section-content">
-            <h2>Prishtin<b>&euml;</b></h2>
-            <p>
-                International Corporation<br>
-                Street 2<br>
-                Kosova
-            </p>
-            <p>
-                <i class="fa fa-phone"></i> 
-                Phone: <a href="tel:+38341234567">+383 41 234 567</a>
-              </p>
-            <p>
-                <i class="fa fa-envelope"></i> 
-                Email: <a href="mailto:support@lacedlifestyle.com">support@lacedlifestyle.com</a>
-              </p>
-        </div>
+    <div id="locationsContainer" class="grid-container" style="background-color: #f0f0f0;">
     </div>
 
     <div class="contact-form" id="contactForm">
@@ -235,6 +289,11 @@
         Thank you! Your message has been successfully sent.
     </div>
 
+    <div id="recentSubmissions" class="recent-submissions" style="display: none;">
+        <h2>Recent Messages</h2>
+        <div id="submissionsList"></div>
+    </div>
+
     <footer class="footer">
         <div class="container">
             <p>© 2024 Laced Lifestyle. All Rights Reserved.</p>
@@ -242,12 +301,69 @@
     </footer>
 
     <script>
+    function loadContactInfo() {
+        fetch('php/regex/contact_form_handler.php')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('storeCount').textContent = data.statistics.total_stores;
+
+                const locationsContainer = document.getElementById('locationsContainer');
+                locationsContainer.innerHTML = '';
+
+                data.contact_info.locations.forEach(location => {
+                    const locationDiv = document.createElement('div');
+                    locationDiv.className = 'location-item';
+                    locationDiv.innerHTML = `
+                        <div class="location-info">
+                            <h3>${location.city}</h3>
+                            <p>${location.address}<br>${location.country}</p>
+                            <div class="location-contact">
+                                <p><i class="fa fa-phone"></i> <a href="tel:${location.phone}">${location.phone}</a></p>
+                                <p><i class="fa fa-envelope"></i> <a href="mailto:${location.email}">${location.email}</a></p>
+                            </div>
+                        </div>
+                        <img src="images/sneakershopshop.jpeg" alt="${location.city} Store">
+                    `;
+                    locationsContainer.appendChild(locationDiv);
+                });
+            })
+            .catch(error => console.error('Error loading contact info:', error));
+    }
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+    }
+
+    function displayRecentSubmissions(submissions) {
+        const submissionsList = document.getElementById('submissionsList');
+        submissionsList.innerHTML = '';
+
+        submissions.forEach(submission => {
+            const submissionDiv = document.createElement('div');
+            submissionDiv.className = 'submission-item';
+            submissionDiv.innerHTML = `
+                <div class="submission-header">
+                    <span class="submission-name">${submission.name}</span>
+                    <span class="submission-date">${formatDate(submission.date)}</span>
+                </div>
+                <div class="submission-message">${submission.message}</div>
+            `;
+            submissionsList.appendChild(submissionDiv);
+        });
+
+        document.getElementById('recentSubmissions').style.display = 'block';
+    }
+
     function showContactForm() {
         const contactForm = document.getElementById('contactForm');
         contactForm.style.display = 'block';
         window.scrollTo({ top: contactForm.offsetTop, behavior: 'smooth' });
     }
+
     document.addEventListener('DOMContentLoaded', () => {
+        loadContactInfo();
+
         const contactForm = document.getElementById('contactForm');
         const contactLinks = document.querySelectorAll('a[href="#contactForm"]');
 
@@ -263,28 +379,59 @@
     document.getElementById('form').addEventListener('submit', function(event) {
         event.preventDefault();
 
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const message = document.getElementById('message').value;
+        const formData = new FormData(this);
+        
 
-        console.log('Name:', name);
-        console.log('Email:', email);
-        console.log('Message:', message);
+        const submitButton = this.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton.textContent;
+        submitButton.textContent = 'Sending...';
+        submitButton.disabled = true;
 
-        const thankYouMessage = document.getElementById('thankYouMessage');
-        thankYouMessage.style.display = 'block';
-        window.scrollTo({ top: thankYouMessage.offsetTop, behavior: 'smooth' });
+        fetch('php/regex/contact_form_handler.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const thankYouMessage = document.getElementById('thankYouMessage');
+                thankYouMessage.style.display = 'block';
+                window.scrollTo({ top: thankYouMessage.offsetTop, behavior: 'smooth' });
+                this.reset();
 
-        document.getElementById('form').reset();
+                if (data.recent_submissions) {
+                    displayRecentSubmissions(data.recent_submissions);
+                }
 
-        setTimeout(() => {
-            thankYouMessage.style.display = 'none';
-            const contactForm = document.getElementById('contactForm');
-            contactForm.style.display = 'none';
-        }, 4000);
+                setTimeout(() => {
+                    thankYouMessage.style.display = 'none';
+                    const contactForm = document.getElementById('contactForm');
+                    contactForm.style.display = 'none';
+                }, 4000);
+            } else {
+                Object.keys(data.errors).forEach(field => {
+                    const input = document.getElementById(field);
+                    if (input) {
+                        input.classList.add('error');
+                        const errorDiv = document.createElement('div');
+                        errorDiv.className = 'error-message';
+                        errorDiv.textContent = data.errors[field];
+                        input.parentNode.appendChild(errorDiv);
+                    }
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while sending your message. Please try again.');
+        })
+        .finally(() => {
+            submitButton.textContent = originalButtonText;
+            submitButton.disabled = false;
+        });
     });
         
-         $(document).ready(function () {
+    $(document).ready(function () {
         $("h2").click(function () {
             $(this).css("background-color", "#f0f8ff");
             $(this).css("border", "1px solid black");
@@ -292,8 +439,19 @@
         });
     });
 
+    const style = document.createElement('style');
+    style.textContent = `
+        .error {
+            border-color: #dc3545 !important;
+        }
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    `;
+    document.head.appendChild(style);
 </script>
-
 
 </body>
 </html>
