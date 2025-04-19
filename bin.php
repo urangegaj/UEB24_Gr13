@@ -397,10 +397,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <nav>
                         <ul class="nav-links">
                             <li><a href="./index.html">Home</a></li>
-                            <li><a href="./Products.html">Products</a></li>
+                            <li><a href="/Products.php">Products</a></li>
                             <li><a href="./About.html">About</a></li>
                             <li><a href="./Contact.html">Contact</a></li>
                         </ul>
+                       
+                        
                     </nav>
                 </div>
             </header>

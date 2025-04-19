@@ -18,7 +18,7 @@
             <nav>
                 <ul class="nav-links">
                     <li><a href="./index.html">Home</a></li>
-                    <li><a href="./Products.html">Products</a></li>
+                    <li><a href="./Products.php">Products</a></li>
                     <li><a href="#about">About</a></li>
                     <li><a href="./Contact.html">Contact</a></li>
                 </ul>
