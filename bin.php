@@ -279,6 +279,11 @@
         $this->phoneNumber = $phoneNumber;
         $this->paymentMethod = $paymentMethod;
     }
+
+    public function __destruct() {
+        echo "<p>BillingDetails object destroyed.</p>";
+    }
+
     public function getFirstName() {
         return $this->firstName;
     }
@@ -380,6 +385,9 @@ class AdvancedBillingDetails extends BillingDetails {
         $billingInfo['Order ID'] = $this->getOrderId();
         return $billingInfo;
     }
+    public function __destruct() {
+        echo "<p>AdvancedBillingDetails object destroyed. Order ID: {$this->orderId}</p>";
+    }
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -395,10 +403,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $orderId = uniqid('order_');
     $billingDetails = new AdvancedBillingDetails($firstName, $lastName, $email, $country, $city, $address, $phoneNumber, $paymentMethod, $orderId);
 
-    // Marrim informacionin e faturimit të plotë
+    
     $billingInfo = $billingDetails->getAdvancedBillingInfo();
     
-    // Shfaq informacionin e faturimit
+   
     echo "<h2>Billing Information:</h2>";
     echo "<ul>";
     foreach ($billingInfo as $key => $value) {
