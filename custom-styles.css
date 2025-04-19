@@ -146,27 +146,34 @@
     margin-bottom: 15px;    
 }
 
-.product .heart-button{
+.heart-button {
     background: white;
-    color: rgb(64,64,64);
     border-radius: 50%;
+    border: 1px solid transparent;
+    width: 36px;
+    aspect-ratio: 1 / 1;
     display: flex;
     justify-content: center;
-    place-items: center;
-    padding: 8px;
+    align-items: center;
+    padding: 0;
     position: absolute;
     top: 10px;
     right: 10px;
     cursor: pointer;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
 }
 
-.product .heart-button svg{
-    stroke: rgb(64,64,64);
+.heart-button svg {
+    width: 18px;
+    height: 18px;
+    stroke: #666;
     fill: none;
     transition: all 0.3s ease;
+    display: block;
 }
 
-.product .heart-button.selected svg{
+.heart-button.selected svg {
     stroke: red;
     fill: red;
 }
@@ -182,7 +189,7 @@
     margin-bottom: 15px;
 }
 
-.product button {
+.product .add-to-cart-btn {
     background-color: #04AA6D;
     color: white;
     padding: 10px 15px;
@@ -191,10 +198,9 @@
     cursor: pointer;
 }
 
-.product button:hover {
+.product .add-to-cart-btn:hover {
     background-color: #45a049;
 }
-
 .hidden {
     display: none;
 }
@@ -690,11 +696,7 @@ button.in-cart:hover {
     background-color: #e53935;
 }
 
-.heart-button.selected {
-    background-color: rgba(255, 0, 0, 0.1);
-    color: red; 
-    border-color: red;
-}
+
 
 button:not(.in-cart) {
     background-color: #4CAF50; 
@@ -706,17 +708,14 @@ button.in-cart:not(.remove) {
 }
 
 .cart-message {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #3ba9b1;
-    color: white;
-    padding: 10px 20px;
+    padding: 10px 15px;
+    background-color: #d4edda;
+    color: #78cbd8;
     border-radius: 5px;
-    font-size: 16px;
-    z-index: 1000;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    margin-bottom: 15px;
+    border: 1px solid #c3e6cb;
+    font-weight: bold;
+    transition: opacity 0.5s ease;
 }
 
 
@@ -822,4 +821,5 @@ button.in-cart:not(.remove) {
 .milestones-table th {
     border-bottom: 2px solid #e1e1e1; 
 }
+
 
