@@ -1,0 +1,280 @@
+<?php
+ session_start();
+
+require_once 'productData.php';
+
+
+
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['remove_from_cart'])) {
+    $removeId = $_POST['productId'];
+    unset($_SESSION['cartItems'][$removeId]);
+    header("Location: cart.php");
+    exit();
+}
+
+if (isset($_POST['checkout'])) {
+    header("Location: bin.php");
+    exit();
+}
+
+
+function getCartCount() {
+    return count($_SESSION['cartItems'] ?? []);
+}
+
+function getWishlistCount() {
+    return count($_SESSION['wishlistItems'] ?? []);
+}
+
+
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="custom-styles.css">
+    <link rel="website icon" type="png" href="images/logo1.png">
+    <script src="cart-wishlist.js"></script>
+    <title>Shopping Cart</title>
+    <style>
+        main {
+            padding: 20px;
+            text-align: center;
+        }
+
+        #cart-items {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .cart-item img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .cart-item-details {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cart-item h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .cart-item p {
+            color: #28a745;
+            font-size: 16px;
+        }
+
+        .quantity-control {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .quantity-control button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+
+        .quantity-control button:hover {
+            background-color: #0056b3;
+        }
+
+        .quantity-control span {
+            font-size: 16px;
+        }
+
+        .remove-from-cart {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .remove-from-cart:hover {
+            background-color: #d32f2f;
+        }
+
+        #total-price {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #333;
+        }
+
+        #checkout-btn {
+            padding: 15px 30px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: center;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        #checkout-btn:hover {
+            background-color: #45a049;
+        }
+
+        #empty-cart-message {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #777;
+        }
+
+        #continue-shopping-btn {
+            padding: 15px 30px;
+            background-color: #f5f5f5;
+            color: #333;
+            font-size: 18px;
+            cursor: pointer;
+            border: 2px solid #ccc;
+            border-radius: 2px;
+            text-transform: uppercase;
+            transition: background-color 0.3s, border-color 0.3s;
+            box-sizing: border-box;
+        }
+        
+        #continue-shopping-btn:hover {
+            background-color: #add1db;
+            border-color: #888;
+        }
+       
+        #cart-actions {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+    </style>
+
+
+</head>
+
+<body>
+    <header class="header">
+        <div class="container1">
+            <div class="logo" >
+            <img src="images/logo.png" alt="Laced Lifestyle Logo">
+            <h1>Laced Lifestyle</h1>
+        </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="./index.html">Home</a></li>
+                    <li><a href="./Products.php">Products</a></li>
+                    <li><a href="/About.html">About</a></li>
+                    <li><a href="./Contact.html">Contact</a></li>
+                </ul>
+                <div id="navbar-tools">
+                <a id="cart-link" href="cart.php">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
+                                    <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
+                                  </svg>
+                                  <span><?php echo getCartCount(); ?></span>
+                            </a>
+                            <a id="wishlist-link" href="wishlist.php">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+                                  </svg>
+                                  <span><?php echo getWishlistCount(); ?></span>
+                            </a>
+                </div>
+            </nav>
+        </div>
+        
+    
+    </header>
+
+    <main>
+    <h1>Your Cart</h1>
+    <div id="cart-container">
+        <ul id="cart-items">
+        <?php
+if (isset($_SESSION['cartItems']) && count($_SESSION['cartItems']) > 0) {
+    $totalPrice = 0;
+    foreach ($_SESSION['cartItems'] as $id => $true) {
+        foreach ($products as $product) {
+            if ($product->id === $id) {
+                echo "<li class='cart-item'>
+                        <img src='{$product->image}' alt='{$product->name}'>
+                        <div class='cart-item-details'>
+                            <h3>{$product->name}</h3>
+                            <p class='price'>\${$product->price}</p>
+                            <form method='post' action='cart.php'>
+                                <input type='hidden' name='productId' value='{$product->id}'>
+                                <button type='submit' name='remove_from_cart'>Remove</button>
+                            </form>
+                        </div>
+                      </li>";
+                $totalPrice += floatval($product->price);
+                break;
+            }
+        }
+    }
+    echo "<li><strong>Total Price: \${$totalPrice}</strong></li>";
+} else {
+    echo "<p>Your cart is empty.</p>";
+}
+?>
+        </ul>
+
+        <?php if (!empty($_SESSION['cartItems'])): ?>
+            <div id="cart-actions">
+                <form method="post" action="cart.php">
+                    <button onclick="window.location.href='bin.php'"id="checkout-btn" type="submit" name="checkout">Proceed to Checkout</button>
+                </form>
+            </div>
+        <?php else: ?>
+            <div id="empty-cart-message">
+            
+                <button  id="continue-shopping-btn" onclick="window.location.href='products.php';">Continue Shopping</button>
+            </div>
+        <?php endif; ?>
+    </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 Laced Lifestyle. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
