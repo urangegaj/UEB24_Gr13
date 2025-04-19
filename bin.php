@@ -358,6 +358,30 @@
     }
 }
 
+class AdvancedBillingDetails extends BillingDetails {
+    private $orderId;
+
+    public function __construct($firstName, $lastName, $email, $country, $city, $address, $phoneNumber, $paymentMethod, $orderId) {
+        parent::__construct($firstName, $lastName, $email, $country, $city, $address, $phoneNumber, $paymentMethod);
+        $this->setOrderId($orderId);
+    }
+
+    
+    public function getOrderId() {
+        return $this->orderId;
+    }
+
+    public function setOrderId($orderId) {
+        $this->orderId = $orderId;
+    }
+
+    public function getAdvancedBillingInfo() {
+        $billingInfo = parent::getBillingInfo();
+        $billingInfo['Order ID'] = $this->getOrderId();
+        return $billingInfo;
+    }
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $firstName = $_POST['billing_first_name'];
     $lastName = $_POST['billing_last_name'];
@@ -368,11 +392,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $phoneNumber = $_POST['billing_number'];
     $paymentMethod = $_POST['payment_method'];
 
-    // Krijo instancën e klasës BillingDetails
-    $billingDetails = new BillingDetails($firstName, $lastName, $email, $country, $city, $address, $phoneNumber, $paymentMethod);
-    
-    // Përdor metodën getBillingInfo për të marrë informacionin e faturimit
-    $billingInfo = $billingDetails->getBillingInfo();
+    $orderId = uniqid('order_');
+    $billingDetails = new AdvancedBillingDetails($firstName, $lastName, $email, $country, $city, $address, $phoneNumber, $paymentMethod, $orderId);
+
+    // Marrim informacionin e faturimit të plotë
+    $billingInfo = $billingDetails->getAdvancedBillingInfo();
     
     // Shfaq informacionin e faturimit
     echo "<h2>Billing Information:</h2>";
