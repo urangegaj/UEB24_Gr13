@@ -126,7 +126,7 @@ function getWishlistCount() {
                 <ul class="nav-links">
                     <li><a href="./index.html">Home</a></li>
                     <li><a href="#products">Products</a></li>
-                    <li><a href="./About.html">About</a></li>
+                    <li><a href="./About.php">About</a></li>
                     <li><a href="./Contact.html">Contact</a></li>
                 </ul>
                 <div id="navbar-tools">

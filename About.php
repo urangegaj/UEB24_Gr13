@@ -1,4 +1,29 @@
 <!DOCTYPE html>
+<?php
+// Konstante
+define('COMPANY_NAME', 'Laced Lifestyle');
+
+// Variabla
+$companyYear = 1999;
+$currentYear = date("Y");
+$yearsInBusiness = $currentYear - $companyYear;
+
+// String funksion
+$upperCompanyName = strtoupper(COMPANY_NAME);
+
+// Paraqitja e string funksionev
+function yearsInBusiness($startYear) {
+    $currentYear = date("Y");
+    return $currentYear - $startYear;
+}
+
+// Shfaqja e variablave me array
+$companyDetails = [
+    'name' => COMPANY_NAME,
+    'year_founded' => $companyYear,
+    'years_in_business' => yearsInBusiness($companyYear)
+];
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,7 +38,7 @@
         <div class="container1">
             <div class="logo" >
             <img src="images/logo.png" alt="Laced Lifestyle Logo">
-            <h1>Laced Lifestyle</h1>
+            <h1><?php echo COMPANY_NAME; ?></h1>
         </div>
             <nav>
                 <ul class="nav-links">
@@ -30,11 +55,48 @@
     
     <article class="QL-z heroComponent jM-z">
         <div class="E">
-            <h2 class="F6-z">At Laced Lifestyle, we believe every step you take should be filled with comfort, confidence, and style. Since our founding in 1999, we have been dedicated to bringing you high-quality footwear that blends timeless design with modern innovation.
+        <h2 class="F6-z">
+                At <?php echo $upperCompanyName; ?>, we believe every step you take should be filled with comfort, confidence, and style. 
+                Since our founding in <?php echo $companyYear; ?>, we have been dedicated to bringing you high-quality footwear that blends timeless design with modern innovation.
             </h2>
             <div class="H6-z"><p>Our mission is simple: to provide footwear that inspires and empowers you, no matter where life takes you. We are committed to offering shoes that not only look great but also feel amazing, ensuring you never have to compromise on quality or comfort.<br>
         
-        </div></div></article>
+        </div>
+      </div>
+    </article>
+
+    <div class="company-info">
+    <h3>Company Information</h3>
+    <pre><?php var_dump($companyDetails); ?></pre>
+    </div>
+    <style>
+    .company-info {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 20px;
+        background-color:rgb(222, 217, 217);
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .company-info h3 {
+        text-align: center;
+        color: #444;
+        margin-bottom: 20px;
+    }
+
+    .company-info pre {
+        background-color: #2d2d2d;
+        color: #f8f8f2;
+        padding: 15px;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-size: 14px;
+    }
+</style>
+
+
     
 
         <div class="body-background foto">
@@ -228,100 +290,56 @@
             </ul>
           </div>
           <h3>Rate your experience with us:</h3>
-          <form method="POST" action="">
-          <div class="rating-container">
-            <div class="emoji-button">
-              <input type="radio" id="star1" name="rating" value="1">
-              <label for="star1" class="emoji-label"></label>
-            </div>
-            <div class="emoji-button">
-              <input type="radio" id="star2" name="rating" value="2">
-              <label for="star2" class="emoji-label"></label>
-            </div>
-            <div class="emoji-button">
-              <input type="radio" id="star3" name="rating" value="3">
-              <label for="star3" class="emoji-label"></label>
-            </div>
-            <div class="emoji-button">
-              <input type="radio" id="star4" name="rating" value="4">
-              <label for="star4" class="emoji-label"></label>
-            </div>
-            <div class="emoji-button">
-              <input type="radio" id="star5" name="rating" value="5">
-              <label for="star5" class="emoji-label"></label>
-            </div>
-            <div id="message-container" style="text-align: center;"></div>
-          </div>
+<form method="POST" id="ratingForm" onsubmit="return false;">
+  <div class="rating-container">
+    <?php for ($i = 1; $i <= 5; $i++): ?>
+      <div class="emoji-button">
+        <input type="radio" id="star<?= $i ?>" name="rating" value="<?= $i ?>">
+        <label for="star<?= $i ?>" class="emoji-label"></label>
+      </div>
+    <?php endfor; ?>
+    <div id="message-container" style="text-align: center; font-size: 1.2em; color: green; margin-top: 20px;"></div>
+  </div>
+</form>
 
-        </form>
-
-
-         <script>
-          const stars = document.querySelectorAll('input[name="rating"]');
+<script>
+const stars = document.querySelectorAll('input[name="rating"]');
 const labels = document.querySelectorAll('.emoji-label');
 const messageContainer = document.getElementById('message-container');
 
-
-function showRatingMessage(rating) {
-  let message;
-
-  
-  if (rating === 5) {
-    message = "Thank you for your 5-star rating! We're thrilled you loved it!";
-  } else if (rating === 4) {
-    message = "Thank you for your 4-star rating! We appreciate your feedback.";
-  } else if (rating === 3) {
-    message = "Thank you for your 3-star rating! We're glad you liked it.";
-  } else if (rating === 2) {
-    message = "Thank you for your 2-star rating! We're sorry it wasn't perfect.";
-  } else {
-    message = "Thank you for your 1-star rating! We'll strive to improve!";
-  }
-
-  
-  messageContainer.innerHTML = message;
-  messageContainer.style.color = 'green';
-  messageContainer.style.fontSize = '1.2em';
-  messageContainer.style.marginTop = '20px';
-  messageContainer.style.textAlign = 'center'; 
-
-}
-
-function disableRatingAndFillStars(rating) {
+function fillStars(rating) {
   stars.forEach((star, index) => {
-    
-    star.disabled = true;
-
-   
-    if (index < rating) {
-      labels[index].style.color = '#f39c12'; 
-    } else {
-      labels[index].style.color = '#ccc';     
-    }
+    labels[index].style.color = index < rating ? '#f39c12' : '#ccc';
   });
 }
-
 
 stars.forEach(star => {
   star.addEventListener('change', () => {
-    const rating = Number(star.value); 
+    const rating = star.value;
 
-    
-    showRatingMessage(rating);
+    fillStars(rating);
 
-    
-    disableRatingAndFillStars(rating);
+    fetch("rate.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `rating=${rating}`
+    })
+    .then(response => response.text())
+    .then(message => {
+      messageContainer.textContent = message; // This will display the returned message
+    })
+    .catch(error => console.error('Error:', error));
   });
 });
-         </script>
+
+</script>
 
 
 
   <footer class="footer">
-        <div class="container">
-            <p>© 2024 Laced Lifestyle. All Rights Reserved.</p>
-        </div>
-    </footer>
+    <div class="container">
+      <p>© <?php echo $currentYear; ?> <?php echo $upperCompanyName; ?>. All Rights Reserved.</p> 
+  </footer>
 
 
 </body>
