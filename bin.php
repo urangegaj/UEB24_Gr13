@@ -254,6 +254,8 @@
         </style>
     
     <?php
+
+
     class BillingDetails {
     private $firstName;
     private $lastName;
@@ -274,10 +276,6 @@
         $this->address = $address;
         $this->phoneNumber = $phoneNumber;
         $this->paymentMethod = $paymentMethod;
-    }
-
-    public function __destruct() {
-        echo "<p>BillingDetails object destroyed.</p>";
     }
 
     public function getFirstName() {
@@ -381,9 +379,7 @@ class AdvancedBillingDetails extends BillingDetails {
         $billingInfo['Order ID'] = $this->getOrderId();
         return $billingInfo;
     }
-    public function __destruct() {
-        echo "<p>AdvancedBillingDetails object destroyed. Order ID: {$this->orderId}</p>";
-    }
+    
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -398,15 +394,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $phoneNumber = $_POST["billing_number"] ?? '';
     $paymentMethod = $_POST["payment_method"] ?? '';
    
+    
 
-
+    
     if (!preg_match("/^[a-zA-ZëËçÇ ]{2,}$/u", $firstName)) $errors[] = "Emri nuk është i vlefshëm.";
     if (!preg_match("/^[a-zA-ZëËçÇ ]{2,}$/u", $lastName)) $errors[] = "Mbiemri nuk është i vlefshëm.";
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "Email-i nuk është i vlefshëm.";
+    if (!in_array($country, ['AL', 'XK', 'MK'])) $errors[] = "Shteti nuk është i vlefshëm.";
     if (strlen($address) < 5) $errors[] = "Adresa është shumë e shkurtër.";
     if (!preg_match("/^[a-zA-ZëËçÇ ]{2,}$/u", $city)) $errors[] = "Qyteti nuk është i vlefshëm.";
     if (!preg_match("/^\+?[0-9\s\-]{8,15}$/", $phoneNumber)) $errors[] = "Numri i telefonit nuk është i vlefshëm.";
-    if (!preg_match("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/", $email)) $errors[] = "Email-i nuk është i vlefshëm.";
     if (empty($paymentMethod)) $errors[] = "Zgjidh një mënyrë pagese.";
+
+   
 
    
     if ($paymentMethod === "debit_card") {
@@ -438,6 +438,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "</ul>";
     }
 }
+
+
 ?>
     
     </head>
@@ -468,78 +470,79 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                
                   
                     <div class="billing-details">
-                        <form name="checkout" method="post" class="checkout-form" action="bin.php" enctype="multipart/form-data">
-                            <h3>Billing Details</h3>
+                    <form name="checkout" method="post" class="checkout-form" action="bin.php" enctype="multipart/form-data">
+    <h3>Billing Details</h3>
+
+    <div class="billing-fields">
+        <p class="form-field">
+            <label for="billing_first_name">Name <abbr class="required">*</abbr></label>
+            <input type="text" name="billing_first_name" id="billing_first_name" placeholder="Name" aria-required="true" required>
+        </p>
+        <p class="form-field">
+            <label for="billing_last_name">Last Name <abbr class="required">*</abbr></label>
+            <input type="text" name="billing_last_name" id="billing_last_name" placeholder="Last Name" aria-required="true" required>
+        </p>
+
+        <p class="form-field">
+            <label for="billing_email">Email <abbr class="required">*</abbr></label>
+            <input type="email" name="billing_email" id="billing_email" placeholder="Email" aria-required="true" required>
+        </p>
         
-                            <div class="billing-fields">
-                                <p class="form-field">
-                                    <label for="billing_first_name">Name <abbr class="required">*</abbr></label>
-                                    <input type="text" name="billing_first_name" id="billing_first_name" placeholder="Name" aria-required="true">
-                                </p>
-                                <p class="form-field">
-                                    <label for="billing_last_name">Last Name <abbr class="required">*</abbr></label>
-                                    <input type="text" name="billing_last_name" id="billing_last_name" placeholder="Last Name" aria-required="true">
-                                </p>
+        <p class="form-field">
+            <label for="billing_country">Country <abbr class="required">*</abbr></label>
+            <select name="billing_country" id="billing_country" aria-required="true" required>
+                <option value="">Select a country</option>
+                <option value="AL">Albania</option>
+                <option value="XK">Kosovo</option>
+                <option value="MK">North Macedonia</option>
+            </select>
+        </p>
+        <p class="form-field">
+            <label for="billing_city">City <abbr class="required">*</abbr></label>
+            <input type="text" name="billing_city" id="billing_city" placeholder="City" aria-required="true" required>
+        </p>
+        <p class="form-field">
+            <label for="billing_address_1">Address <abbr class="required">*</abbr></label>
+            <input type="text" name="billing_address_1" id="billing_address_1" placeholder="Address" aria-required="true" required>
+        </p>
+        <p class="form-field">
+            <label for="billing_number">Phone Number <abbr class="required">*</abbr></label>
+            <input type="tel" name="billing_number" id="billing_number" placeholder="Phone Number" aria-required="true" required>
+        </p>
+        
+        <div class="payment-methods">
+            <p class="form-field">
+                <label for="payment_method">Payment Method <abbr class="required">*</abbr></label>
+                <select name="payment_method" id="payment_method" aria-required="true" onchange="toggleCardInput()" required>
+                    <option value="">Select a payment method</option>
+                    <option value="cash">Cash</option>
+                    <option value="debit_card">Debit Card</option>
+                </select>
+            </p>
+        
+            <div id="debit_card_fields" style="display:none;">
+                <p class="form-field">
+                    <label for="card_number">Debit Card Number <abbr class="required">*</abbr></label>
+                    <input type="text" name="card_number" id="card_number" placeholder="Debit Card Number" aria-required="true">
+                </p>
+
+                <p class="form-field">
+                    <label for="expiry_date">Expiration Date <abbr class="required">*</abbr></label>
+                    <input type="text" name="expiry_date" id="expiry_date" placeholder="MM/YY" aria-required="true">
+                </p>
+
+                <p class="form-field">
+                    <label for="cvv">CVV <abbr class="required">*</abbr></label>
+                    <input type="text" name="cvv" id="cvv" placeholder="CVV" aria-required="true">
+                </p>
+            </div>
+        </div>
+    </div>
+
     
-                                <p class="form-field">
-                                    <label for="billing_email">Email <abbr class="required">*</abbr></label>
-                                    <input type="email" name="billing_email" id="billing_email" placeholder="Email" aria-required="true" required>
-                                </p>
-                                
-                                <p class="form-field">
-                                    <label for="billing_country">Country <abbr class="required">*</abbr></label>
-                                    <select name="billing_country" id="billing_country" aria-required="true">
-                                        <option value="">Select a country</option>
-                                        <option value="AL">Albania</option>
-                                        <option value="XK">Kosovo</option>
-                                        <option value="MK">North Macedonia</option>
-                                    </select>
-                                </p>
-                                <p class="form-field">
-                                    <label for="billing_city">City <abbr class="required">*</abbr></label>
-                                    <input type="text" name="billing_city" id="billing_city" placeholder="City" aria-required="true">
-                                </p>
-                                <p class="form-field">
-                                    <label for="billing_address_1">Address <abbr class="required">*</abbr></label>
-                                    <input type="text" name="billing_address_1" id="billing_address_1" placeholder="Address" aria-required="true">
-                                </p>
-                                <p class="form-field">
-                                    <label for="billing_number">Phone Number <abbr class="required">*</abbr></label>
-                                    <input type="tel" name="billing_number" id="billing_number" placeholder="Phone Number" aria-required="true">
-                                </p>
-                                <div class="payment-methods">
-                                    <p class="form-field">
-                                        <label for="payment_method">Payment Method <abbr class="required">*</abbr></label>
-                                        <select name="payment_method" id="payment_method" aria-required="true" onchange="toggleCardInput()">
-                                            <option value="">Select a payment method</option>
-                                            <option value="cash">Cash</option>
-                                            <option value="debit_card">Debit Card</option>
-                                        </select>
-                                    </p>
-                                
-                                  
-                                    <div id="debit_card_fields" style="display:none;">
-                                        <p class="form-field">
-                                            <label for="card_number">Debit Card Number <abbr class="required">*</abbr></label>
-                                            <input type="text" name="card_number" id="card_number" placeholder="Debit Card Number" aria-required="true">
-                                        </p>
-                                
-                                        <p class="form-field">
-                                            <label for="expiry_date">Expiration Date <abbr class="required">*</abbr></label>
-                                            <input type="text" name="expiry_date" id="expiry_date" placeholder="MM/YY" aria-required="true">
-                                        </p>
-                                
-                                        <p class="form-field">
-                                            <label for="cvv">CVV <abbr class="required">*</abbr></label>
-                                            <input type="text" name="cvv" id="cvv" placeholder="CVV" aria-required="true">
-                                        </p>
-                                    </div>
-                                </div>
-    
-    
-                            
-                            </div>
-                        </form>
+    <button type="submit" id="submit-btn" class="submit-btn">Checkout</button>
+</form>
+
                     </div>
     
                            
@@ -571,124 +574,158 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                 </div>
             </div>
+            
+            
 
             <audio id="success-audio" src="audio.wav" type="audio/wav"></audio>
     
-    <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const cartItemsContainer = document.getElementById('cart-items');
-    const totalPriceElement = document.getElementById('total-price');
-    const emptyCartMessage = document.getElementById('empty-cart-message');
-    const checkoutBtn = document.getElementById('checkout-btn');
-    const confirmationMessage = document.getElementById('confirmation-message');
-    const userEmailElement = document.getElementById('user-email');
-    const userAddressElement = document.getElementById('user-address');
-    const closeBtn = document.getElementById('close-btn');
-    const formWarningMessage = document.getElementById('form-warning-message');
-    const debitCardFields = document.getElementById('debit_card_fields'); 
-   
-
+            <script>
   
+     
+  document.addEventListener('DOMContentLoaded', () => {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const totalPriceElement = document.getElementById('total-price');
+            const emptyCartMessage = document.getElementById('empty-cart-message');
+            const checkoutBtn = document.getElementById('checkout-btn');
+            const confirmationMessage = document.getElementById('confirmation-message');
+            const userEmailElement = document.getElementById('user-email');
+            const userAddressElement = document.getElementById('user-address');
+            const closeBtn = document.getElementById('close-btn');
+            const formWarningMessage = document.getElementById('form-warning-message');
+            const debitCardFields = document.getElementById('debit_card_fields'); 
 
- 
+           
+            function validatePhoneNumber(phone) {
+                const albaniaPhoneRegex = /^\+355\d{8}$/;
+                const kosovoPhoneRegex = /^\+383\d{8}$/;
+                const macedoniaPhoneRegex = /^\+389\d{7}$/;
+                return albaniaPhoneRegex.test(phone) || kosovoPhoneRegex.test(phone) || macedoniaPhoneRegex.test(phone);
+            }
 
-    
-    checkoutBtn.addEventListener('click', (event) => {
-       
-        formWarningMessage.classList.remove('show');
+            function validateEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+           
+            function validateExpiryDate(expiryDate) {
+                const [month, year] = expiryDate.split('/').map(num => parseInt(num, 10));
+                if (isNaN(month) || isNaN(year) || month < 1 || month > 12) {
+                    return false;
+                }
+
+                const currentDate = new Date();
+                const currentYear = currentDate.getFullYear() % 100;
+                const currentMonth = currentDate.getMonth() + 1;
+
+                return year > currentYear || (year === currentYear && month >= currentMonth);
+            }
+
+           
+            function validateCardNumber(cardNumber) {
+                const cardNumberRegex = /^\d{16}$/; 
+                return cardNumberRegex.test(cardNumber);
+            }
+
+            
+            function toggleCardInput() {
+                debitCardFields.style.display = document.getElementById('payment_method').value === "debit_card" ? 'block' : 'none';
+            }
+
+           
+            function validateForm() {
+                try {
+                    const fields = {
+                        "First Name": document.getElementById('billing_first_name').value,
+                        "Last Name": document.getElementById('billing_last_name').value,
+                        "Email": document.getElementById('billing_email').value,
+                        "Country": document.getElementById('billing_country').value,
+                        "City": document.getElementById('billing_city').value,
+                        "Address": document.getElementById('billing_address_1').value,
+                        "Phone Number": document.getElementById('billing_number').value,
+                        "Payment Method": document.getElementById('payment_method').value,
+                    };
+
+                    const missingFields = Object.keys(fields).filter(field => !fields[field]);
+
+                    if (missingFields.length > 0) {
+                        throw new Error(`Please fill in the following fields: ${missingFields.join(', ')}`);
+                    }
+
+                    if (!validateEmail(fields["Email"])) {
+                        throw new Error("Invalid email address!");
+                    }
+
+                    const phone = fields["Phone Number"];
+                    if (!validatePhoneNumber(phone)) {
+                        throw new Error("Invalid phone number! Must be for Albania, Kosovo, or North Macedonia.");
+                    }
+
+                    if (fields["Payment Method"] === "debit_card") {
+                        const cardNumber = document.getElementById('card_number').value;
+                        const expiryDate = document.getElementById('expiry_date').value;
+                        const cvv = document.getElementById('cvv').value;
+
+                        if (!validateCardNumber(cardNumber)) {
+                            throw new Error("Invalid debit card number!");
+                        }
+
+                        if (!validateExpiryDate(expiryDate)) {
+                            throw new Error("Invalid expiration date!");
+                        }
+
+                        if (!cvv || cvv.length !== 3) {
+                            throw new Error("Invalid CVV!");
+                        }
+                    }
+
+                    return true;
+                } catch (error) {
+                    formWarningMessage.textContent = error.message;
+                    formWarningMessage.classList.add('show');
+                    return false;
+                }
+            }
+
+           
+            checkoutBtn.addEventListener('click', (event) => {
+                event.preventDefault();  
+
+                formWarningMessage.classList.remove('show');  
+
+                const isValid = validateForm(); 
+                if (!isValid) {
+                
+                    formWarningMessage.classList.add('show');
+                    setTimeout(() => {
+                        formWarningMessage.classList.remove('show');
+                    }, 2000);
+                } else {
+                   
+                    const email = document.getElementById('billing_email').value;
+                    const address = document.getElementById('billing_address_1').value;
+
+                    confirmationMessage.style.display = 'flex';  
+                    userEmailElement.textContent = email;
+                    userAddressElement.textContent = address;
+
+                    cartItemsContainer.style.display = 'none';  
+                    localStorage.removeItem('cartItems');  
+
+                    
+                    const successAudio = document.getElementById('success-audio');
+                    successAudio.play();
+                }
+            });
+
         
-        const email = document.getElementById('billing_email').value;
-        const address = document.getElementById('billing_address_1').value;
-
-        
-            confirmationMessage.style.display = 'flex';
-            userEmailElement.textContent = email;
-            userAddressElement.textContent = address;
-
-            cartItemsContainer.style.display = 'none';
-            localStorage.removeItem('cartItems');
-        }
-
-        const successAudio = document.getElementById('success-audio');
-        successAudio.play();
-    );
-  
-    function toggleCardInput() {
-        debitCardFields.style.display = document.getElementById('payment_method').value === "debit_card" ? 'block' : 'none';
-    }
-
-
-    closeBtn.addEventListener('click', () => {
-        confirmationMessage.style.display = 'none';
-        setTimeout(() => {
-            window.location.href = '/index.html';
-        }, 1000);
-    });
-
-    function updateCart() {
-    try {
-        const cartItems = localStorage.getItem('cartItems') || '';
-        const productsArray = cartItems.split(';').filter(Boolean);
-        let totalPrice = 0;
-
-        cartItemsContainer.innerHTML = '';
-
-        if (productsArray.length === 0) {
-            emptyCartMessage.style.display = 'block';
-            totalPriceElement.style.display = 'none';
-            checkoutBtn.style.display = 'none';
-            return;
-        }
-
-        emptyCartMessage.style.display = 'none';
-
-        productsArray.forEach((item) => {
-            const [productId, productName, productPrice, productImage, quantity] = item.split(',');
-            const pricePerItem = parseFloat(productPrice.replace('$', ''));
-            const itemQuantity = parseInt(quantity || '1', 10); 
-            const totalItemPrice = pricePerItem * itemQuantity;
-
-            const cartItem = document.createElement('li');
-            cartItem.className = 'cart-item';
-
-            cartItem.innerHTML = `
-                <img src="${productImage}" alt="${productName}">
-                <div class="cart-item-details">
-                    <h3>${productName}</h3>
-                    <p class="price">$<span>${totalItemPrice.toFixed(2)}</span> (${itemQuantity} x $${pricePerItem.toFixed(2)})</p>
-                </div>
-                <button class="remove-from-cart" data-id="${productId}">Remove</button>
-            `;
-
-            cartItemsContainer.appendChild(cartItem);
-            totalPrice += totalItemPrice;
-
-        
-            cartItem.querySelector('.remove-from-cart').addEventListener('click', function () {
-                removeFromCart(productId);
+            closeBtn.addEventListener('click', () => {
+                confirmationMessage.style.display = 'none';
+                setTimeout(() => {
+                    window.location.href = '/index.html';
+                }, 1000);
             });
         });
-
-        totalPriceElement.textContent = `Total Price: $${totalPrice.toFixed(2)}`;
-        totalPriceElement.style.display = 'block';
-        checkoutBtn.style.display = 'inline-block';
-    } catch (error) {
-        console.error("Error updating the cart:", error.message);
-        emptyCartMessage.textContent = "An error occurred while updating the cart.";
-        emptyCartMessage.style.display = 'block';
-    }
-}
-    function removeFromCart(productId) {
-        let cartItems = localStorage.getItem('cartItems') || '';
-        const cartArray = cartItems.split(';').filter(Boolean);
-
-        const updatedCartArray = cartArray.filter(item => !item.startsWith(productId));
-        localStorage.setItem('cartItems', updatedCartArray.join(';'));
-        updateCart();
-    }
-
-    updateCart();
-});    
     </script>
 
         <footer class="footer">
