@@ -68,8 +68,8 @@ class Product {
     new Product ("formal-shoes-2", "images/FormalShoes2.jpg", "Classic Brogue", 129.99, "formal-shoes"),
     new Product ("formal-shoes-3", "images/FormalShoes3.jpg", "Patent Leather", 159.99, "formal-shoes"),
     new Product ("formal-shoes-4", "images/FormalShoes7.jpg", "Classic Black", 199.99, "formal-shoes"),
-    new Product ("formal-shoes-5", "images/FormalShoes5.jpg", "Cognac Classic Oxford", 124.99, "formal-shoes"),
-    new Product ("formal-shoes-6", "images/FormalShoes6.jpg", "Ebony Elegance Oxford", 140.99, "formal-shoes")
+    new Product ("formal-shoes-5", "images/FormalShoes5.jpg", "Cognac Classic ", 124.99, "formal-shoes"),
+    new Product ("formal-shoes-6", "images/FormalShoes6.jpg", "Ebony Elegance ", 140.99, "formal-shoes")
 ];
 
 if (isset($_POST['cartId'])) {
@@ -77,8 +77,10 @@ if (isset($_POST['cartId'])) {
     $productCategory = $_POST['category'] ?? '';
     if (isset($_SESSION['cartItems'][$id])) {
         unset($_SESSION['cartItems'][$id]);
+        $_SESSION['message'] = "Item removed from cart!";
     } else {
         $_SESSION['cartItems'][$id] = true;
+        $_SESSION['message'] = "Item added to cart!";
     }
     header("Location: " . $_SERVER['PHP_SELF'] . "#$productCategory");
     exit();
@@ -89,8 +91,10 @@ if (isset($_POST['wishlistId'])) {
     $productCategory = $_POST['category'] ?? '';
     if (isset($_SESSION['wishlistItems'][$id])) {
         unset($_SESSION['wishlistItems'][$id]);
+        $_SESSION['message'] = "Item removed from favourites!";
     } else {
         $_SESSION['wishlistItems'][$id] = true;
+        $_SESSION['message'] = "Item added to favourites!";
     }
     header("Location: " . $_SERVER['PHP_SELF'] . "#$productCategory");
     exit();
@@ -167,7 +171,15 @@ function getWishlistCount() {
        
     </header>
     <div class="products">
+    <?php if (isset($_SESSION['message'])): ?>
+    <div id="mesazhi" class="cart-message">
+        <?= $_SESSION['message']; ?>
+    </div>
+    <?php unset($_SESSION['message']); ?>
+<?php endif; ?>
+
         <?php
+        
         $categories = [
             "running-shoes" => ["label" => "Running Shoes", "sort_param" => "sort_running"],
             "casual-shoes" => ["label" => "Casual Shoes", "sort_param" => "sort_casual"],
@@ -218,7 +230,7 @@ function getWishlistCount() {
             echo "</form>";
             echo "</div>";
 
-            echo "<div class='product-grid scrollable-grid'>";
+            echo "<div class='product-grid scrollable-grid '>";
             foreach ($categoryProducts as $product) {
                 echo $product->render();
             }
@@ -231,6 +243,21 @@ function getWishlistCount() {
             <p>© 2024 Laced Lifestyle. All Rights Reserved.</p>
         </div>
     </footer>
+
+    <script>
+                setTimeout(() => {
+                    const mesazhi = document.getElementById('mesazhi');
+                    if(mesazhi){
+                        mesazhi.style.opacity='0';
+                        setTimeout(() => {
+                            mesazhi.remove();
+                            
+                        }, 500);
+                    }
+                    
+                }, 2500);
+                </script>
+
 
 
 </body>

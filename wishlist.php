@@ -15,6 +15,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['remove'])) {
         $id = $_POST['product_id'];
         unset($_SESSION['wishlistItems'][$id]); 
+        $_SESSION['message'] = "Item removed from favourites!";
+        header("Location: wishlist.php");
+        exit();
+    }
+
+    
+    if (isset($_POST['remove_from_cart'])) {
+        $id = $_POST['product_id'];
+        unset($_SESSION['cartItems'][$id]);
+        $_SESSION['message'] = "Item removed from cart!";
         header("Location: wishlist.php");
         exit();
     }
@@ -252,34 +262,43 @@ button.add-to-cart:hover {
 
     <h2>Your Saved Favourites</h2>
     <ul id="wishlist-items">
-        <?php
-        if (!empty($wishlistItems)) {
-            foreach ($wishlistItems as $item) {
-                echo "
-                <li class='wishlist-item'>
-                    <div class='product-card'>
-                        <div class='product-image'>
-                            <img src='{$item->image}' alt='{$item->name}'>
-                            <p class='price'>{$item->price}</p>
-                        </div>
-                        <div class='product-info'>
-                            <h3>{$item->name}</h3>
-                            <form method='post'>
-                                <input type='hidden' name='product_id' value='{$item->id}'>
-                                <button class='button remove-from-wishlist' name='remove'>Remove from Favourites</button>
-                            </form>
-                            <form method='post'>
-                                <input type='hidden' name='product_id' value='{$item->id}'>
-                                <button class='button add-to-cart' name='add_to_cart'>Add to Cart</button>
-                            </form>
-                        </div>
-                    </div>
-                </li>";
-            }
+    <?php
+if (!empty($wishlistItems)) {
+    foreach ($wishlistItems as $item) {
+        echo "
+        <li class='wishlist-item'>
+            <div class='product-card'>
+                <div class='product-image'>
+                    <img src='{$item->image}' alt='{$item->name}'>
+                    <p class='price'>\${$item->price}</p>
+                </div>
+                <div class='product-info'>
+                    <h3>{$item->name}</h3>
+                    
+                    <form method='post'>
+                        <input type='hidden' name='product_id' value='{$item->id}'>
+                        <button class='button remove-from-wishlist' name='remove'>Remove from Favourites</button>
+                    </form>
+
+                    <form method='post'>
+                        <input type='hidden' name='product_id' value='{$item->id}'>";
+                        
+        if (isset($_SESSION['cartItems'][$item->id])) {
+            echo "<button class='button remove-from-wishlist' name='remove_from_cart'>Remove from Cart</button>";
         } else {
-            echo "<div class='no-favorites-message'><p>No items have been added to your Favourites yet.</p></div>";
+            echo "<button class='button add-to-cart' name='add_to_cart'>Add to Cart</button>";
         }
-        ?>
+
+        echo "</form>
+                </div>
+            </div>
+        </li>";
+    }
+} else {
+    echo "<div class='no-favorites-message'><p>No items have been added to your Favourites yet.</p></div>";
+}
+?>
+
     </ul>
 
 
