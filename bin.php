@@ -1,8 +1,4 @@
 
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -391,28 +387,56 @@ class AdvancedBillingDetails extends BillingDetails {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $firstName = $_POST['billing_first_name'];
-    $lastName = $_POST['billing_last_name'];
-    $email = $_POST['billing_email'];
-    $country = $_POST['billing_country'];
-    $city = $_POST['billing_city'];
-    $address = $_POST['billing_address_1'];
-    $phoneNumber = $_POST['billing_number'];
-    $paymentMethod = $_POST['payment_method'];
+    $errors = [];
 
-    $orderId = uniqid('order_');
-    $billingDetails = new AdvancedBillingDetails($firstName, $lastName, $email, $country, $city, $address, $phoneNumber, $paymentMethod, $orderId);
-
-    
-    $billingInfo = $billingDetails->getAdvancedBillingInfo();
-    
+    $firstName = trim($_POST["billing_first_name"] ?? '');
+    $lastName = trim($_POST["billing_last_name"] ?? '');
+    $email = trim($_POST["billing_email"] ?? '');
+    $country = $_POST["billing_country"] ?? '';
+    $city = $_POST["billing_city"] ?? '';
+    $address = $_POST["billing_address_1"] ?? '';
+    $phoneNumber = $_POST["billing_number"] ?? '';
+    $paymentMethod = $_POST["payment_method"] ?? '';
    
-    echo "<h2>Billing Information:</h2>";
-    echo "<ul>";
-    foreach ($billingInfo as $key => $value) {
-        echo "<li><strong>$key:</strong> $value</li>";
+
+
+    if (!preg_match("/^[a-zA-ZëËçÇ ]{2,}$/u", $firstName)) $errors[] = "Emri nuk është i vlefshëm.";
+    if (!preg_match("/^[a-zA-ZëËçÇ ]{2,}$/u", $lastName)) $errors[] = "Mbiemri nuk është i vlefshëm.";
+    if (strlen($address) < 5) $errors[] = "Adresa është shumë e shkurtër.";
+    if (!preg_match("/^[a-zA-ZëËçÇ ]{2,}$/u", $city)) $errors[] = "Qyteti nuk është i vlefshëm.";
+    if (!preg_match("/^\+?[0-9\s\-]{8,15}$/", $phoneNumber)) $errors[] = "Numri i telefonit nuk është i vlefshëm.";
+    if (!preg_match("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/", $email)) $errors[] = "Email-i nuk është i vlefshëm.";
+    if (empty($paymentMethod)) $errors[] = "Zgjidh një mënyrë pagese.";
+
+   
+    if ($paymentMethod === "debit_card") {
+        $cardNumber = trim($_POST["card_number"] ?? '');
+        $expiryDate = trim($_POST["expiry_date"] ?? '');
+        $cvv = trim($_POST["cvv"] ?? '');
+
+        if (!preg_match("/^\d{13,19}$/", $cardNumber)) $errors[] = "Numri i kartës nuk është i vlefshëm.";
+        if (!preg_match("/^(0[1-9]|1[0-2])\/\d{2}$/", $expiryDate)) $errors[] = "Data e skadencës nuk është e vlefshme (format: MM/YY).";
+        if (!preg_match("/^\d{3,4}$/", $cvv)) $errors[] = "CVV nuk është i vlefshëm.";
     }
-    echo "</ul>";
+
+    if (empty($errors)) {
+        $orderId = uniqid('order_');
+        $billingDetails = new AdvancedBillingDetails($firstName, $lastName, $email, $country, $city, $address, $phoneNumber, $paymentMethod, $orderId);
+        $billingInfo = $billingDetails->getAdvancedBillingInfo();
+
+        echo "<h2>Checkout i suksesshëm</h2>";
+        echo "<ul>";
+        foreach ($billingInfo as $key => $value) {
+            echo "<li><strong>$key:</strong> $value</li>";
+        }
+        echo "</ul>";
+    } else {
+        echo "<h3 style='color:red'>Gabime në formular:</h3><ul style='color:red'>";
+        foreach ($errors as $error) {
+            echo "<li>" . htmlspecialchars($error) . "</li>";
+        }
+        echo "</ul>";
+    }
 }
 ?>
     
@@ -429,7 +453,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <nav>
                         <ul class="nav-links">
                             <li><a href="./index.html">Home</a></li>
-                            <li><a href="./Products.php">Products</a></li>
+                            <li><a href="/Products.php">Products</a></li>
                             <li><a href="./About.html">About</a></li>
                             <li><a href="./Contact.html">Contact</a></li>
                         </ul>
@@ -562,115 +586,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeBtn = document.getElementById('close-btn');
     const formWarningMessage = document.getElementById('form-warning-message');
     const debitCardFields = document.getElementById('debit_card_fields'); 
-
-    
-    function validatePhoneNumber(phone) {
-        const albaniaPhoneRegex = /^\+355\d{8}$/;
-        const kosovoPhoneRegex = /^\+383\d{8}$/;
-        const macedoniaPhoneRegex = /^\+389\d{7}$/;
-        return albaniaPhoneRegex.test(phone) || kosovoPhoneRegex.test(phone) || macedoniaPhoneRegex.test(phone);
-    }
-
-    function validateEmail(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    }
-
    
-    function validateExpiryDate(expiryDate) {
-        const [month, year] = expiryDate.split('/').map(num => parseInt(num, 10));
-        if (isNaN(month) || isNaN(year) || month < 1 || month > 12) {
-            return false;
-        }
-
-        const currentDate = new Date();
-        const currentYear = currentDate.getFullYear() % 100;
-        const currentMonth = currentDate.getMonth() + 1;
-
-        return year > currentYear || (year === currentYear && month >= currentMonth);
-    }
 
   
-    function validateCardNumber(cardNumber) {
-        const cardNumberRegex = /^\d{16}$/; 
-        return cardNumberRegex.test(cardNumber);
-    }
 
-   
-    function toggleCardInput() {
-        debitCardFields.style.display = document.getElementById('payment_method').value === "debit_card" ? 'block' : 'none';
-    }
+ 
 
-   
-    function validateForm() {
-    try {
-        const fields = {
-            "First Name": document.getElementById('billing_first_name').value,
-            "Last Name": document.getElementById('billing_last_name').value,
-            "Email": document.getElementById('billing_email').value,
-            "Country": document.getElementById('billing_country').value,
-            "City": document.getElementById('billing_city').value,
-            "Address": document.getElementById('billing_address_1').value,
-            "Phone Number": document.getElementById('billing_number').value,
-            "Payment Method": document.getElementById('payment_method').value,
-        };
-
-        const missingFields = Object.keys(fields).filter(field => !fields[field]);
-
-        if (missingFields.length > 0) {
-            throw new Error(`Please fill in the following fields: ${missingFields.join(', ')}`);
-        }
-
-        if (!validateEmail(fields["Email"])) {
-            throw new Error("Invalid email address!");
-        }
-
-        const phone = fields["Phone Number"];
-        if (!validatePhoneNumber(phone)) {
-            throw new Error("Invalid phone number! Must be for Albania, Kosovo, or North Macedonia.");
-        }
-
-        if (fields["Payment Method"] === "debit_card") {
-            const cardNumber = document.getElementById('card_number').value;
-            const expiryDate = document.getElementById('expiry_date').value;
-            const cvv = document.getElementById('cvv').value;
-
-            if (!validateCardNumber(cardNumber)) {
-                throw new Error("Invalid debit card number!");
-            }
-
-            if (!validateExpiryDate(expiryDate)) {
-                throw new Error("Invalid expiration date!");
-            }
-
-            if (!cvv || cvv.length !== 3) {
-                throw new Error("Invalid CVV!");
-            }
-        }
-
-        return true;
-    } catch (error) {
-        formWarningMessage.textContent = error.message;
-        formWarningMessage.classList.add('show');
-        return false;
-    }
-}
+    
     checkoutBtn.addEventListener('click', (event) => {
        
         formWarningMessage.classList.remove('show');
         
-        const isValid = validateForm();
+        const email = document.getElementById('billing_email').value;
+        const address = document.getElementById('billing_address_1').value;
 
-        if (!isValid) {
-            event.preventDefault();
-            formWarningMessage.classList.add('show');
-            setTimeout(() => {
-                formWarningMessage.classList.remove('show');
-            }, 2000);
-        } else {
-            const email = document.getElementById('billing_email').value;
-            const address = document.getElementById('billing_address_1').value;
-
+        
             confirmationMessage.style.display = 'flex';
             userEmailElement.textContent = email;
             userAddressElement.textContent = address;
@@ -681,7 +611,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const successAudio = document.getElementById('success-audio');
         successAudio.play();
-    });
+    );
+  
+    function toggleCardInput() {
+        debitCardFields.style.display = document.getElementById('payment_method').value === "debit_card" ? 'block' : 'none';
+    }
+
 
     closeBtn.addEventListener('click', () => {
         confirmationMessage.style.display = 'none';
@@ -743,10 +678,6 @@ document.addEventListener('DOMContentLoaded', () => {
         emptyCartMessage.style.display = 'block';
     }
 }
-
-
-
-
     function removeFromCart(productId) {
         let cartItems = localStorage.getItem('cartItems') || '';
         const cartArray = cartItems.split(';').filter(Boolean);
@@ -757,28 +688,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     updateCart();
-
-document.getElementById('billing_first_name').addEventListener('input', validateForm);
-document.getElementById('billing_last_name').addEventListener('input', validateForm);
-document.getElementById('billing_email').addEventListener('input', validateForm);
-document.getElementById('billing_country').addEventListener('change', validateForm);
-document.getElementById('billing_city').addEventListener('input', validateForm);
-document.getElementById('billing_address_1').addEventListener('input', validateForm);
-document.getElementById('billing_number').addEventListener('input', validateForm);
-document.getElementById('payment_method').addEventListener('change', toggleCardInput);
-document.getElementById('card_number').addEventListener('input', validateForm);
-document.getElementById('expiry_date').addEventListener('input', validateForm);
-document.getElementById('cvv').addEventListener('input', validateForm);
-
-
-});
-    
+});    
     </script>
-              
-            
-    
-    
-
 
         <footer class="footer">
             <div class="container">
