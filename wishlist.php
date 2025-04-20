@@ -232,28 +232,9 @@ button.add-to-cart:hover {
         
         
             <main>
-<<<<<<< HEAD:wishlist.html
-                <h1>Favourites</h1>
-                <p>SAVE YOUR FAVOURITE ITEMS</p>
-                <p>Want to save the items that you love? Just click on the heart symbol beside the item and it will appear here.</p>
-        
-                <button id="explore-btn" onclick="window.location.href='./Products.php';">Explore Now</button>
-        
-                <hr class="divider">
-        
-                <h2>Your Saved Favourites</h2>
-                <ul id="wishlist-items"></ul> 
-        
-                <div id="no-favorites-message" class="no-favorites-message" style="display: none;">
-                    <p>No items have been added to your Favourites yet.</p>
-                </div>
-            </main>
-            <div class="cart-message" style="display:none;"></div>
-=======
             <h1>Favourites</h1>
     <p>SAVE YOUR FAVOURITE ITEMS</p>
     <p>Want to save the items that you love? Just click on the heart symbol beside the item and it will appear here.</p>
->>>>>>> deeba08300a494b89ebb5a9755c5d706468bd497:wishlist.php
 
     <?php if (empty($wishlistItems)): ?>
         <button id="explore-btn" onclick="window.location.href='./Products.php';">Explore Now</button>
