@@ -75,7 +75,7 @@ $products = [
     new Product("formal-shoes-2", "images/FormalShoes2.jpg", "Classic Brogue", 129.99, "formal-shoes"),
     new Product("formal-shoes-3", "images/FormalShoes3.jpg", "Patent Leather", 159.99, "formal-shoes"),
     new Product("formal-shoes-4", "images/FormalShoes7.jpg", "Classic Black", 199.99, "formal-shoes"),
-    new Product("formal-shoes-5", "images/FormalShoes5.jpg", "Cognac Classic Oxford", 124.99, "formal-shoes"),
-    new Product("formal-shoes-6", "images/FormalShoes6.jpg", "Ebony Elegance Oxford", 140.00, "formal-shoes")
+    new Product("formal-shoes-5", "images/FormalShoes5.jpg", "Cognac Classic", 124.99, "formal-shoes"),
+    new Product("formal-shoes-6", "images/FormalShoes6.jpg", "Ebony Elegance ", 14.00, "formal-shoes")
 ];
 ?>

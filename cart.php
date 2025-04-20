@@ -1,13 +1,23 @@
 <?php
  session_start();
 
+ if (!isset($_SESSION['cartItems'])) {
+    $_SESSION['cartItems'] = [];
+}
+if (!isset($_SESSION['wishlistItems'])) {
+    $_SESSION['wishlistItems'] = [];
+}
+
 require_once 'productData.php';
 
 
 
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['remove_from_cart'])) {
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (isset($_POST['remove_from_cart'])){
     $removeId = $_POST['productId'];
     unset($_SESSION['cartItems'][$removeId]);
+    $_SESSION['message'] = "Item removed from cart!";
     header("Location: cart.php");
     exit();
 }
@@ -17,14 +27,10 @@ if (isset($_POST['checkout'])) {
     exit();
 }
 
-
-function getCartCount() {
-    return count($_SESSION['cartItems'] ?? []);
 }
 
-function getWishlistCount() {
-    return count($_SESSION['wishlistItems'] ?? []);
-}
+$cartIds = array_keys($_SESSION['cartItems'] ?? []);
+$cartItems = array_filter($products, fn($p) => in_array($p->id, $cartIds));
 
 
 ?>
@@ -137,23 +143,31 @@ function getWishlistCount() {
             margin: 20px 0;
             color: #333;
         }
-
         #checkout-btn {
-            padding: 15px 30px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-            border-radius: 5px;
-            text-align: center;
-            display: inline-block;
-            margin-top: 20px;
-        }
+    padding: 15px 40px;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 8px;
+    text-align: center;
+    display: inline-block;
+    width: fit-content;
+    max-width: 100%;
+    margin: 20px auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease-in-out;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
 
-        #checkout-btn:hover {
-            background-color: #45a049;
-        }
+#checkout-btn:hover {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, #3e8e41, #388e3c);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
 
         #empty-cart-message {
             margin-top: 20px;
@@ -208,13 +222,13 @@ function getWishlistCount() {
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
                                     <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
                                   </svg>
-                                  <span><?php echo getCartCount(); ?></span>
+                                  <span><?php echo count($_SESSION['cartItems'] ?? []); ?></span>
                             </a>
                             <a id="wishlist-link" href="wishlist.php">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
                                     <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
                                   </svg>
-                                  <span><?php echo getWishlistCount(); ?></span>
+                                  <span><?php echo count($_SESSION['wishlistItems'] ?? []); ?></span>
                             </a>
                 </div>
             </nav>
@@ -228,33 +242,43 @@ function getWishlistCount() {
     <div id="cart-container">
         <ul id="cart-items">
         <?php
-if (isset($_SESSION['cartItems']) && count($_SESSION['cartItems']) > 0) {
-    $totalPrice = 0;
-    foreach ($_SESSION['cartItems'] as $id => $true) {
-        foreach ($products as $product) {
-            if ($product->id === $id) {
-                echo "<li class='cart-item'>
-                        <img src='{$product->image}' alt='{$product->name}'>
-                        <div class='cart-item-details'>
-                            <h3>{$product->name}</h3>
-                            <p class='price'>\${$product->price}</p>
-                            <form method='post' action='cart.php'>
-                                <input type='hidden' name='productId' value='{$product->id}'>
-                                <button type='submit' name='remove_from_cart'>Remove</button>
-                            </form>
-                        </div>
-                      </li>";
-                $totalPrice += floatval($product->price);
-                break;
+    if (isset($_SESSION['cartItems']) && count($_SESSION['cartItems']) > 0) {
+        $totalPrice = 0;
+        foreach ($_SESSION['cartItems'] as $id => $true) {
+            foreach ($products as $product) {
+                if ($product->id === $id) {
+                    echo "<li class='cart-item'>
+                            <img src='{$product->image}' alt='{$product->name}'>
+                            <div class='cart-item-details'>
+                                <h3>{$product->name}</h3>
+                                <p class='price'>\$" . number_format($product->price, 2) . "</p>
+                                <form method='post' action='cart.php'>
+                                    <input type='hidden' name='productId' value='{$product->id}'>
+                                    <button class='remove-from-cart' type='submit' name='remove_from_cart'>Remove</button>
+                                </form>
+                            </div>
+                          </li>";
+                    $totalPrice += floatval($product->price);
+                    break;
+                }
             }
         }
+        echo "<div id='total-price'>Total Price: \$" . number_format($totalPrice, 2) . "</div>";
+    } else {
+        echo "<p>Your cart is empty.</p>";
     }
-    echo "<li><strong>Total Price: \${$totalPrice}</strong></li>";
-} else {
-    echo "<p>Your cart is empty.</p>";
-}
 ?>
+ 
+
         </ul>
+
+        
+    <?php if (isset($_SESSION['message'])): ?>
+    <div id="mesazhi" class="cart-message">
+        <?= $_SESSION['message']; ?>
+    </div>
+    <?php unset($_SESSION['message']); ?>
+<?php endif; ?>
 
         <?php if (!empty($_SESSION['cartItems'])): ?>
             <div id="cart-actions">
@@ -276,5 +300,19 @@ if (isset($_SESSION['cartItems']) && count($_SESSION['cartItems']) > 0) {
         </div>
     </footer>
 
+    <script>
+                setTimeout(() => {
+                    const mesazhi = document.getElementById('mesazhi');
+                    if(mesazhi){
+                        mesazhi.style.opacity='0';
+                        setTimeout(() => {
+                            mesazhi.remove();
+                            
+                        }, 500);
+                    }
+                    
+                }, 2500);
+            
+                </script>
 </body>
 </html>
