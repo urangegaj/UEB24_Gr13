@@ -96,9 +96,6 @@ $companyDetails = [
     }
 </style>
 
-
-    
-
         <div class="body-background foto">
             <img class="image-display" src="https://cdn.allbirds.com/image/upload/f_auto,q_auto/cms/v8XWwh4K3Mer3ysAIpcm7/12a38eac5b14202d281e84f3c6c6ec39/ezgif.com-optimize.gif" alt="Optimized GIF">
 
@@ -326,7 +323,7 @@ stars.forEach(star => {
     })
     .then(response => response.text())
     .then(message => {
-      messageContainer.textContent = message; // This will display the returned message
+      messageContainer.textContent = message; 
     })
     .catch(error => console.error('Error:', error));
   });
