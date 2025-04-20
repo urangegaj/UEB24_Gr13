@@ -964,7 +964,7 @@ footer p {
     color: #7f8c8d;
 }
 
-/* Responsive Design */
+
 @media screen and (max-width: 768px) {
     .Grid {
         flex-direction: column;
