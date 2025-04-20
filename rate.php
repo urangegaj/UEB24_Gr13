@@ -1,8 +1,6 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['rating'])) {
-    $rating = intval($_POST['rating']); // Get the rating
-
-    // Determine the message based on the rating
+    $rating = intval($_POST['rating']); 
     function showRatingMessage($rating) {
         switch ($rating) {
             case 5: return "Thank you for your 5-star rating! We're thrilled you loved it!";
@@ -14,7 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['rating'])) {
         }
     }
 
-    // Output the message to be displayed on the page
     echo showRatingMessage($rating);
 }
 ?>
