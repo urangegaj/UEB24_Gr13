@@ -1,4 +1,25 @@
 <!DOCTYPE html>
+<?php
+// Implementimi i nje associative array per te ruajtur te dhenat e perdoruesit dhe i nje kushtezimi 
+// if..else per te kontrolluar nese te dhenat jane plotesuar
+$userData = array();
+$errorMessage = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (empty($_POST['name']) || empty($_POST['lastname']) || empty($_POST['username']) || empty($_POST['email']) || empty($_POST['birthdate']) || empty($_POST['gender'])) {
+        $errorMessage = "Please fill in all the fields.";
+    } else {
+        $userData = array(
+            "name" => $_POST['name'],
+            "lastname" => $_POST['lastname'],
+            "username" => $_POST['username'],
+            "email" => $_POST['email'],
+            "birthdate" => $_POST['birthdate'],
+            "gender" => $_POST['gender']
+        );
+    }
+}
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -171,8 +192,13 @@
             <div id="display-birthdate"></div>
             <div id="display-gender"></div>
         </div>
+
+        <?php if ($errorMessage): ?>
+            <p style="color: red;"><?php echo $errorMessage; ?></p>
+        <?php endif; ?>
+
         <img src="default-profile.png" alt="Profile Picture" class="profile-pic" id="profile-pic">
-        <form id="profile-form">
+        <form id="profile-form" method="POST" action="">
             <div>
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" required>
@@ -212,6 +238,17 @@
             <button type="submit">Save</button>
         </form>
     </div>
+
+        <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && !$errorMessage): ?>
+        <h2>Profile Information</h2>
+        <p>Name: <?php echo $userData['name']; ?></p>
+        <p>Lastname: <?php echo $userData['lastname']; ?></p>
+        <p>Username: <?php echo $userData['username']; ?></p>
+        <p>Email: <?php echo $userData['email']; ?></p>
+        <p>Birthdate: <?php echo $userData['birthdate']; ?></p>
+        <p>Gender: <?php echo $userData['gender']; ?></p>
+    <?php endif; ?>
+    
 
     <script>
         const dragDropArea = document.getElementById('drag-drop-area');
