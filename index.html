@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laced Lifestyle | Online Shoe Store</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=1.0">
     <script defer src="script.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="website icon" type="png" href="images/logo1.png">
@@ -13,10 +13,10 @@
 <body>
     <header class="header">
         <div class="container">
-            <div class="logo" >
-            <img src="images/logo.png" alt="Laced Lifestyle Logo">
-            <h1>Laced Lifestyle</h1>
-        </div>
+            <div class="logo">
+                <img src="images/logo.png" alt="Laced Lifestyle Logo">
+                <h1>Laced Lifestyle</h1>
+            </div>
             <nav>
                 <ul class="nav-links">
                     <li><a href="#home" title="Go to Homepage">Home</a></li>
@@ -25,26 +25,26 @@
                     <li><a href="./Contact.html" title="Contact Us">Contact</a></li>
                 </ul>
             </nav>
-        </div>
-        
-        <button id="login-button" class="nav-button">Login</button>
-        <div id="user-account" class="user-account hidden">
-            <a href="profile.html">
-                <button id="profile-button" class="nav-button"> 
-                <i class="fa fa-user"></i> My Account </button>
-            </a>
-            <div id="account-dropdown" class="dropdown hidden">
-                <a href="profile.html">Profile</a>
-                <a href="orders.html">My Orders</a>
-                <button id="logout-button">Logout</button>
+            <div class="header-utils">
+                <button id="login-button" class="nav-button">Login</button>
+                <div id="user-account" class="user-account hidden">
+                    <a href="profile.html">
+                        <button id="profile-button" class="nav-button"> 
+                            <i class="fa fa-user"></i> My Account 
+                        </button>
+                    </a>
+                    <div id="account-dropdown" class="dropdown hidden">
+                        <a href="profile.html">Profile</a>
+                        <a href="orders.html">My Orders</a>
+                        <button id="logout-button">Logout</button>
+                    </div>
+                </div>
+                <button id="search-button"><i class="fa fa-search"></i></button>
+                <div id="search-container" class="hidden">
+                    <input type="text" id="search-input" placeholder="Search for a product..." />
+                </div>
             </div>
         </div>
-            
-        <button id="search-button"><i class="fa fa-search"></i></button>
-        <div id="search-container" class="hidden">
-        <input type="text" id="search-input" placeholder="Search for a product..." />
-        </div>
-
     </header>
     <div id="login-modal" class="modal">
         <div class="modal-content">

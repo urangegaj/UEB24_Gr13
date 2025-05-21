@@ -15,28 +15,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loginButton.addEventListener('click', () => {
         modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
     });
 
 
     closeModalButton.addEventListener('click', () => {
         modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
     });
 
 
     window.addEventListener('click', (event) => {
         if (event.target === modal) {
             modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
     });
 
 
-    signUpLink.addEventListener('click', () => {
+    signUpLink.addEventListener('click', (e) => {
+        e.preventDefault();
         loginForm.classList.add('hidden');
         signUpForm.classList.remove('hidden');
     });
 
 
-    loginLink.addEventListener('click', () => {
+    loginLink.addEventListener('click', (e) => {
+        e.preventDefault();
         signUpForm.classList.add('hidden');
         loginForm.classList.remove('hidden');
     });
