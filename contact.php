@@ -1,10 +1,10 @@
 <?php
 require_once 'session_handler.php';
 
-// Increment visit count
+
 $visitCount = incrementVisitCount();
 
-// Get user preferences
+
 $preferences = getUserPreferences();
 $themeStyles = getThemeStyles();
 ?>
@@ -31,21 +31,31 @@ $themeStyles = getThemeStyles();
 
         .theme-switcher {
             position: fixed;
-            top: 20px;
+            top: 80px;
             right: 20px;
             background: <?php echo $themeStyles['accent-color']; ?>;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 12px 24px;
+            border-radius: 8px;
             color: white;
             cursor: pointer;
-            z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 1001;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .theme-switcher i {
+            font-size: 20px;
         }
 
         .theme-switcher:hover {
             opacity: 0.9;
             transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
         }
 
         .visit-counter {
@@ -60,7 +70,7 @@ $themeStyles = getThemeStyles();
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
-        /* Keep all your existing styles here */
+
         .background-section {
             position: relative;
             height: 60vh;
@@ -130,52 +140,83 @@ $themeStyles = getThemeStyles();
         .contact-form {
             max-width: 600px;
             margin: 40px auto;
-            background: <?php echo $themeStyles['theme'] === 'dark' ? '#444' : '#ffffff'; ?>;
+            background: <?php echo $themeStyles['theme'] === 'dark' ? '#1a1a1a' : '#ffffff'; ?>;
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border: 1px solid <?php echo $themeStyles['theme'] === 'dark' ? '#333' : '#e0e0e0'; ?>;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: bold;
+            color: <?php echo $themeStyles['theme'] === 'dark' ? '#ffffff' : '#333333'; ?>;
+            font-size: 16px;
         }
 
         input, textarea {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #cccccc;
-            border-radius: 5px;
+            padding: 14px;
+            border: 2px solid <?php echo $themeStyles['theme'] === 'dark' ? '#444' : '#cccccc'; ?>;
+            border-radius: 8px;
             font-size: 16px;
-            background: <?php echo $themeStyles['theme'] === 'dark' ? '#555' : '#ffffff'; ?>;
-            color: <?php echo $themeStyles['text-color']; ?>;
+            background: <?php echo $themeStyles['theme'] === 'dark' ? '#2a2a2a' : '#ffffff'; ?>;
+            color: <?php echo $themeStyles['theme'] === 'dark' ? '#ffffff' : '#333333'; ?>;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: <?php echo $themeStyles['accent-color']; ?>;
+            box-shadow: 0 0 0 3px <?php echo $themeStyles['theme'] === 'dark' ? 'rgba(0, 123, 255, 0.4)' : 'rgba(0, 123, 255, 0.2)'; ?>;
+            background: <?php echo $themeStyles['theme'] === 'dark' ? '#333333' : '#ffffff'; ?>;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: <?php echo $themeStyles['theme'] === 'dark' ? '#888888' : '#999999'; ?>;
         }
 
         textarea {
-            height: 100px;
+            height: 120px;
             resize: none;
         }
 
         button {
             width: 100%;
-            padding: 15px;
+            padding: 16px;
             background-color: <?php echo $themeStyles['accent-color']; ?>;
             color: #ffffff;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             font-size: 18px;
+            font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         button:hover {
             opacity: 0.9;
             transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            background-color: <?php echo $themeStyles['theme'] === 'dark' ? '#0056b3' : '#0056b3'; ?>;
+        }
+
+        #formMessage {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            background: <?php echo $themeStyles['theme'] === 'dark' ? '#2a2a2a' : '#f8f9fa'; ?>;
+            color: <?php echo $themeStyles['theme'] === 'dark' ? '#ffffff' : '#333333'; ?>;
+            border: 1px solid <?php echo $themeStyles['theme'] === 'dark' ? '#444' : '#e0e0e0'; ?>;
         }
 
         @font-face {
@@ -188,13 +229,13 @@ $themeStyles = getThemeStyles();
     </style>
 </head>
 <body>
-    <!-- Theme Switcher -->
+
     <div class="theme-switcher" onclick="toggleTheme()">
         <i class="fa fa-<?php echo $preferences['theme'] === 'dark' ? 'sun-o' : 'moon-o'; ?>"></i>
-        <?php echo ucfirst($preferences['theme']); ?> Mode
+        <span>Switch to <?php echo $preferences['theme'] === 'dark' ? 'Light' : 'Dark'; ?> Mode</span>
     </div>
 
-    <!-- Visit Counter -->
+
     <div class="visit-counter" onclick="resetCounter()" style="cursor: pointer;">
         <i class="fa fa-eye"></i> Visit Count: <?php echo $visitCount; ?> <i class="fa fa-refresh" style="margin-left: 5px;"></i>
     </div>
@@ -221,7 +262,7 @@ $themeStyles = getThemeStyles();
     </div>
 
     <div class="grid-container">
-        <!-- Your existing grid content -->
+
     </div>
 
     <form id="contactForm" class="contact-form" onsubmit="handleSubmit(event)">
@@ -245,19 +286,21 @@ $themeStyles = getThemeStyles();
         function toggleTheme() {
             const currentTheme = '<?php echo $preferences['theme']; ?>';
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            const newBgColor = newTheme === 'dark' ? '#333333' : '#f8f9fa';
             
             fetch('set_preferences.php', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/json',
                 },
-                body: `theme=${newTheme}&bg_color=${newBgColor}`
+                body: JSON.stringify({ theme: newTheme })
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    location.reload();
+                    // Reload the page to apply the new theme
+                    window.location.reload();
+                } else {
+                    console.error('Failed to update theme:', data.error);
                 }
             })
             .catch(error => {
@@ -267,15 +310,15 @@ $themeStyles = getThemeStyles();
 
         function resetCounter() {
             fetch('reset_counter.php')
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    location.reload();
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.reload();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         }
 
         function handleSubmit(event) {
@@ -283,16 +326,16 @@ $themeStyles = getThemeStyles();
             const form = document.getElementById('contactForm');
             const messageDiv = document.getElementById('formMessage');
             
-            // Show success message
+
             messageDiv.style.display = 'block';
             messageDiv.style.backgroundColor = '#4CAF50';
             messageDiv.style.color = 'white';
-            messageDiv.textContent = 'Thank you for your message! We will get back to you soon.';
+            messageDiv.textContent = 'Thank you for your message!';
             
-            // Reset form
+
             form.reset();
             
-            // Hide message after 5 seconds
+
             setTimeout(() => {
                 messageDiv.style.display = 'none';
             }, 5000);

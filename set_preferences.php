@@ -2,17 +2,26 @@
 require_once 'session_handler.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $theme = $_POST['theme'] ?? 'light';
-    $bgColor = $_POST['bg_color'] ?? '#f8f9fa';
+    $data = json_decode(file_get_contents('php://input'), true);
     
-    setUserPreferences($bgColor, $theme);
-    
-    // Send success response
-    header('Content-Type: application/json');
-    echo json_encode(['success' => true]);
+    if (isset($data['theme'])) {
+        $theme = $data['theme'];
+        $bgColor = $theme === 'dark' ? '#333333' : '#f8f9fa';
+        
+        // Update session preferences
+        $_SESSION['preferences'] = [
+            'theme' => $theme,
+            'bg_color' => $bgColor
+        ];
+        
+        // Set cookies for persistence
+        setUserPreferences($bgColor, $theme);
+        
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['success' => false, 'error' => 'Invalid request']);
+    }
 } else {
-    // Send error response
-    header('HTTP/1.1 405 Method Not Allowed');
-    echo json_encode(['error' => 'Method not allowed']);
+    echo json_encode(['success' => false, 'error' => 'Invalid request method']);
 }
 ?> 
