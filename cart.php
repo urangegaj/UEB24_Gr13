@@ -294,11 +294,8 @@ $cartItems = array_filter($products, fn($p) => in_array($p->id, $cartIds));
         <?php endif; ?>
     </div>
     </main>
-    <footer class="footer">
-        <div class="container">
-            <p>© 2024 Laced Lifestyle. All Rights Reserved.</p>
-        </div>
-    </footer>
+
+    <?php include 'footer.php'; ?>
 
     <script>
                 setTimeout(() => {

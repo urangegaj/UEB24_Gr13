@@ -727,13 +727,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             });
         });
     </script>
-
-        <footer class="footer">
-            <div class="container">
-                <p>© 2024 Laced Lifestyle. All Rights Reserved.</p>
-            </div>
-        </footer>
     
+    <?php include 'footer.php'; ?>
     
     </body>
     </html>

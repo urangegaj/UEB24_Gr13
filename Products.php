@@ -268,11 +268,8 @@ function getWishlistCount() {
         }
         ?>
     </div>
-    <footer class="footer">
-        <div class="container">
-            <p>© 2024 Laced Lifestyle. All Rights Reserved.</p>
-        </div>
-    </footer>
+    <!-- perdorimi i incude -->
+     <?php include 'footer.php'; ?>
 
     <script>
                 setTimeout(() => {
@@ -300,14 +297,6 @@ function getWishlistCount() {
     };
     xhr.send();
 });
-
-
-                </script>
-
-
-
+  </script>
 </body>
 </html>
-
-
-

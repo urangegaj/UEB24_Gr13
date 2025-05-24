@@ -108,11 +108,6 @@ if (isset($_POST['cartId'])) {
             <button type="submit">Add to Cart</button>
         </form>
     </div>
+<?php include 'footer.php'; ?>
 
-     <footer class="footer">
-        <div class="container">
-            <p>© 2024 Laced Lifestyle. All Rights Reserved.</p>
-        </div>
-    </footer>
-</body>
 </html>

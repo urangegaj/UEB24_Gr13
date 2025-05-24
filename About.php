@@ -339,13 +339,7 @@ stars.forEach(star => {
 
 </script>
 
-
-
-  <footer class="footer">
-    <div class="container">
-      <p>© <?php echo $currentYear; ?> <?php echo $upperCompanyName; ?>. All Rights Reserved.</p> 
-  </footer>
-
+  <?php include 'footer.php'; ?>
 
 </body>
 </html>

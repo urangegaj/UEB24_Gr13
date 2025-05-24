@@ -484,12 +484,9 @@ $themeStyles = getThemeStyles();
         <button type="submit">Send Message</button>
         <div id="formMessage" style="display: none; margin-top: 20px; padding: 10px; border-radius: 5px;"></div>
     </form>
-
-    <footer class="footer">
-        <div class="container">
-            <p>© 2024 Laced Lifestyle. All Rights Reserved.</p>
-        </div>
-    </footer>
+    
+     <!-- perdorimi i require -->
+     <?php require 'footer.php'; ?>
 
     <script>
         function toggleTheme() {
