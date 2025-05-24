@@ -3,29 +3,6 @@ session_start();
 
 require_once 'products.php';
 
- $products = [
-    new Product("running-shoes-1", "images/RunningShoes11.jpg", "Speed Racer 2000", 79.99, "running-shoes", "Lightweight and durable athletic shoes designed for professional runners."),
-    new Product("running-shoes-2", "images/RunningShoes2.jpg", "Runner X-Pro", 89.99, "running-shoes", "Advanced model with cushioning technology for long-distance performance."),
-    new Product("running-shoes-3", "images/RunningShoes33.jpg", "Race Flex", 85.99, "running-shoes", "Aerodynamic design offering excellent support for running enthusiasts."),
-    new Product("running-shoes-4", "images/RunningShoes4.jpg", "Speed Goat", 75.99, "running-shoes", "Ideal footwear for uneven terrains and mountain trails."),
-    new Product("running-shoes-5", "images/RunningShoes5.jpg", "Ultraboost", 69.99, "running-shoes", "Maximum comfort combined with breathable materials for extended wear."),
-    new Product("running-shoes-6", "images/RunningShoes6.jpg", "Infinity Run", 65.99, "running-shoes", "Elastic laces and anti-slip soles ensuring reliable grip."),
-    
-    new Product("casual-shoes-1", "images/CasualShoes11.jpg", "Urban Loafers", 59.99, "casual-shoes", "Comfortable footwear crafted for everyday urban use."),
-    new Product("casual-shoes-2", "images/CasualShoes2.jpg", "Easy Walk", 49.99, "casual-shoes", "Simple and flexible design suitable for any outfit."),
-    new Product("casual-shoes-3", "images/CasualShoes3.jpg", "Daily Flex", 39.99, "casual-shoes", "Lightweight textile material with a durable sole."),
-    new Product("casual-shoes-4", "images/CasualShoes4.jpg", "Timeless Tread", 59.99, "casual-shoes", "Versatile style that pairs effortlessly with casual and sporty looks."),
-    new Product("casual-shoes-5", "images/CasualShoes5.jpg", "Heritage Step", 55.99, "casual-shoes", "Classic silhouette enriched with modern touches."),
-    new Product("casual-shoes-6", "images/CasualShoes6.jpg", "Prestige Glide", 79.99, "casual-shoes", "High-comfort casual shoes designed for extended walks."),
-    
-    new Product("formal-shoes-1", "images/FormalShoes1.jpg", "Executive Apex", 119.99, "formal-shoes", "Classic elegance tailored for formal and business settings."),
-    new Product("formal-shoes-2", "images/FormalShoes2.jpg", "Classic Brogue", 129.99, "formal-shoes", "Timeless brogue detailing for a refined, distinguished appearance."),
-    new Product("formal-shoes-3", "images/FormalShoes3.jpg", "Patent Leather", 159.99, "formal-shoes", "High-gloss finish and luxurious look for gala evenings."),
-    new Product("formal-shoes-4", "images/FormalShoes7.jpg", "Classic Black", 199.99, "formal-shoes", "Timeless model featuring a sturdy, durable sole."),
-    new Product("formal-shoes-5", "images/FormalShoes5.jpg", "Cognac Classic", 124.99, "formal-shoes", "Elegant cognac brown hue suitable for all formal occasions."),
-    new Product("formal-shoes-6", "images/FormalShoes6.jpg", "Ebony Elegance", 140.99, "formal-shoes", "A sophisticated blend of classic and contemporary design.")
-];
-
 $id = $_GET['id'] ?? null;
 $product = null;
 
@@ -68,8 +45,7 @@ if (isset($_POST['cartId'])) {
     <title><?= $product->name ?> | Laced Lifestyle</title>
 </head>
 <body>
-
-   <header id="navbar" class="header">
+       <header id="navbar" class="header">
         <div class="container1">
             <div class="logo" >
             <img src="images/logo.png" alt="Laced Lifestyle Logo">
@@ -101,6 +77,9 @@ if (isset($_POST['cartId'])) {
         </div>
     
     </header>
+
+
+
 
 
     <a href="Products.php">← Go back to Products</a>

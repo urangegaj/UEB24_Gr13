@@ -829,13 +829,10 @@ button.in-cart:not(.remove) {
 }
 
 .product-detail {
-  max-width: 900px;
   background: #fff;
-  padding: 40px;
-  border-radius: 16px;
-  box-shadow: 0 6px 30px rgba(0,0,0,0.12);
+  border: 3px dashed red;
   margin: 40px auto;
-  text-align: center;
+  padding: 40px;
 }
 
 .product-detail img {
