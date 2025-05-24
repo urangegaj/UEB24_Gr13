@@ -130,9 +130,12 @@ function getWishlistCount() {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Products</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="custom-styles.css">
     <link rel="website icon" type="png" href="images/logo1.png">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+   
      
   
     <header id="navbar" class="header">
@@ -165,6 +168,14 @@ function getWishlistCount() {
 
 
             </div>
+
+            <form id="searchForm" style="margin-left: 20px;">
+    <input 
+        type="text" 
+        id="searchInput" 
+        placeholder="Search products..." 
+        style="padding: 6px 15px; border-radius: 20px; border: 1px solid #ccc; font-size: 1rem;">
+</form>
             </nav>
         </div>
     
@@ -179,14 +190,16 @@ function getWishlistCount() {
                     <li><a href="#formal-shoes">Formal Shoes</a></li>
                 </ul>
             </nav>
-        </div>  <title>Products</title>
+        </div>  
+         </header>
 </head>
+
 <body>
 
 
         
        
-    </header>
+  
     <div class="products">
     <?php if (isset($_SESSION['message'])): ?>
     <div id="mesazhi" class="cart-message">
@@ -273,6 +286,22 @@ function getWishlistCount() {
                     }
                     
                 }, 2500);
+
+
+                document.getElementById('searchInput').addEventListener('input', function () {
+    const searchTerm = this.value;
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'search-products.php?query=' + encodeURIComponent(searchTerm), true);
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            document.querySelector('.products').innerHTML = xhr.responseText;
+        }
+    };
+    xhr.send();
+});
+
+
                 </script>
 
 
