@@ -828,4 +828,74 @@ button.in-cart:not(.remove) {
     border-bottom: 2px solid #e1e1e1; 
 }
 
+.product-detail {
+  max-width: 900px;
+  background: #fff;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 6px 30px rgba(0,0,0,0.12);
+  margin: 40px auto;
+  text-align: center;
+}
+
+.product-detail img {
+  max-width: 450px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+}
+
+.product-detail h1 {
+  font-size: 36px;
+  color: #333;
+  margin-bottom: 14px;
+}
+
+.product-detail p {
+  font-size: 18px;
+  color: #555;
+  margin: 12px 0;
+  line-height: 1.7;
+}
+
+.product-detail form {
+  margin-top: 25px;
+}
+
+.product-detail select {
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.product-detail button {
+  padding: 14px 30px;
+  background-color: #3498db;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.product-detail button:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+}
+
+.product-detail a {
+  display: inline-block;
+  margin-bottom: 20px;
+  text-decoration: none;
+  color: #3498db;
+  font-weight: 600;
+}
+
+.product-detail a:hover {
+  text-decoration: underline;
+}
+
 
