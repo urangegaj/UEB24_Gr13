@@ -1,7 +1,11 @@
-<!DOCTYPE html>
 <?php
-// Implementimi i nje associative array per te ruajtur te dhenat e perdoruesit dhe i nje kushtezimi 
-// if..else per te kontrolluar nese te dhenat jane plotesuar
+session_start();
+
+// if (!isset($_SESSION['is_logged_in']) || $_SESSION['is_logged_in'] !== true) {
+//     header('Location: index.html');
+//     exit;
+// }
+
 $userData = array();
 $errorMessage = "";
 
@@ -31,152 +35,270 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Profile</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --text-color: #2c3e50;
+            --light-gray: #f5f6fa;
+            --border-color: #dcdde1;
+            --success-color: #27ae60;
+            --error-color: #e74c3c;
         }
-        .hidden{
-            display: none;
-        }
-        .profile-container{
+
+        /* Profile specific styles */
+        .profile-container {
             display: flex;
             align-items: flex-start;
-            gap: 20px;
+            gap: 3rem;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
         }
+
         .profile-pic {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        object-fit: cover;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--secondary-color);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+
         .drag-drop-area {
-            border: 2px dashed #ccc;
-            padding: 20px;
+            border: 2px dashed var(--border-color);
+            padding: 2rem;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 2rem;
             cursor: pointer;
-            transition: border-color 0.3s;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            background-color: white;
         }
+
+        .drag-drop-area:hover {
+            border-color: var(--secondary-color);
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+
         .drag-drop-area.dragover {
-            border-color: #000;
+            border-color: var(--secondary-color);
+            background-color: rgba(52, 152, 219, 0.1);
         }
-        .dropdown {
-        position: absolute;
-        background-color: #fff;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        z-index: 1;
-        }
-        .dropdown a, .dropdown button {
-            color: #333;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            text-align: left;
-        }
-        .dropdown a:hover, .dropdown button:hover {
-            background-color: #ddd;
-        }
-        .gender{
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        }
-        .gender div {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-        }
-        .gender input[type="radio"] {
-        display: none;
-        }
-        .gender label {
-        position: relative;
-        padding-left: 30px;
-        cursor: pointer;
-        user-select: none;
-        }
-        .gender label::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 20px;
-        height: 20px;
-        border: 2px solid #ccc;
-        border-radius: 50%;
-        background-color: #fff;
-        }
-        .gender input[type="radio"]:checked + label::before {
-        border-color: #007bff;
-        background-color: #007bff;
-        }
-        .gender input[type="radio"]:checked + label::after {
-        content: "";
-        position: absolute;
-        left: 7.5px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background-color: #fff;
-        }
+
         .user-info {
             flex: 1;
         }
+
         .user-info div {
-            margin-bottom: 10px;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: var(--light-gray);
+            border-radius: 8px;
         }
-        #profile-button {
-        transition: background-color 0.3s ease, color 0.3s ease;
+
+        #profile-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        #profile-button:hover {
-        background-color: #909395;
-        color: #fff;
-        border-radius: 10px;
+
+        #profile-form div {
+            margin-bottom: 1.5rem;
         }
-        @media (max-width: 768px) {
-        .profile-container {
-            flex-direction: column;
+
+        #profile-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        #profile-form input[type="text"],
+        #profile-form input[type="email"],
+        #profile-form input[type="password"],
+        #profile-form input[type="date"] {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        #profile-form input:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+
+        .gender {
+            display: flex;
+            gap: 2rem;
+            margin-top: 0.5rem;
+        }
+
+        .gender div {
+            display: flex;
             align-items: center;
+            margin-bottom: 0;
+            background: none;
+            padding: 0;
         }
-        .profile-pic {
-            width: 100px;
-            height: 100px;
+
+        .gender input[type="radio"] {
+            display: none;
         }
+
+        .gender label {
+            position: relative;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            cursor: pointer;
+            user-select: none;
+            font-weight: normal;
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .gender label:hover {
+            border-color: var(--secondary-color);
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+
+        .gender label::before {
+            content: "";
+            position: absolute;
+            left: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            background-color: white;
+            transition: all 0.3s ease;
+        }
+
+        .gender input[type="radio"]:checked + label {
+            border-color: var(--secondary-color);
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        .gender input[type="radio"]:checked + label::before {
+            border-color: var(--secondary-color);
+            background-color: var(--secondary-color);
+        }
+
+        .gender input[type="radio"]:checked + label::after {
+            content: "";
+            position: absolute;
+            left: 1.1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: white;
+        }
+
+        button[type="submit"] {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .profile-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 2rem;
+                padding: 1rem;
+            }
+
+            .profile-pic {
+                width: 150px;
+                height: 150px;
+            }
+
+            .gender {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        .error-message {
+            color: var(--error-color);
+            background-color: rgba(231, 76, 60, 0.1);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+
+        .success-message {
+            color: var(--success-color);
+            background-color: rgba(39, 174, 96, 0.1);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
         }
     </style>
+</head>
+<body>
     <header class="header">
         <div class="container">
-            <div class="logo" >
-            <img src="images/logo.png" alt="Laced Lifestyle Logo">
-            <h1>Laced Lifestyle</h1>
-        </div>
+            <div class="logo">
+                <img src="images/logo.png" alt="Laced Lifestyle Logo">
+                <h1>Laced Lifestyle</h1>
+            </div>
             <nav>
                 <ul class="nav-links">
                     <li><a href="./index.html" title="Go to Homepage">Home</a></li>
-                    <li><a href="./Products.php" tile="View Products">Products</a></li>
+                    <li><a href="./Products.php" title="View Products">Products</a></li>
                     <li><a href="./About.html" title="Learn About Us">About</a></li>
                     <li><a href="./Contact.html" title="Contact Us">Contact</a></li>
                 </ul>
             </nav>
-        </div>
-        
-        <div id="user-account" class="user-account hidden">
-            <button id="profile-button" class="nav-button"> 
-                <i class="fa fa-user"></i> My Account 
-            </button>
-            <div id="account-dropdown" class="dropdown hidden">
-                <a href="cart.html"><u>My orders</u></a>
-                <button id="logout-button">Logout</button>
+            <div class="header-utils">
+                <div id="user-account" class="user-account hidden">
+                    <button id="profile-button" class="nav-button"> 
+                        <i class="fa fa-user"></i> My Account 
+                    </button>
+                    <div id="account-dropdown" class="dropdown hidden">
+                        <a href="cart.html">My orders</a>
+                        <button id="logout-button">Logout</button>
+                    </div>
+                </div>
+                <button id="login-button" class="nav-button">Login</button>
             </div>
         </div>
-        
-        <button id="login-button" class="nav-button">Login</button>
     </header>
-    
-</head>
-<body>
+
     <div class="container">
         <h1>Your Profile</h1>
         <div class="drag-drop-area" id="drag-drop-area">
@@ -206,6 +328,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div>
                 <label for="lastname">Lastname:</label>
                 <input type="text" id="lastname" name="lastname" required>
+            </div>
             <div>
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
