@@ -380,50 +380,40 @@
         event.preventDefault();
 
         const formData = new FormData(this);
-        
-
         const submitButton = this.querySelector('button[type="submit"]');
         const originalButtonText = submitButton.textContent;
         submitButton.textContent = 'Sending...';
         submitButton.disabled = true;
 
-        fetch('php/regex/contact_form_handler.php', {
+        fetch('php/email_handler.php', {
             method: 'POST',
             body: formData
         })
         .then(response => response.json())
         .then(data => {
+            const thankYouMessage = document.getElementById('thankYouMessage');
+            thankYouMessage.textContent = data.message;
+            thankYouMessage.style.display = 'block';
+            thankYouMessage.style.backgroundColor = data.success ? '#d4edda' : '#f8d7da';
+            thankYouMessage.style.color = data.success ? '#155724' : '#721c24';
+            window.scrollTo({ top: thankYouMessage.offsetTop, behavior: 'smooth' });
+            
             if (data.success) {
-                const thankYouMessage = document.getElementById('thankYouMessage');
-                thankYouMessage.style.display = 'block';
-                window.scrollTo({ top: thankYouMessage.offsetTop, behavior: 'smooth' });
                 this.reset();
-
-                if (data.recent_submissions) {
-                    displayRecentSubmissions(data.recent_submissions);
-                }
-
                 setTimeout(() => {
                     thankYouMessage.style.display = 'none';
                     const contactForm = document.getElementById('contactForm');
                     contactForm.style.display = 'none';
                 }, 4000);
-            } else {
-                Object.keys(data.errors).forEach(field => {
-                    const input = document.getElementById(field);
-                    if (input) {
-                        input.classList.add('error');
-                        const errorDiv = document.createElement('div');
-                        errorDiv.className = 'error-message';
-                        errorDiv.textContent = data.errors[field];
-                        input.parentNode.appendChild(errorDiv);
-                    }
-                });
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('An error occurred while sending your message. Please try again.');
+            const thankYouMessage = document.getElementById('thankYouMessage');
+            thankYouMessage.textContent = 'An error occurred while sending your message. Please try again.';
+            thankYouMessage.style.display = 'block';
+            thankYouMessage.style.backgroundColor = '#f8d7da';
+            thankYouMessage.style.color = '#721c24';
         })
         .finally(() => {
             submitButton.textContent = originalButtonText;
