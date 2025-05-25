@@ -1,4 +1,22 @@
 
+
+<?php
+require_once 'error_handling.php';
+/*
+//disa rraste testimi
+$emri = "";
+if (empty($emri)) {
+    trigger_error("Emri nuk është i plotësuar!", E_USER_NOTICE);
+}
+
+$pagesa = -50;
+
+if ($pagesa < 0) {
+    trigger_error("Shuma e pagesës nuk mund të jetë negative!", E_USER_ERROR);
+}*/
+?>
+
+
 <?php
 session_start();
 
