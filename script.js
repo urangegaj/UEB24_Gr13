@@ -1,37 +1,57 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const modal = document.getElementById('login-modal');
+document.addEventListener('DOMContentLoaded', function() {
     const loginButton = document.getElementById('login-button');
-    const closeModalButton = document.getElementById('close-modal');
+    const loginModal = document.getElementById('login-modal');
+    const closeModal = document.getElementById('close-modal');
     const signUpLink = document.getElementById('sign-up-link');
     const loginLink = document.getElementById('login-link');
     const loginForm = document.getElementById('login-form');
     const signUpForm = document.getElementById('sign-up-form');
     const userAccount = document.getElementById('user-account');
-    const loginFormElement = document.querySelector('#login-form-element');
-    const signUpFormElement = document.querySelector('#sign-up-form-element');
-    const togglePasswordButtons = document.querySelectorAll('.toggle-password');  
+    const profileButton = document.getElementById('profile-button');
+    const accountDropdown = document.getElementById('account-dropdown');
+    const logoutButton = document.getElementById('logout-button');
 
+    function updateUI(loggedIn) {
+        if (loggedIn) {
+            loginButton.style.display = 'none';
+            userAccount.classList.remove('hidden');
+            loginModal.classList.remove('show');
+        } else {
+            loginButton.style.display = 'block';
+            userAccount.classList.add('hidden');
+            accountDropdown.classList.add('hidden');
+        }
+    }
 
+    async function checkLoginStatus() {
+        try {
+            const response = await fetch('models/login.php', {
+                credentials: 'same-origin'
+            });
+            const data = await response.json();
+            updateUI(data.logged_in);
+        } catch (error) {
+            updateUI(false);
+        }
+    }
+
+    checkLoginStatus();
 
     loginButton.addEventListener('click', () => {
-        modal.style.display = 'block';
-        document.body.style.overflow = 'hidden';
+        loginModal.classList.add('show');
+        document.getElementById('login-form-element').reset();
+        document.getElementById('sign-up-form-element').reset();
     });
 
-
-    closeModalButton.addEventListener('click', () => {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto';
+    closeModal.addEventListener('click', () => {
+        loginModal.classList.remove('show');
     });
 
-
-    window.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
+    window.addEventListener('click', (e) => {
+        if (e.target === loginModal) {
+            loginModal.classList.remove('show');
         }
     });
-
 
     signUpLink.addEventListener('click', (e) => {
         e.preventDefault();
@@ -39,88 +59,116 @@ document.addEventListener('DOMContentLoaded', () => {
         signUpForm.classList.remove('hidden');
     });
 
-
     loginLink.addEventListener('click', (e) => {
         e.preventDefault();
         signUpForm.classList.add('hidden');
         loginForm.classList.remove('hidden');
     });
 
-
-    loginFormElement.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const username = loginFormElement.querySelector('input[name="username"]').value.trim();
-        const password = loginFormElement.querySelector('input[name="password"]').value.trim();
-
-        if (validateLogin(username, password)) {
-            modal.style.display = 'none';
-            loginButton.classList.add('hidden');
-            userAccount.classList.remove('hidden');
-        } else {
-            alert('Invalid login credentials. Username and password must meet the requirements.');
-        }
-    });
-
-
-    signUpFormElement.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const email = signUpFormElement.querySelector('input[name="email"]').value.trim();
-        const password = signUpFormElement.querySelector('input[name="password"]').value.trim();
-        const confirmPassword = signUpFormElement.querySelector('input[name="confirm-password"]').value.trim();
-
-        if (validateSignup(email, password, confirmPassword)) {
-            modal.style.display = 'none';
-            alert('Account created successfully!');
-            loginButton.classList.add('hidden');
-            userAccount.classList.remove('hidden');
-        } else {
-            alert('Signup failed. Please ensure all fields meet the requirements.');
-        }
-    });
-
-
-    togglePasswordButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-            const passwordInput = button.previousElementSibling;  
-            const isPasswordVisible = passwordInput.type === 'text';
-            passwordInput.type = isPasswordVisible ? 'password' : 'text';  
-            button.querySelector('i').classList.toggle('fa-eye-slash');  
+    document.querySelectorAll('.toggle-password').forEach(button => {
+        button.addEventListener('click', function() {
+            const input = this.previousElementSibling;
+            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+            input.setAttribute('type', type);
+            this.querySelector('i').classList.toggle('fa-eye');
+            this.querySelector('i').classList.toggle('fa-eye-slash');
         });
     });
 
-
-    function validateLogin(username, password) {
-        const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/; 
-        const minPasswordLength = 6;
-
-        return usernameRegex.test(username) && password.length >= minPasswordLength;
-    }
-
-
-    function validateSignup(email, password, confirmPassword) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
-        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}$/; 
-
-        if (!emailRegex.test(email)) {
-            alert('Invalid email format.');
-            return false;
+    document.getElementById('login-form-element').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        
+        try {
+            const response = await fetch('models/login.php', {
+                method: 'POST',
+                body: formData,
+                credentials: 'same-origin',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                e.target.reset();
+                updateUI(true);
+                window.location.reload();
+            } else {
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'error-message';
+                errorMessage.textContent = data.message;
+                e.target.appendChild(errorMessage);
+                
+                setTimeout(() => {
+                    errorMessage.remove();
+                }, 3000);
+            }
+        } catch (error) {
+            const errorMessage = document.createElement('div');
+            errorMessage.className = 'error-message';
+            errorMessage.textContent = 'An error occurred. Please try again.';
+            e.target.appendChild(errorMessage);
+            
+            setTimeout(() => {
+                errorMessage.remove();
+            }, 3000);
         }
+    });
 
-        if (!passwordRegex.test(password)) {
-            alert('Password must be at least 6 characters long and include at least one letter and one number.');
-            return false;
+    profileButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        accountDropdown.classList.toggle('hidden');
+    });
+
+    logoutButton.addEventListener('click', async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        try {
+            const response = await fetch('models/logout.php', {
+                credentials: 'same-origin'
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                updateUI(false);
+                
+                window.location.reload();
+            } else {
+                alert('Logout failed. Please try again.');
+            }
+        } catch (error) {
+            alert('An error occurred during logout. Please try again.');
         }
+    });
 
-        if (password !== confirmPassword) {
-            alert('Passwords do not match.');
-            return false;
+    document.addEventListener('click', (e) => {
+        if (!profileButton.contains(e.target) && !accountDropdown.contains(e.target)) {
+            accountDropdown.classList.add('hidden');
         }
+    });
 
-        return true;
-    }
+    const scrollToTopButton = document.getElementById('scrollToTop');
+    
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            scrollToTopButton.style.display = 'block';
+        } else {
+            scrollToTopButton.style.display = 'none';
+        }
+    });
+
+    scrollToTopButton.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
 });
-
-
 
 $(document).ready(function () {
     

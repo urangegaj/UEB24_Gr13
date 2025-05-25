@@ -1,3 +1,6 @@
+<?php
+require_once 'session_handler.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,15 +31,13 @@
             <div class="header-utils">
                 <button id="login-button" class="nav-button">Login</button>
                 <div id="user-account" class="user-account hidden">
-                    <a href="profile.php">
-                        <button id="profile-button" class="nav-button"> 
-                            <i class="fa fa-user"></i> My Account 
-                        </button>
-                    </a>
+                    <button id="profile-button" class="nav-button" type="button"> 
+                        <i class="fa fa-user"></i> My Account 
+                    </button>
                     <div id="account-dropdown" class="dropdown hidden">
-                        <a href="profile.html">Profile</a>
-                        <a href="orders.html">My Orders</a>
-                        <button id="logout-button">Logout</button>
+                        <a href="profile.php" class="dropdown-item">Profile</a>
+                        <a href="orders.html" class="dropdown-item">My Orders</a>
+                        <button id="logout-button" class="dropdown-item">Logout</button>
                     </div>
                 </div>
                 <button id="search-button"><i class="fa fa-search"></i></button>
@@ -49,27 +50,26 @@
     <div id="login-modal" class="modal">
         <div class="modal-content">
             <span id="close-modal" class="close">&times;</span>
-    
-           
+            
             <div id="login-form" class="form">
                 <h2>Login</h2>
-                <form id="login-form-element" novalidate>
+                <form id="login-form-element">
                     <div class="form-group">
-                        <label for="username">Username:</label>
+                        <label for="login-username">Username or Email:</label>
                         <input 
                             type="text" 
-                            id="username" 
+                            id="login-username" 
                             name="username" 
-                            placeholder="Enter your username" 
+                            placeholder="Enter your username or email" 
                             required 
                         >
                     </div>
                     <div class="form-group">
-                        <label for="password">Password:</label>
+                        <label for="login-password">Password:</label>
                         <div class="password-container">
                             <input 
                                 type="password" 
-                                id="password" 
+                                id="login-password" 
                                 name="password" 
                                 placeholder="Enter your password" 
                                 required 
@@ -77,44 +77,62 @@
                             <button type="button" class="toggle-password">
                                 <i class="fa fa-eye"></i>
                             </button>
-                    
                         </div>
                     </div>
                     <button type="submit" class="submit-button">Login</button>
                     <p class="toggle-form">Don't have an account? <a href="#" id="sign-up-link">Sign Up</a></p>
                 </form>
             </div>
-    
-        
+
             <div id="sign-up-form" class="form hidden">
                 <h2>Sign Up</h2>
-                <form id="sign-up-form-element" novalidate>
+                <form id="sign-up-form-element">
                     <div class="form-group">
-                        <label for="new-username">Username:</label>
+                        <label for="signup-firstname">First Name:</label>
                         <input 
                             type="text" 
-                            id="new-username" 
-                            name="username" 
-                            placeholder="Create a username" 
+                            id="signup-firstname" 
+                            name="first_name" 
+                            placeholder="Enter your first name" 
                             required 
                         >
                     </div>
                     <div class="form-group">
-                        <label for="new-email">Email:</label>
+                        <label for="signup-lastname">Last Name:</label>
+                        <input 
+                            type="text" 
+                            id="signup-lastname" 
+                            name="last_name" 
+                            placeholder="Enter your last name" 
+                            required 
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-username">Username:</label>
+                        <input 
+                            type="text" 
+                            id="signup-username" 
+                            name="username" 
+                            placeholder="Choose a username" 
+                            required 
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Email:</label>
                         <input 
                             type="email" 
-                            id="new-email" 
+                            id="signup-email" 
                             name="email" 
                             placeholder="Enter your email" 
                             required 
                         >
                     </div>
                     <div class="form-group">
-                        <label for="new-password">Password:</label>
+                        <label for="signup-password">Password:</label>
                         <div class="password-container">
                             <input 
                                 type="password" 
-                                id="new-password" 
+                                id="signup-password" 
                                 name="password" 
                                 placeholder="Create a password" 
                                 required 
@@ -125,14 +143,45 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="confirm-password">Confirm Password:</label>
+                        <label for="signup-confirm-password">Confirm Password:</label>
+                        <div class="password-container">
+                            <input 
+                                type="password" 
+                                id="signup-confirm-password" 
+                                name="confirm-password" 
+                                placeholder="Confirm your password" 
+                                required 
+                            >
+                            <button type="button" class="toggle-password">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-birthdate">Birthdate:</label>
                         <input 
-                            type="password" 
-                            id="confirm-password" 
-                            name="confirm-password" 
-                            placeholder="Re-enter your password" 
+                            type="date" 
+                            id="signup-birthdate" 
+                            name="birthdate" 
                             required 
                         >
+                    </div>
+                    <div class="form-group">
+                        <label>Gender:</label>
+                        <div class="gender-options">
+                            <label>
+                                <input type="radio" name="gender" value="male" required>
+                                Male
+                            </label>
+                            <label>
+                                <input type="radio" name="gender" value="female" required>
+                                Female
+                            </label>
+                            <label>
+                                <input type="radio" name="gender" value="other" required>
+                                Other
+                            </label>
+                        </div>
                     </div>
                     <button type="submit" class="submit-button">Sign Up</button>
                     <p class="toggle-form">Already have an account? <a href="#" id="login-link">Login</a></p>

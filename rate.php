@@ -3,7 +3,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['rating'])) {
     $rating = intval($_POST['rating']); 
 
     if ($rating >= 1 && $rating <= 5) {
-        //manipulimi me file
         $file = fopen("ratings.txt", "a");
         if ($file) {
             fwrite($file, $rating . "\n");

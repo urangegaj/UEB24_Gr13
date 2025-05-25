@@ -447,7 +447,7 @@ $themeStyles = getThemeStyles();
             </div>
             <nav>
                 <ul class="nav-links">
-                    <li><a href="./index.html" title="Go to Homepage">Home</a></li>
+                    <li><a href="./index.php" title="Go to Homepage">Home</a></li>
                     <li><a href="./Products.php" title="View Products">Products</a></li>
                     <li><a href="./About.php" title="Learn About Us">About</a></li>
                     <li><a href="#contactForm" title="Contact Us">Contact</a></li>

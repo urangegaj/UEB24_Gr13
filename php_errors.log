@@ -1,0 +1,335 @@
+[25-May-2025 23:07:35 Europe/Berlin] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\ueb24__gr13\includes\session.php on line 2
+[25-May-2025 23:07:35 Europe/Berlin] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\ueb24__gr13\includes\session.php on line 36
+[25-May-2025 23:07:35 Europe/Berlin] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\ueb24__gr13\includes\session.php on line 37
+[25-May-2025 23:07:35 Europe/Berlin] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\ueb24__gr13\includes\session.php on line 38
+[25-May-2025 23:07:35 Europe/Berlin] PHP Fatal error:  Cannot redeclare isLoggedIn() (previously declared in C:\xampp\htdocs\ueb24__gr13\includes\session.php:5) in C:\xampp\htdocs\ueb24__gr13\session_handler.php on line 65
+[25-May-2025 23:07:37 Europe/Berlin] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\ueb24__gr13\includes\session.php on line 2
+[25-May-2025 23:07:37 Europe/Berlin] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\ueb24__gr13\includes\session.php on line 36
+[25-May-2025 23:07:37 Europe/Berlin] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\ueb24__gr13\includes\session.php on line 37
+[25-May-2025 23:07:37 Europe/Berlin] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\ueb24__gr13\includes\session.php on line 38
+[25-May-2025 23:07:37 Europe/Berlin] PHP Fatal error:  Cannot redeclare isLoggedIn() (previously declared in C:\xampp\htdocs\ueb24__gr13\includes\session.php:5) in C:\xampp\htdocs\ueb24__gr13\session_handler.php on line 65
+[25-May-2025 23:13:57 Europe/Berlin] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\ueb24__gr13\includes\session.php on line 2
+[25-May-2025 23:13:57 Europe/Berlin] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\ueb24__gr13\includes\session.php on line 36
+[25-May-2025 23:13:57 Europe/Berlin] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\ueb24__gr13\includes\session.php on line 37
+[25-May-2025 23:13:57 Europe/Berlin] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\ueb24__gr13\includes\session.php on line 38
+[25-May-2025 23:13:57 Europe/Berlin] PHP Fatal error:  Cannot redeclare isLoggedIn() (previously declared in C:\xampp\htdocs\ueb24__gr13\includes\session.php:5) in C:\xampp\htdocs\ueb24__gr13\session_handler.php on line 65
+[25-May-2025 23:14:31 Europe/Berlin] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\ueb24__gr13\includes\session.php on line 2
+[25-May-2025 23:14:31 Europe/Berlin] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\ueb24__gr13\includes\session.php on line 36
+[25-May-2025 23:14:31 Europe/Berlin] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\ueb24__gr13\includes\session.php on line 37
+[25-May-2025 23:14:31 Europe/Berlin] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\ueb24__gr13\includes\session.php on line 38
+[25-May-2025 23:14:31 Europe/Berlin] PHP Fatal error:  Cannot redeclare isLoggedIn() (previously declared in C:\xampp\htdocs\ueb24__gr13\includes\session.php:5) in C:\xampp\htdocs\ueb24__gr13\session_handler.php on line 65
+[25-May-2025 23:27:08 Europe/Berlin] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\ueb24__gr13\includes\session.php on line 2
+[25-May-2025 23:27:08 Europe/Berlin] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\ueb24__gr13\includes\session.php on line 36
+[25-May-2025 23:27:08 Europe/Berlin] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\ueb24__gr13\includes\session.php on line 37
+[25-May-2025 23:27:08 Europe/Berlin] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\ueb24__gr13\includes\session.php on line 38
+[25-May-2025 23:27:08 Europe/Berlin] PHP Fatal error:  Cannot redeclare isLoggedIn() (previously declared in C:\xampp\htdocs\ueb24__gr13\includes\session.php:5) in C:\xampp\htdocs\ueb24__gr13\session_handler.php on line 65
+[25-May-2025 23:27:26 Europe/Berlin] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\ueb24__gr13\includes\session.php on line 2
+[25-May-2025 23:27:26 Europe/Berlin] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\ueb24__gr13\includes\session.php on line 36
+[25-May-2025 23:27:26 Europe/Berlin] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\ueb24__gr13\includes\session.php on line 37
+[25-May-2025 23:27:26 Europe/Berlin] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\xampp\htdocs\ueb24__gr13\includes\session.php on line 38
+[25-May-2025 23:27:26 Europe/Berlin] PHP Fatal error:  Cannot redeclare isLoggedIn() (previously declared in C:\xampp\htdocs\ueb24__gr13\includes\session.php:5) in C:\xampp\htdocs\ueb24__gr13\session_handler.php on line 65
+[25-May-2025 23:32:19 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:33:02 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:33:03 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:33:27 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:33:28 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:33:29 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:33:29 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:33:55 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:42:39 Europe/Berlin] Login attempt started
+[25-May-2025 23:42:39 Europe/Berlin] Database connection successful
+[25-May-2025 23:42:39 Europe/Berlin] Password verification failed for user: testuser
+[25-May-2025 23:42:39 Europe/Berlin] Login failed for user: testuser
+[25-May-2025 23:42:39 Europe/Berlin] Login error: Invalid username or password
+[25-May-2025 23:42:39 Europe/Berlin] Stack trace: #0 {main}
+[25-May-2025 23:42:46 Europe/Berlin] Login attempt started
+[25-May-2025 23:42:46 Europe/Berlin] Database connection successful
+[25-May-2025 23:42:46 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:42:46 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:42:46 Europe/Berlin] PHP Warning:  session_regenerate_id(): Session ID cannot be regenerated when there is no active session in C:\xampp\htdocs\ueb24__gr13\login.php on line 62
+[25-May-2025 23:42:58 Europe/Berlin] Login attempt started
+[25-May-2025 23:42:58 Europe/Berlin] Database connection successful
+[25-May-2025 23:42:58 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:42:58 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:42:58 Europe/Berlin] PHP Warning:  session_regenerate_id(): Session ID cannot be regenerated when there is no active session in C:\xampp\htdocs\ueb24__gr13\login.php on line 62
+[25-May-2025 23:44:00 Europe/Berlin] Login attempt started
+[25-May-2025 23:44:00 Europe/Berlin] Database connection successful
+[25-May-2025 23:44:00 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:44:00 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:44:00 Europe/Berlin] PHP Warning:  session_regenerate_id(): Session ID cannot be regenerated when there is no active session in C:\xampp\htdocs\ueb24__gr13\login.php on line 62
+[25-May-2025 23:44:17 Europe/Berlin] Login attempt started
+[25-May-2025 23:44:17 Europe/Berlin] Database connection successful
+[25-May-2025 23:44:17 Europe/Berlin] Password verification failed for user: testuser
+[25-May-2025 23:44:17 Europe/Berlin] Login failed for user: testuser
+[25-May-2025 23:44:17 Europe/Berlin] Login error: Invalid username or password
+[25-May-2025 23:44:17 Europe/Berlin] Stack trace: #0 {main}
+[25-May-2025 23:44:23 Europe/Berlin] Login attempt started
+[25-May-2025 23:44:23 Europe/Berlin] Database connection successful
+[25-May-2025 23:44:23 Europe/Berlin] Password verification failed for user: testuser
+[25-May-2025 23:44:23 Europe/Berlin] Login failed for user: testuser
+[25-May-2025 23:44:23 Europe/Berlin] Login error: Invalid username or password
+[25-May-2025 23:44:23 Europe/Berlin] Stack trace: #0 {main}
+[25-May-2025 23:44:27 Europe/Berlin] Login attempt started
+[25-May-2025 23:44:27 Europe/Berlin] Database connection successful
+[25-May-2025 23:44:27 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:44:27 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:44:27 Europe/Berlin] PHP Warning:  session_regenerate_id(): Session ID cannot be regenerated when there is no active session in C:\xampp\htdocs\ueb24__gr13\login.php on line 62
+[25-May-2025 23:46:20 Europe/Berlin] Login attempt started
+[25-May-2025 23:46:20 Europe/Berlin] Database connection successful
+[25-May-2025 23:46:20 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:46:20 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:46:20 Europe/Berlin] PHP Warning:  session_regenerate_id(): Session ID cannot be regenerated when there is no active session in C:\xampp\htdocs\ueb24__gr13\login.php on line 62
+[25-May-2025 23:46:26 Europe/Berlin] Login attempt started
+[25-May-2025 23:46:26 Europe/Berlin] Database connection successful
+[25-May-2025 23:46:26 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:46:26 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:46:26 Europe/Berlin] PHP Warning:  session_regenerate_id(): Session ID cannot be regenerated when there is no active session in C:\xampp\htdocs\ueb24__gr13\login.php on line 62
+[25-May-2025 23:47:52 Europe/Berlin] Login attempt started
+[25-May-2025 23:47:52 Europe/Berlin] Database connection successful
+[25-May-2025 23:47:52 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:47:52 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:47:52 Europe/Berlin] PHP Warning:  session_regenerate_id(): Session ID cannot be regenerated when there is no active session in C:\xampp\htdocs\ueb24__gr13\login.php on line 62
+[25-May-2025 23:51:06 Europe/Berlin] Login attempt started
+[25-May-2025 23:51:06 Europe/Berlin] Login attempt for username: gegajuran
+[25-May-2025 23:51:06 Europe/Berlin] Database connection successful
+[25-May-2025 23:51:06 Europe/Berlin] No user found with username: gegajuran
+[25-May-2025 23:51:06 Europe/Berlin] Login failed for user: gegajuran
+[25-May-2025 23:51:06 Europe/Berlin] Login error: Invalid username or password
+[25-May-2025 23:51:06 Europe/Berlin] Stack trace: #0 {main}
+[25-May-2025 23:51:07 Europe/Berlin] Login attempt started
+[25-May-2025 23:51:07 Europe/Berlin] Login attempt for username: gegajuran
+[25-May-2025 23:51:07 Europe/Berlin] Database connection successful
+[25-May-2025 23:51:07 Europe/Berlin] No user found with username: gegajuran
+[25-May-2025 23:51:07 Europe/Berlin] Login failed for user: gegajuran
+[25-May-2025 23:51:07 Europe/Berlin] Login error: Invalid username or password
+[25-May-2025 23:51:07 Europe/Berlin] Stack trace: #0 {main}
+[25-May-2025 23:51:12 Europe/Berlin] Login attempt started
+[25-May-2025 23:51:12 Europe/Berlin] Login attempt for username: gegajuran
+[25-May-2025 23:51:12 Europe/Berlin] Database connection successful
+[25-May-2025 23:51:12 Europe/Berlin] No user found with username: gegajuran
+[25-May-2025 23:51:12 Europe/Berlin] Login failed for user: gegajuran
+[25-May-2025 23:51:12 Europe/Berlin] Login error: Invalid username or password
+[25-May-2025 23:51:12 Europe/Berlin] Stack trace: #0 {main}
+[25-May-2025 23:51:13 Europe/Berlin] Login attempt started
+[25-May-2025 23:51:13 Europe/Berlin] Login attempt for username: gegajuran
+[25-May-2025 23:51:13 Europe/Berlin] Database connection successful
+[25-May-2025 23:51:13 Europe/Berlin] No user found with username: gegajuran
+[25-May-2025 23:51:13 Europe/Berlin] Login failed for user: gegajuran
+[25-May-2025 23:51:13 Europe/Berlin] Login error: Invalid username or password
+[25-May-2025 23:51:13 Europe/Berlin] Stack trace: #0 {main}
+[25-May-2025 23:51:14 Europe/Berlin] Login attempt started
+[25-May-2025 23:51:14 Europe/Berlin] Login attempt for username: gegajuran
+[25-May-2025 23:51:14 Europe/Berlin] Database connection successful
+[25-May-2025 23:51:14 Europe/Berlin] No user found with username: gegajuran
+[25-May-2025 23:51:14 Europe/Berlin] Login failed for user: gegajuran
+[25-May-2025 23:51:14 Europe/Berlin] Login error: Invalid username or password
+[25-May-2025 23:51:14 Europe/Berlin] Stack trace: #0 {main}
+[25-May-2025 23:51:15 Europe/Berlin] Login attempt started
+[25-May-2025 23:51:15 Europe/Berlin] Login attempt for username: gegajuran
+[25-May-2025 23:51:15 Europe/Berlin] Database connection successful
+[25-May-2025 23:51:15 Europe/Berlin] No user found with username: gegajuran
+[25-May-2025 23:51:15 Europe/Berlin] Login failed for user: gegajuran
+[25-May-2025 23:51:15 Europe/Berlin] Login error: Invalid username or password
+[25-May-2025 23:51:15 Europe/Berlin] Stack trace: #0 {main}
+[25-May-2025 23:51:15 Europe/Berlin] Login attempt started
+[25-May-2025 23:51:15 Europe/Berlin] Login attempt for username: gegajuran
+[25-May-2025 23:51:15 Europe/Berlin] Database connection successful
+[25-May-2025 23:51:15 Europe/Berlin] No user found with username: gegajuran
+[25-May-2025 23:51:15 Europe/Berlin] Login failed for user: gegajuran
+[25-May-2025 23:51:15 Europe/Berlin] Login error: Invalid username or password
+[25-May-2025 23:51:15 Europe/Berlin] Stack trace: #0 {main}
+[25-May-2025 23:51:15 Europe/Berlin] Login attempt started
+[25-May-2025 23:51:15 Europe/Berlin] Login attempt for username: gegajuran
+[25-May-2025 23:51:15 Europe/Berlin] Database connection successful
+[25-May-2025 23:51:15 Europe/Berlin] No user found with username: gegajuran
+[25-May-2025 23:51:15 Europe/Berlin] Login failed for user: gegajuran
+[25-May-2025 23:51:15 Europe/Berlin] Login error: Invalid username or password
+[25-May-2025 23:51:15 Europe/Berlin] Stack trace: #0 {main}
+[25-May-2025 23:51:15 Europe/Berlin] Login attempt started
+[25-May-2025 23:51:15 Europe/Berlin] Login attempt for username: gegajuran
+[25-May-2025 23:51:15 Europe/Berlin] Database connection successful
+[25-May-2025 23:51:15 Europe/Berlin] No user found with username: gegajuran
+[25-May-2025 23:51:15 Europe/Berlin] Login failed for user: gegajuran
+[25-May-2025 23:51:15 Europe/Berlin] Login error: Invalid username or password
+[25-May-2025 23:51:15 Europe/Berlin] Stack trace: #0 {main}
+[25-May-2025 23:51:15 Europe/Berlin] Login attempt started
+[25-May-2025 23:51:15 Europe/Berlin] Login attempt for username: gegajuran
+[25-May-2025 23:51:15 Europe/Berlin] Database connection successful
+[25-May-2025 23:51:15 Europe/Berlin] No user found with username: gegajuran
+[25-May-2025 23:51:15 Europe/Berlin] Login failed for user: gegajuran
+[25-May-2025 23:51:15 Europe/Berlin] Login error: Invalid username or password
+[25-May-2025 23:51:15 Europe/Berlin] Stack trace: #0 {main}
+[25-May-2025 23:51:15 Europe/Berlin] Login attempt started
+[25-May-2025 23:51:15 Europe/Berlin] Login attempt for username: gegajuran
+[25-May-2025 23:51:15 Europe/Berlin] Database connection successful
+[25-May-2025 23:51:15 Europe/Berlin] No user found with username: gegajuran
+[25-May-2025 23:51:15 Europe/Berlin] Login failed for user: gegajuran
+[25-May-2025 23:51:15 Europe/Berlin] Login error: Invalid username or password
+[25-May-2025 23:51:15 Europe/Berlin] Stack trace: #0 {main}
+[25-May-2025 23:51:19 Europe/Berlin] Login attempt started
+[25-May-2025 23:51:19 Europe/Berlin] Login attempt for username: gegajuran
+[25-May-2025 23:51:19 Europe/Berlin] Database connection successful
+[25-May-2025 23:51:19 Europe/Berlin] No user found with username: gegajuran
+[25-May-2025 23:51:19 Europe/Berlin] Login failed for user: gegajuran
+[25-May-2025 23:51:19 Europe/Berlin] Login error: Invalid username or password
+[25-May-2025 23:51:19 Europe/Berlin] Stack trace: #0 {main}
+[25-May-2025 23:51:24 Europe/Berlin] Login attempt started
+[25-May-2025 23:51:24 Europe/Berlin] Login attempt for username: gegajuran
+[25-May-2025 23:51:24 Europe/Berlin] Database connection successful
+[25-May-2025 23:51:24 Europe/Berlin] No user found with username: gegajuran
+[25-May-2025 23:51:24 Europe/Berlin] Login failed for user: gegajuran
+[25-May-2025 23:51:24 Europe/Berlin] Login error: Invalid username or password
+[25-May-2025 23:51:24 Europe/Berlin] Stack trace: #0 {main}
+[25-May-2025 23:51:37 Europe/Berlin] Login attempt started
+[25-May-2025 23:51:37 Europe/Berlin] Login attempt for username: testuser
+[25-May-2025 23:51:37 Europe/Berlin] Database connection successful
+[25-May-2025 23:51:37 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:51:37 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:51:37 Europe/Berlin] Session data after login: Array
+(
+    [user_id] => 2
+    [username] => testuser
+    [first_name] => Test
+    [last_name] => User
+    [email] => test@example.com
+    [logged_in] => 1
+    [last_activity] => 1748209897
+)
+
+[25-May-2025 23:51:37 Europe/Berlin] PHP Warning:  session_regenerate_id(): Session ID cannot be regenerated when there is no active session in C:\xampp\htdocs\ueb24__gr13\login.php on line 67
+[25-May-2025 23:56:29 Europe/Berlin] Login attempt started
+[25-May-2025 23:56:29 Europe/Berlin] Login attempt for username: testuser
+[25-May-2025 23:56:29 Europe/Berlin] Database connection successful
+[25-May-2025 23:56:29 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:56:29 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:56:29 Europe/Berlin] Session data after login: Array
+(
+    [user_id] => 2
+    [username] => testuser
+    [first_name] => Test
+    [last_name] => User
+    [email] => test@example.com
+    [logged_in] => 1
+    [last_activity] => 1748210189
+)
+
+[25-May-2025 23:57:05 Europe/Berlin] Login attempt started
+[25-May-2025 23:57:05 Europe/Berlin] Login attempt for username: testuser
+[25-May-2025 23:57:05 Europe/Berlin] Database connection successful
+[25-May-2025 23:57:05 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:57:05 Europe/Berlin] Login successful for user: testuser
+[25-May-2025 23:57:05 Europe/Berlin] Session data after login: Array
+(
+    [user_id] => 2
+    [username] => testuser
+    [first_name] => Test
+    [last_name] => User
+    [email] => test@example.com
+    [logged_in] => 1
+    [last_activity] => 1748210225
+)
+
+[26-May-2025 00:02:56 Europe/Berlin] Login attempt started
+[26-May-2025 00:02:56 Europe/Berlin] Login attempt for username: testuser
+[26-May-2025 00:02:56 Europe/Berlin] Database connection successful
+[26-May-2025 00:02:56 Europe/Berlin] Login successful for user: testuser
+[26-May-2025 00:02:56 Europe/Berlin] Login successful for user: testuser
+[26-May-2025 00:02:56 Europe/Berlin] Session data after login: Array
+(
+    [user_id] => 2
+    [username] => testuser
+    [first_name] => Test
+    [last_name] => User
+    [email] => test@example.com
+    [logged_in] => 1
+    [last_activity] => 1748210576
+)
+
+[26-May-2025 00:08:05 Europe/Berlin] Login attempt started
+[26-May-2025 00:08:05 Europe/Berlin] Login attempt for username: testuser
+[26-May-2025 00:08:05 Europe/Berlin] Database connection successful
+[26-May-2025 00:08:05 Europe/Berlin] Login successful for user: testuser
+[26-May-2025 00:08:05 Europe/Berlin] Login successful for user: testuser
+[26-May-2025 00:08:05 Europe/Berlin] Session data after login: Array
+(
+    [user_id] => 2
+    [username] => testuser
+    [first_name] => Test
+    [last_name] => User
+    [email] => test@example.com
+    [logged_in] => 1
+    [last_activity] => 1748210885
+)
+
+[26-May-2025 00:16:16 Europe/Berlin] Login attempt started
+[26-May-2025 00:16:16 Europe/Berlin] Login attempt for username: testuser
+[26-May-2025 00:16:16 Europe/Berlin] Database connection successful
+[26-May-2025 00:16:16 Europe/Berlin] Login successful for user: testuser
+[26-May-2025 00:16:16 Europe/Berlin] Login successful for user: testuser
+[26-May-2025 00:16:16 Europe/Berlin] Session data after login: Array
+(
+    [user_id] => 2
+    [username] => testuser
+    [first_name] => Test
+    [last_name] => User
+    [email] => test@example.com
+    [logged_in] => 1
+    [last_activity] => 1748211376
+)
+
+[26-May-2025 00:16:59 Europe/Berlin] Login attempt started
+[26-May-2025 00:16:59 Europe/Berlin] Login attempt for username: urangegaj@gmail.com
+[26-May-2025 00:16:59 Europe/Berlin] Database connection successful
+[26-May-2025 00:16:59 Europe/Berlin] No user found with username: urangegaj@gmail.com
+[26-May-2025 00:16:59 Europe/Berlin] Login failed for user: urangegaj@gmail.com
+[26-May-2025 00:16:59 Europe/Berlin] Login error: Invalid username or password
+[26-May-2025 00:16:59 Europe/Berlin] Stack trace: #0 {main}
+[26-May-2025 00:17:00 Europe/Berlin] Login attempt started
+[26-May-2025 00:17:00 Europe/Berlin] Login attempt for username: urangegaj@gmail.com
+[26-May-2025 00:17:00 Europe/Berlin] Database connection successful
+[26-May-2025 00:17:00 Europe/Berlin] No user found with username: urangegaj@gmail.com
+[26-May-2025 00:17:00 Europe/Berlin] Login failed for user: urangegaj@gmail.com
+[26-May-2025 00:17:00 Europe/Berlin] Login error: Invalid username or password
+[26-May-2025 00:17:00 Europe/Berlin] Stack trace: #0 {main}
+[26-May-2025 00:17:14 Europe/Berlin] Login attempt started
+[26-May-2025 00:17:14 Europe/Berlin] Login attempt for username: urangegaj
+[26-May-2025 00:17:14 Europe/Berlin] Database connection successful
+[26-May-2025 00:17:14 Europe/Berlin] No user found with username: urangegaj
+[26-May-2025 00:17:14 Europe/Berlin] Login failed for user: urangegaj
+[26-May-2025 00:17:14 Europe/Berlin] Login error: Invalid username or password
+[26-May-2025 00:17:14 Europe/Berlin] Stack trace: #0 {main}
+[26-May-2025 00:20:50 Europe/Berlin] Login attempt started
+[26-May-2025 00:20:50 Europe/Berlin] Login attempt for username: testuser
+[26-May-2025 00:20:50 Europe/Berlin] Database connection successful
+[26-May-2025 00:20:50 Europe/Berlin] Login successful for user: testuser
+[26-May-2025 00:20:50 Europe/Berlin] Login successful for user: testuser
+[26-May-2025 00:20:50 Europe/Berlin] Session data after login: Array
+(
+    [user_id] => 2
+    [username] => testuser
+    [first_name] => Test
+    [last_name] => User
+    [email] => test@example.com
+    [logged_in] => 1
+    [last_activity] => 1748211650
+)
+
+[26-May-2025 00:21:19 Europe/Berlin] Login attempt started
+[26-May-2025 00:21:19 Europe/Berlin] Login attempt for username: testuser
+[26-May-2025 00:21:19 Europe/Berlin] Database connection successful
+[26-May-2025 00:21:19 Europe/Berlin] Login successful for user: testuser
+[26-May-2025 00:21:19 Europe/Berlin] Login successful for user: testuser
+[26-May-2025 00:21:19 Europe/Berlin] Session data after login: Array
+(
+    [user_id] => 2
+    [username] => testuser
+    [first_name] => Test
+    [last_name] => User
+    [email] => test@example.com
+    [logged_in] => 1
+    [last_activity] => 1748211679
+)
+
+[26-May-2025 00:23:31 Europe/Berlin] Login successful for user: testuser
+[26-May-2025 00:24:08 Europe/Berlin] Login successful for user: testuser
+[26-May-2025 00:24:51 Europe/Berlin] Login successful for user: testuser
