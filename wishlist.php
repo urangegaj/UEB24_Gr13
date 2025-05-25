@@ -204,7 +204,6 @@ button.add-to-cart:hover {
             margin: 20px 0; 
         }
 
-}
             </style>
         </head>
         
@@ -302,16 +301,9 @@ if (!empty($wishlistItems)) {
     </ul>
 
 
- </main>
-        
+ </main>  
 
-        
-            <footer class="footer">
-                <div class="container">
-                    <p>© 2024 Laced Lifestyle. All Rights Reserved.</p>
-                </div>
-            </footer>
-            
+        <?php include 'footer.php'; ?>
 
             <script>
                 setTimeout(() => {

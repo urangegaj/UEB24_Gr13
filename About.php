@@ -94,6 +94,14 @@ $companyDetails = [
         overflow-x: auto;
         font-size: 14px;
     }
+
+    /* Add styles for rating text */
+    .rating-title {
+        text-align: center;
+        margin: 2rem 0;
+        color: #333;
+        font-size: 1.5rem;
+    }
 </style>
 
         <div class="body-background foto">
@@ -105,26 +113,26 @@ $companyDetails = [
             <div class="yy">
                 <div class="ee">
                     <h3 class="aa">SIMPLICITY IN DESIGN</h3>
-                    <p class="ff">No flashy logos. No senseless details. Just the world’s most comfortable shoes, made naturally and designed practically. It’s that simple.</p>
+                    <p class="ff">No flashy logos. No senseless details. Just the world's most comfortable shoes, made naturally and designed practically. It's that simple.</p>
                 </div>
             </div>
             <div class="yy">
                 <div class="ee">
                     <h3 class="aa">CONFIDENCE IN COMFORT</h3>
-                    <p class="ff">Trying is believing. Give our shoes a shot for 30 days, and if you’re not walking on cloud nine, we’ll take them back—no questions asked.</p>
+                    <p class="ff">Trying is believing. Give our shoes a shot for 30 days, and if you're not walking on cloud nine, we'll take them back—no questions asked.</p>
                 </div>
             </div>
             <div class="yy">
                 <div class="ee">
                     <h3 class="aa">MADE FROM NATURE</h3>
-                    <p class="ff">The footwear industry often overlooks Mother Nature’s materials in favor of cheaper, synthetic alternatives. We think it’s time to change that.</p>
+                    <p class="ff">The footwear industry often overlooks Mother Nature's materials in favor of cheaper, synthetic alternatives. We think it's time to change that.</p>
                 </div>
             </div>
         </div>
 
         <div class="Gridy Grid--centered">
             
-                <h2 class="Typography--secondary-heading Typography--with-margin">The journey to making better things in a better way is a long one, and we’re just getting started. Here are a few of our proudest moments so far:</h2>
+                <h2 class="Typography--secondary-heading Typography--with-margin">The journey to making better things in a better way is a long one, and we're just getting started. Here are a few of our proudest moments so far:</h2>
           </div>
           
 
@@ -148,7 +156,7 @@ $companyDetails = [
                   </div>
                 </div>
                 <h3 class="card-title">Building Strong Relationships</h3>
-                <p class="card-text"> Our loyal customers keep coming back, and we’ve built a community that shares a passion for quality footwear and exceptional service.</p>
+                <p class="card-text"> Our loyal customers keep coming back, and we've built a community that shares a passion for quality footwear and exceptional service.</p>
               </div>
             </div>
             <div class="cell">
@@ -286,7 +294,7 @@ $companyDetails = [
               </li>
             </ul>
           </div>
-          <h3>Rate your experience with us:</h3>
+          <h3 class="rating-title">Rate your experience with us:</h3>
 <form method="POST" id="ratingForm" onsubmit="return false;">
   <div class="rating-container">
     <?php for ($i = 1; $i <= 5; $i++): ?>
@@ -331,13 +339,7 @@ stars.forEach(star => {
 
 </script>
 
-
-
-  <footer class="footer">
-    <div class="container">
-      <p>© <?php echo $currentYear; ?> <?php echo $upperCompanyName; ?>. All Rights Reserved.</p> 
-  </footer>
-
+  <?php include 'footer.php'; ?>
 
 </body>
 </html>

@@ -1,3 +1,45 @@
+<?php
+require_once 'validation.php'; 
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    try {
+        $fields = [
+            'First Name'      => trim($_POST['billing_first_name'] ?? ''),
+            'Last Name'       => trim($_POST['billing_last_name'] ?? ''),
+            'Email'           => trim($_POST['billing_email'] ?? ''),
+            'Country'         => trim($_POST['billing_country'] ?? ''),
+            'City'            => trim($_POST['billing_city'] ?? ''),
+            'Address'         => trim($_POST['billing_address_1'] ?? ''),
+            'Phone Number'    => trim($_POST['billing_number'] ?? ''),
+        ];
+
+        $missing = array_filter($fields, fn($val) => empty($val));
+        if (!empty($missing)) {
+            throw new Exception("Ju lutem plotësoni të gjitha fushat e detyrueshme.");
+        }
+
+    
+        Validation::validateEmail($fields['Email']);
+        Validation::validatePhone($fields['Phone Number']);
+
+    
+        echo "<div style='color: green; font-weight: bold;'>Checkout i suksesshëm</div>";
+
+        // Printimi i te dhenave 
+        foreach ($fields as $key => $value) {
+            echo "<p><strong>$key:</strong> " . htmlspecialchars($value) . "</p>";
+        }
+
+        // Gjenerimi i nje ID 
+        $orderId = 'order_' . uniqid();
+        echo "<p><strong>Order ID:</strong> $orderId</p>";
+
+    } catch (Exception $e) {
+        echo "<div style='color: red; font-weight: bold;'>Gabim: " . $e->getMessage() . "</div>";
+    }
+}
+?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,22 +52,21 @@
         <title>Checkout</title>
         <style>
           
-    input[type="text"], input[type="tel"], select {
-        width: 100%;
-        padding: 10px;
-        font-size: 14px;
-        border-radius: 8px;
-        border: 1px solid #ddd;
-        margin-bottom: 15px;
-        transition: border 0.3s ease;
+    input[type="text"], input[type="tel"], input[type="email"], select {
+     width: 100%;
+     padding: 10px;
+     font-size: 14px;
+     border-radius: 8px;
+     border: 1px solid #ddd;
+     margin-bottom: 15px;
+     transition: border 0.3s ease;
     }
-    
-    
-    input[type="text"]:focus, input[type="tel"]:focus, select:focus {
-        border-color: #28a745; 
-        outline: none;
+
+    input[type="text"]:focus, input[type="tel"]:focus, input[type="email"]:focus, select:focus {
+     border-color: #28a745; 
+     outline: none;
     }
-    
+
     
     label {
         font-size: 16px;
@@ -35,17 +76,6 @@
         display: block;
     }
     
-    
-    .payment-methods select {
-        background-color: #f9f9f9;
-        color: #333;
-        border: 1px solid #ddd;
-    }
-    
-    
-    .payment-methods select:hover {
-        border-color: #28a745;
-    }
     
     
     select#billing_country {
@@ -253,195 +283,6 @@
     }
         </style>
     
-    <?php
-
-
-    class BillingDetails {
-    private $firstName;
-    private $lastName;
-    private $email;
-    private $country;
-    private $city;
-    private $address;
-    private $phoneNumber;
-    private $paymentMethod;
-
-    
-    public function __construct($firstName, $lastName, $email, $country, $city, $address, $phoneNumber, $paymentMethod) {
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->email = $email;
-        $this->country = $country;
-        $this->city = $city;
-        $this->address = $address;
-        $this->phoneNumber = $phoneNumber;
-        $this->paymentMethod = $paymentMethod;
-    }
-
-    public function getFirstName() {
-        return $this->firstName;
-    }
-    
-    public function getLastName() {
-        return $this->lastName;
-    }
-
-    public function getEmail() {
-        return $this->email;
-    }
-
-    public function getCountry() {
-        return $this->country;
-    }
-
-    public function getCity() {
-        return $this->city;
-    }
-
-    public function getAddress() {
-        return $this->address;
-    }
-
-    public function getPhoneNumber() {
-        return $this->phoneNumber;
-    }
-
-    public function getPaymentMethod() {
-        return $this->paymentMethod;
-    }
-
-
-    public function setFirstName($firstName) {
-        $this->firstName = $firstName;
-    }
-
-    public function setLastName($lastName) {
-        $this->lastName = $lastName;
-    }
-
-    public function setEmail($email) {
-        $this->email = $email;
-    }
-
-    public function setCountry($country) {
-        $this->country = $country;
-    }
-
-    public function setCity($city) {
-        $this->city = $city;
-    }
-
-    public function setAddress($address) {
-        $this->address = $address;
-    }
-
-    public function setPhoneNumber($phoneNumber) {
-        $this->phoneNumber = $phoneNumber;
-    }
-
-    public function setPaymentMethod($paymentMethod) {
-        $this->paymentMethod = $paymentMethod;
-    }
-    
-    public function getBillingInfo() {
-        return [
-            'First Name' => $this->firstName,
-            'Last Name' => $this->lastName,
-            'Email' => $this->email,
-            'Country' => $this->country,
-            'City' => $this->city,
-            'Address' => $this->address,
-            'Phone Number' => $this->phoneNumber,
-            'Payment Method' => $this->paymentMethod
-        ];
-    }
-}
-
-class AdvancedBillingDetails extends BillingDetails {
-    private $orderId;
-
-    public function __construct($firstName, $lastName, $email, $country, $city, $address, $phoneNumber, $paymentMethod, $orderId) {
-        parent::__construct($firstName, $lastName, $email, $country, $city, $address, $phoneNumber, $paymentMethod);
-        $this->setOrderId($orderId);
-    }
-
-    
-    public function getOrderId() {
-        return $this->orderId;
-    }
-
-    public function setOrderId($orderId) {
-        $this->orderId = $orderId;
-    }
-
-    public function getAdvancedBillingInfo() {
-        $billingInfo = parent::getBillingInfo();
-        $billingInfo['Order ID'] = $this->getOrderId();
-        return $billingInfo;
-    }
-    
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $errors = [];
-
-    $firstName = trim($_POST["billing_first_name"] ?? '');
-    $lastName = trim($_POST["billing_last_name"] ?? '');
-    $email = trim($_POST["billing_email"] ?? '');
-    $country = $_POST["billing_country"] ?? '';
-    $city = $_POST["billing_city"] ?? '';
-    $address = $_POST["billing_address_1"] ?? '';
-    $phoneNumber = $_POST["billing_number"] ?? '';
-    $paymentMethod = $_POST["payment_method"] ?? '';
-   
-    
-
-    
-    if (!preg_match("/^[a-zA-ZëËçÇ ]{2,}$/u", $firstName)) $errors[] = "Emri nuk është i vlefshëm.";
-    if (!preg_match("/^[a-zA-ZëËçÇ ]{2,}$/u", $lastName)) $errors[] = "Mbiemri nuk është i vlefshëm.";
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "Email-i nuk është i vlefshëm.";
-    if (!in_array($country, ['AL', 'XK', 'MK'])) $errors[] = "Shteti nuk është i vlefshëm.";
-    if (strlen($address) < 5) $errors[] = "Adresa është shumë e shkurtër.";
-    if (!preg_match("/^[a-zA-ZëËçÇ ]{2,}$/u", $city)) $errors[] = "Qyteti nuk është i vlefshëm.";
-    if (!preg_match("/^\+?[0-9\s\-]{8,15}$/", $phoneNumber)) $errors[] = "Numri i telefonit nuk është i vlefshëm.";
-    if (empty($paymentMethod)) $errors[] = "Zgjidh një mënyrë pagese.";
-
-   
-
-   
-    if ($paymentMethod === "debit_card") {
-        $cardNumber = trim($_POST["card_number"] ?? '');
-        $expiryDate = trim($_POST["expiry_date"] ?? '');
-        $cvv = trim($_POST["cvv"] ?? '');
-
-        if (!preg_match("/^\d{13,19}$/", $cardNumber)) $errors[] = "Numri i kartës nuk është i vlefshëm.";
-        if (!preg_match("/^(0[1-9]|1[0-2])\/\d{2}$/", $expiryDate)) $errors[] = "Data e skadencës nuk është e vlefshme (format: MM/YY).";
-        if (!preg_match("/^\d{3,4}$/", $cvv)) $errors[] = "CVV nuk është i vlefshëm.";
-    }
-
-    if (empty($errors)) {
-        $orderId = uniqid('order_');
-        $billingDetails = new AdvancedBillingDetails($firstName, $lastName, $email, $country, $city, $address, $phoneNumber, $paymentMethod, $orderId);
-        $billingInfo = $billingDetails->getAdvancedBillingInfo();
-
-        echo "<h2>Checkout i suksesshëm</h2>";
-        echo "<ul>";
-        foreach ($billingInfo as $key => $value) {
-            echo "<li><strong>$key:</strong> $value</li>";
-        }
-        echo "</ul>";
-    } else {
-        echo "<h3 style='color:red'>Gabime në formular:</h3><ul style='color:red'>";
-        foreach ($errors as $error) {
-            echo "<li>" . htmlspecialchars($error) . "</li>";
-        }
-        echo "</ul>";
-    }
-}
-
-
-?>
-    
     </head>
     <body>
        
@@ -509,34 +350,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <label for="billing_number">Phone Number <abbr class="required">*</abbr></label>
             <input type="tel" name="billing_number" id="billing_number" placeholder="Phone Number" aria-required="true" required>
         </p>
-        
-        <div class="payment-methods">
-            <p class="form-field">
-                <label for="payment_method">Payment Method <abbr class="required">*</abbr></label>
-                <select name="payment_method" id="payment_method" aria-required="true" onchange="toggleCardInput()" required>
-                    <option value="">Select a payment method</option>
-                    <option value="cash">Cash</option>
-                    <option value="debit_card">Debit Card</option>
-                </select>
-            </p>
-        
-            <div id="debit_card_fields" style="display:none;">
-                <p class="form-field">
-                    <label for="card_number">Debit Card Number <abbr class="required">*</abbr></label>
-                    <input type="text" name="card_number" id="card_number" placeholder="Debit Card Number" aria-required="true">
-                </p>
 
-                <p class="form-field">
-                    <label for="expiry_date">Expiration Date <abbr class="required">*</abbr></label>
-                    <input type="text" name="expiry_date" id="expiry_date" placeholder="MM/YY" aria-required="true">
-                </p>
-
-                <p class="form-field">
-                    <label for="cvv">CVV <abbr class="required">*</abbr></label>
-                    <input type="text" name="cvv" id="cvv" placeholder="CVV" aria-required="true">
-                </p>
-            </div>
-        </div>
     </div>
 
     
@@ -551,7 +365,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <ul id="cart-items"></ul>
                             <p id="total-price"></p>
                             <p id="empty-cart-message" style="display: none;">Your cart is empty!</p>
-                            <button id="checkout-btn">Checkout</button>
+                            
                         </div>
                     
                         <div id="confirmation-message" class="confirmation-popup">
@@ -621,73 +435,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 return year > currentYear || (year === currentYear && month >= currentMonth);
             }
 
-           
-            function validateCardNumber(cardNumber) {
-                const cardNumberRegex = /^\d{16}$/; 
-                return cardNumberRegex.test(cardNumber);
-            }
-
+        
             
-            function toggleCardInput() {
-                debitCardFields.style.display = document.getElementById('payment_method').value === "debit_card" ? 'block' : 'none';
-            }
+            
 
-           
-            function validateForm() {
-                try {
-                    const fields = {
-                        "First Name": document.getElementById('billing_first_name').value,
-                        "Last Name": document.getElementById('billing_last_name').value,
-                        "Email": document.getElementById('billing_email').value,
-                        "Country": document.getElementById('billing_country').value,
-                        "City": document.getElementById('billing_city').value,
-                        "Address": document.getElementById('billing_address_1').value,
-                        "Phone Number": document.getElementById('billing_number').value,
-                        "Payment Method": document.getElementById('payment_method').value,
-                    };
-
-                    const missingFields = Object.keys(fields).filter(field => !fields[field]);
-
-                    if (missingFields.length > 0) {
-                        throw new Error(`Please fill in the following fields: ${missingFields.join(', ')}`);
-                    }
-
-                    if (!validateEmail(fields["Email"])) {
-                        throw new Error("Invalid email address!");
-                    }
-
-                    const phone = fields["Phone Number"];
-                    if (!validatePhoneNumber(phone)) {
-                        throw new Error("Invalid phone number! Must be for Albania, Kosovo, or North Macedonia.");
-                    }
-
-                    if (fields["Payment Method"] === "debit_card") {
-                        const cardNumber = document.getElementById('card_number').value;
-                        const expiryDate = document.getElementById('expiry_date').value;
-                        const cvv = document.getElementById('cvv').value;
-
-                        if (!validateCardNumber(cardNumber)) {
-                            throw new Error("Invalid debit card number!");
-                        }
-
-                        if (!validateExpiryDate(expiryDate)) {
-                            throw new Error("Invalid expiration date!");
-                        }
-
-                        if (!cvv || cvv.length !== 3) {
-                            throw new Error("Invalid CVV!");
-                        }
-                    }
-
-                    return true;
-                } catch (error) {
-                    formWarningMessage.textContent = error.message;
-                    formWarningMessage.classList.add('show');
-                    return false;
-                }
-            }
-
-           
             checkoutBtn.addEventListener('click', (event) => {
                 event.preventDefault();  
 
@@ -727,13 +478,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             });
         });
     </script>
-
-        <footer class="footer">
-            <div class="container">
-                <p>© 2024 Laced Lifestyle. All Rights Reserved.</p>
-            </div>
-        </footer>
     
+
+    <?php include 'footer.php'; ?>
     
     </body>
     </html>
