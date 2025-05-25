@@ -204,7 +204,6 @@ button.add-to-cart:hover {
             margin: 20px 0; 
         }
 
-}
             </style>
         </head>
         
