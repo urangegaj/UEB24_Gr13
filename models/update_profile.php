@@ -1,9 +1,8 @@
 <?php
 require_once 'session_handler.php';
-require_once '../config/db.php';
+require_once 'config/database.php';
 require_once 'models/User.php';
 
-// Check if user is logged in
 if (!isLoggedIn()) {
     header('Content-Type: application/json');
     echo json_encode(['success' => false, 'message' => 'Not logged in']);
@@ -18,10 +17,8 @@ $response = ['success' => false, 'message' => ''];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        // Get current user data
         $currentUser = getCurrentUser();
         
-        // Validate required fields
         $required_fields = ['name', 'lastname', 'username', 'email'];
         foreach ($required_fields as $field) {
             if (!isset($_POST[$field]) || empty(trim($_POST[$field]))) {
@@ -29,12 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        // Validate email format
         if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
             throw new Exception("Invalid email format");
         }
 
-        // Update user data
         $updateData = [
             'first_name' => $_POST['name'],
             'last_name' => $_POST['lastname'],
@@ -42,7 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'email' => $_POST['email']
         ];
 
-        // Only update password if provided
         if (!empty($_POST['password'])) {
             if (strlen($_POST['password']) < 8) {
                 throw new Exception("Password must be at least 8 characters long");
@@ -50,9 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $updateData['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
         }
 
-        // Update user in database
         if ($user->update($currentUser['user_id'], $updateData)) {
-            // Update session data
             $_SESSION['username'] = $updateData['username'];
             $_SESSION['first_name'] = $updateData['first_name'];
             $_SESSION['last_name'] = $updateData['last_name'];
@@ -68,6 +60,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Return JSON response
 header('Content-Type: application/json');
 echo json_encode($response); 
