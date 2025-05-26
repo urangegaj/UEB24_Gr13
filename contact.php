@@ -1,7 +1,7 @@
 <?php
 require_once 'session_handler.php';
 
-// Initialize and increment visit count
+
 $visitCount = incrementVisitCount();
 
 $preferences = getUserPreferences();
@@ -436,7 +436,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             position: relative;
         }
 
-        /* Add transition for all theme-dependent elements */
+
         .contact-form,
         input,
         textarea,
@@ -447,7 +447,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             transition: all 0.3s ease;
         }
 
-        /* Add dark mode specific styles */
+
         body.dark-mode {
             background-color: #1a1a1a;
             color: #ffffff;
@@ -506,7 +506,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </header>
 
-    <!-- Theme switcher button -->
+
     <form id="theme-form" method="POST" action="session_handler.php" style="display: inline; position: fixed; top: 20px; right: 20px; z-index: 1001;">
         <input type="hidden" name="action" value="switch_theme">
         <input type="hidden" name="theme" value="<?php echo $preferences['theme'] === 'dark' ? 'light' : 'dark'; ?>">
@@ -516,7 +516,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </button>
     </form>
 
-    <!-- Visit counter -->
+
     <div class="visit-counter" style="position: fixed; bottom: 20px; right: 20px; background: <?php echo $themeStyles['accent-color']; ?>; padding: 10px 20px; border-radius: 5px; color: white; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: all 0.3s ease; display: flex; align-items: center; gap: 8px;">
         <i class="fa fa-eye"></i>
         <span id="visit-count">Visit Count: <?php echo $visitCount; ?></span>
@@ -548,18 +548,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div id="formMessage" style="display: none; margin-top: 20px; padding: 10px; border-radius: 5px;"></div>
     </form>
     
-     <!-- perdorimi i require -->
+
      <?php require 'footer.php'; ?>
 
     <script>
         $(document).ready(function() {
-            // Theme switcher functionality
+
             $('#theme-switcher').click(function(e) {
-                e.preventDefault(); // Prevent any default action
+                e.preventDefault(); 
                 const currentTheme = '<?php echo $preferences['theme']; ?>';
                 const newTheme = currentTheme === 'light' ? 'dark' : 'light';
                 
-                // Send the update to the server
+
                 $.ajax({
                     url: 'session_handler.php',
                     method: 'POST',
@@ -570,7 +570,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     dataType: 'json',
                     success: function(response) {
                         if (response.success) {
-                            // Force reload immediately
+
                             location.reload();
                         }
                     }
@@ -578,13 +578,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             });
         });
 
-        // Reset counter functionality
+
         function resetCounter(event) {
             event.preventDefault();
             event.stopPropagation();
             
             const refreshIcon = event.target;
-            refreshIcon.style.pointerEvents = 'none'; // Prevent multiple clicks
+            refreshIcon.style.pointerEvents = 'none'; 
             
             fetch('reset_counter.php', {
                 method: 'POST',
@@ -595,9 +595,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Update the counter display
+
                     document.getElementById('visit-count').textContent = 'Visit Count: 1';
-                    // Force reload the page
+
                     window.location.reload(true);
                 } else {
                     console.error('Failed to reset counter:', data.message);
