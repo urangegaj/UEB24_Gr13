@@ -26,7 +26,7 @@ require_once 'includes/session.php';
                     <li><a href="#home" title="Go to Homepage">Home</a></li>
                     <li><a href="./Products.php" title="View Products">Products</a></li>
                     <li><a href="./About.php" title="Learn About Us">About</a></li>
-                    <li><a href="./Contact.html" title="Contact Us">Contact</a></li>
+                    <li><a href="./contact.php" title="Contact Us">Contact</a></li>
                 </ul>
             </nav>
             <div class="header-utils">

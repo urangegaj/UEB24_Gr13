@@ -22,7 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception("Username and password cannot be empty");
         }
 
-        // Attempt login
         if ($user->login($username, $password)) {
             $response['success'] = true;
             $response['message'] = "Login successful!";
@@ -33,7 +32,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'email'      => $_SESSION['email']
             );
         } else {
-            // Clear login-related session variables only
             unset($_SESSION['user_id'], $_SESSION['username'], $_SESSION['first_name'], $_SESSION['last_name'], $_SESSION['email']);
             $response['message'] = "Invalid username or password";
         }
@@ -42,7 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Return JSON response
 header('Content-Type: application/json');
 echo json_encode($response);
 ?>

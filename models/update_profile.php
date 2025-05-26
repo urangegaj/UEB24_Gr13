@@ -8,7 +8,6 @@ require_once __DIR__ . '/../includes/session.php';
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/User.php';
 
-// Check if user is logged in
 if (!isLoggedIn()) {
     error_log("Update profile attempt without login. Session data: " . print_r($_SESSION, true));
     header('Content-Type: application/json');
@@ -50,7 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'email' => trim($_POST['email'])
         ];
 
-        // Handle password update
         if (!empty($_POST['password'])) {
             if (strlen($_POST['password']) < 8) {
                 throw new Exception("Password must be at least 8 characters long");
@@ -67,7 +65,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $updateData['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
         }
 
-        // Handle profile picture upload
         if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
             error_log("Processing profile picture upload");
             $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
@@ -106,7 +103,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($user->update($currentUser['user_id'], $updateData)) {
             error_log("Profile update successful");
             
-            // Update session data
             $_SESSION['username'] = $updateData['username'];
             $_SESSION['first_name'] = $updateData['first_name'];
             $_SESSION['last_name'] = $updateData['last_name'];

@@ -65,7 +65,6 @@ class User {
                 $row = mysqli_fetch_assoc($result);
                 error_log("User found in database: " . print_r($row, true));
                 
-                // Log the password verification attempt
                 error_log("Attempting to verify password for user: " . $username);
                 error_log("Stored hash: " . $row['password']);
                 error_log("Provided password: " . $password);
@@ -73,7 +72,6 @@ class User {
                 if (password_verify($password, $row['password'])) {
                     error_log("Password verified for user: " . $username);
                     
-                    // Set object properties
                     $this->id = (int)$row['user_id'];
                     $this->first_name = $row['first_name'];
                     $this->last_name = $row['last_name'];
@@ -81,9 +79,8 @@ class User {
                     $this->username = $row['username'];
                     $this->profile_picture = $row['profile_picture'];
                     
-                    // Create user data array with explicit user_id
                     $userData = [
-                        'user_id' => (int)$row['user_id'], // Ensure it's an integer
+                        'user_id' => (int)$row['user_id'], 
                         'username' => $this->username,
                         'first_name' => $this->first_name,
                         'last_name' => $this->last_name,
@@ -133,7 +130,6 @@ class User {
             error_log("Updating user profile for ID: " . $user_id);
             error_log("Update data: " . print_r($data, true));
 
-            // Get current user data
             $query = "SELECT username, email, profile_picture FROM " . $this->table_name . " WHERE user_id = ?";
             $stmt = mysqli_prepare($this->conn, $query);
             mysqli_stmt_bind_param($stmt, "i", $user_id);
@@ -146,7 +142,6 @@ class User {
                 return false;
             }
 
-            // Check if username is being changed and if it already exists
             if (isset($data['username']) && $data['username'] !== $current_user['username']) {
                 $query = "SELECT user_id FROM " . $this->table_name . " WHERE username = ? AND user_id != ?";
                 $stmt = mysqli_prepare($this->conn, $query);
@@ -159,7 +154,6 @@ class User {
                 }
             }
 
-            // Check if email is being changed and if it already exists
             if (isset($data['email']) && $data['email'] !== $current_user['email']) {
                 $query = "SELECT user_id FROM " . $this->table_name . " WHERE email = ? AND user_id != ?";
                 $stmt = mysqli_prepare($this->conn, $query);
@@ -172,7 +166,6 @@ class User {
                 }
             }
 
-            // Build the update query
             $query = "UPDATE " . $this->table_name . " SET ";
             $params = array();
             $types = "";
@@ -181,7 +174,6 @@ class User {
                 if ($key === 'password') {
                     $query .= "password = ?, ";
                 } else if ($key === 'profile_picture') {
-                    // If there's an existing profile picture, delete it
                     if (!empty($current_user['profile_picture'])) {
                         $old_picture_path = __DIR__ . '/../' . $current_user['profile_picture'];
                         if (file_exists($old_picture_path)) {
@@ -196,7 +188,6 @@ class User {
                 $types .= "s";
             }
 
-            // Remove trailing comma and space
             $query = rtrim($query, ", ");
             $query .= " WHERE user_id = ?";
             $params[] = $user_id;
@@ -213,7 +204,6 @@ class User {
 
             if ($result) {
                 error_log("Profile update successful for user ID: " . $user_id);
-                // Update object properties
                 foreach ($data as $key => $value) {
                     if (property_exists($this, $key)) {
                         $this->$key = $value;

@@ -9,7 +9,6 @@ require_once __DIR__ . '/includes/session.php';
 error_log("Profile page accessed. Session ID: " . session_id());
 error_log("Session data: " . print_r($_SESSION, true));
 
-// Check if user is logged in
 if (!isLoggedIn()) {
     error_log("User not logged in, redirecting to index.php");
     error_log("Session data at redirect: " . print_r($_SESSION, true));
@@ -286,7 +285,7 @@ error_log("User successfully authenticated. User data: " . print_r($currentUser,
                     <li><a href="index.php" title="Go to Homepage">Home</a></li>
                     <li><a href="Products.php" title="View Products">Products</a></li>
                     <li><a href="About.php" title="Learn About Us">About</a></li>
-                    <li><a href="Contact.html" title="Contact Us">Contact</a></li>
+                    <li><a href="contact.php" title="Contact Us">Contact</a></li>
                 </ul>
             </nav>
             <div class="header-utils">
@@ -379,14 +378,12 @@ error_log("User successfully authenticated. User data: " . print_r($currentUser,
                 return;
             }
 
-            // Display current profile picture if exists
             <?php if (isset($currentUser['profile_picture']) && !empty($currentUser['profile_picture'])): ?>
             profilePic.src = '<?php echo htmlspecialchars($currentUser['profile_picture']); ?>';
             <?php else: ?>
             profilePic.src = 'images/default-profile.png';
             <?php endif; ?>
 
-            // Handle file upload through drag and drop area
             dragDropArea.addEventListener('click', () => fileInput.click());
 
             dragDropArea.addEventListener('dragover', (e) => {
@@ -428,12 +425,10 @@ error_log("User successfully authenticated. User data: " . print_r($currentUser,
                 }
             }
 
-            // Handle form submission
             profileForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const formData = new FormData(profileForm);
                 
-                // Add the profile picture to the form data if it exists
                 if (fileInput.files.length > 0) {
                     formData.append('profile_picture', fileInput.files[0]);
                 }
@@ -459,7 +454,6 @@ error_log("User successfully authenticated. User data: " . print_r($currentUser,
                 }
             });
 
-            // Handle logout
             const logoutButton = document.getElementById('logout-button');
             if (logoutButton) {
                 logoutButton.addEventListener('click', async (e) => {

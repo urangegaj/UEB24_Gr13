@@ -204,7 +204,7 @@ $cartItems = array_filter($products, fn($p) => in_array($p->id, $cartIds));
                     <li><a href="./index.php">Home</a></li>
                     <li><a href="./Products.php">Products</a></li>
                     <li><a href="/About.html">About</a></li>
-                    <li><a href="./Contact.html">Contact</a></li>
+                    <li><a href="./contact.php">Contact</a></li>
                 </ul>
                 <div id="navbar-tools">
                 <a id="cart-link" href="cart.php">

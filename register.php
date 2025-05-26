@@ -10,7 +10,6 @@ $response = array('success' => false, 'message' => '');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        // Validate required fields
         $required_fields = ['first_name', 'last_name', 'username', 'password', 'email', 'birthdate', 'gender'];
         foreach ($required_fields as $field) {
             if (!isset($_POST[$field]) || empty(trim($_POST[$field]))) {
@@ -18,23 +17,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        // Validate email format
         if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
             throw new Exception("Invalid email format");
         }
 
-        // Validate password strength (minimum 8 characters)
         if (strlen($_POST['password']) < 8) {
             throw new Exception("Password must be at least 8 characters long");
         }
 
-        // Validate gender
         $valid_genders = ['male', 'female', 'other'];
         if (!in_array($_POST['gender'], $valid_genders)) {
             throw new Exception("Invalid gender selection");
         }
 
-        // Create user (pass raw password; hashing done inside User class)
         if ($user->create(
             $_POST['first_name'],
             $_POST['last_name'],
@@ -54,6 +49,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Return JSON response
 header('Content-Type: application/json');
 echo json_encode($response);

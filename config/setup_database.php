@@ -9,13 +9,11 @@ require_once __DIR__ . '/database.php';
 try {
     error_log("Starting database setup...");
     
-    // Read the SQL file
     $sql = file_get_contents(__DIR__ . '/database.sql');
     if ($sql === false) {
         throw new Exception("Could not read database.sql file");
     }
     
-    // Connect to MySQL without selecting a database
     $conn = new mysqli(DB_HOST, DB_USER, DB_PASS);
     if ($conn->connect_error) {
         throw new Exception("Connection failed: " . $conn->connect_error);
@@ -23,10 +21,8 @@ try {
     
     error_log("Connected to MySQL server");
     
-    // Execute the SQL commands
     if ($conn->multi_query($sql)) {
         do {
-            // Store first result set
             if ($result = $conn->store_result()) {
                 $result->free();
             }
