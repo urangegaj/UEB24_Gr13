@@ -36,7 +36,7 @@ require_once 'session_handler.php';
                     </button>
                     <div id="account-dropdown" class="dropdown hidden">
                         <a href="profile.php" class="dropdown-item">Profile</a>
-                        <a href="orders.html" class="dropdown-item">My Orders</a>
+                        <a href="cart.html" class="dropdown-item">My Orders</a>
                         <button id="logout-button" class="dropdown-item">Logout</button>
                     </div>
                 </div>
