@@ -59,22 +59,15 @@ public function render() {
             <p class='price'>\${$this->price}</p>
         </div>
 
-        
-        <form method='post' style='display:inline'>
-            <input type='hidden' name='wishlistId' value='{$this->id}'>
-            <input type='hidden' name='category' value='{$this->category}'>
-            <button class='heart-button {$wishlistClass}' name='add_to_wishlist' type='submit'>
-                <svg viewBox='0 0 24 24' width='22px' height='22px' xmlns='http://www.w3.org/2000/svg'>
+        <button class='add-to-cart {$cartClass}' data-id='{$this->id}' data-type='cart'>{$cartText}</button>
+<button class='heart-button {$wishlistClass}' data-id='{$this->id}' data-type='wishlist'>
+    <svg viewBox='0 0 24 24' width='22px' height='22px' xmlns='http://www.w3.org/2000/svg'>
                     <path fill-rule='evenodd' clip-rule='evenodd' d='M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z'/>
                 </svg>
-            </button>
-        </form>
+</button>
 
-        <form method='post'>
-            <input type='hidden' name='cartId' value='{$this->id}'>
-            <input type='hidden' name='category' value='{$this->category}'>
-            <button class='add-to-cart {$cartClass}' type='submit'>{$cartText}</button>
-        </form>
+        
+
     </div>";
 }
 
@@ -310,6 +303,38 @@ function getWishlistCount() {
 
 
     <script>
+
+        $(document).ready(function(){
+    $(".add-to-cart, .heart-button").click(function(e){
+        e.preventDefault();
+        var button = $(this);
+        var id = button.data("id");
+        var type = button.data("type");
+
+        $.ajax({
+            url: 'actions.php',
+            type: 'POST',
+            data: (type === 'cart') ? {cartId: id} : {wishlistId: id},
+            success: function(response){
+                var data = JSON.parse(response);
+                
+                // Mesazhi
+                $("#mesazhi").remove();
+                $(".products").prepend("<div id='mesazhi' class='cart-message'>" + data.message + "</div>");
+
+                // Ndrysho numrin në navbar
+                if(type === 'cart'){
+                    $("#cart-link span").text(data.cartCount);
+                    button.toggleClass("in-cart");
+                    button.text(button.hasClass("in-cart") ? "Remove from Cart" : "Add to Cart");
+                } else {
+                    $("#wishlist-link span").text(data.wishlistCount);
+                    button.toggleClass("selected");
+                }
+            }
+        });
+    });
+});
                 setTimeout(() => {
                     const mesazhi = document.getElementById('mesazhi');
                     if(mesazhi){
@@ -322,18 +347,22 @@ function getWishlistCount() {
                     
                 }, 2500);
 
-
-document.getElementById('searchInput').addEventListener('input', function () {
+document.getElementById('searchInput').addEventListener('input', async function () {
     const searchTerm = this.value;
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', 'search-products.php?query=' + encodeURIComponent(searchTerm), true);
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            document.querySelector('.products').innerHTML = xhr.responseText;
+    try {
+        const response = await fetch('search-products.php?query=' + encodeURIComponent(searchTerm));
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
-    };
-    xhr.send();
+
+        const data = await response.text();
+        document.querySelector('.products').innerHTML = data;
+
+    } catch (error) {
+        console.error('Error:', error);
+    }
 });
 
 

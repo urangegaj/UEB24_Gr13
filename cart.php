@@ -11,23 +11,11 @@ if (!isset($_SESSION['wishlistItems'])) {
 require_once 'productData.php';
 
 
-
-
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    if (isset($_POST['remove_from_cart'])){
-    $removeId = $_POST['productId'];
-    unset($_SESSION['cartItems'][$removeId]);
-    $_SESSION['message'] = "Item removed from cart!";
-    header("Location: cart.php");
-    exit();
-}
-
 if (isset($_POST['checkout'])) {
     header("Location: bin.php");
     exit();
 }
 
-}
 
 $cartIds = array_keys($_SESSION['cartItems'] ?? []);
 $cartItems = array_filter($products, fn($p) => in_array($p->id, $cartIds));
@@ -252,10 +240,8 @@ $cartItems = array_filter($products, fn($p) => in_array($p->id, $cartIds));
                             <div class='cart-item-details'>
                                 <h3>{$product->name}</h3>
                                 <p class='price'>\$" . number_format($product->price, 2) . "</p>
-                                <form method='post' action='cart.php'>
-                                    <input type='hidden' name='productId' value='{$product->id}'>
-                                    <button class='remove-from-cart' type='submit' name='remove_from_cart'>Remove</button>
-                                </form>
+                               <button class='remove-from-cart' data-id='{$product->id}'>Remove</button>
+
                             </div>
                           </li>";
                     $totalPrice += floatval($product->price);
@@ -310,6 +296,49 @@ $cartItems = array_filter($products, fn($p) => in_array($p->id, $cartIds));
                     
                 }, 2500);
             
+
+                
+document.addEventListener('DOMContentLoaded', () => {
+    const removeButtons = document.querySelectorAll('.remove-from-cart');
+    removeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const productId = button.getAttribute('data-id');
+
+            fetch('actions.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `removeFromCartId=${productId}`
+            })
+            .then(res => res.json())
+            .then(data => {
+                // Hiq artikullin nga DOM
+                const item = button.closest('.cart-item');
+                if (item) item.remove();
+
+                // Përditëso numrin në ikonën e shportës
+                const cartLink = document.querySelector('#cart-link span');
+                if (cartLink) cartLink.textContent = data.cartCount;
+
+                // Përditëso çmimin total
+                const totalEl = document.getElementById('total-price');
+                if (data.cartCount > 0 && totalEl) {
+                    totalEl.textContent = `Total Price: $${parseFloat(data.totalPrice).toFixed(2)}`;
+                } else if (totalEl) {
+                    totalEl.remove();
+                    document.getElementById('cart-actions')?.remove();
+                    document.getElementById('cart-container').innerHTML += `
+                        <div id="empty-cart-message">
+                            <button id="continue-shopping-btn" onclick="window.location.href='products.php';">Continue Shopping</button>
+                        </div>`;
+                }
+            });
+        });
+    });
+});
+
+
                 </script>
 </body>
 </html>

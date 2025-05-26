@@ -3,32 +3,6 @@ session_start();
 
 require_once 'productData.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['add_to_cart'])) {
-        $id = $_POST['product_id'];
-        $_SESSION['cartItems'][$id] = true;
-        $_SESSION['message'] = "Item added to cart!";
-        header("Location: wishlist.php");
-        exit();
-    }
-
-    if (isset($_POST['remove'])) {
-        $id = $_POST['product_id'];
-        unset($_SESSION['wishlistItems'][$id]); 
-        $_SESSION['message'] = "Item removed from favourites!";
-        header("Location: wishlist.php");
-        exit();
-    }
-
-    
-    if (isset($_POST['remove_from_cart'])) {
-        $id = $_POST['product_id'];
-        unset($_SESSION['cartItems'][$id]);
-        $_SESSION['message'] = "Item removed from cart!";
-        header("Location: wishlist.php");
-        exit();
-    }
-}
 
 $wishlistIds = array_keys($_SESSION['wishlistItems'] ?? []);
 $wishlistItems = array_filter($products, fn($p) => in_array($p->id, $wishlistIds));
@@ -42,6 +16,7 @@ $wishlistItems = array_filter($products, fn($p) => in_array($p->id, $wishlistIds
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="custom-styles.css">
     <link rel="website icon" type="png" href="images/logo1.png">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Favourites</title>
     <style>
         
@@ -260,45 +235,34 @@ button.add-to-cart:hover {
 
 
     <h2>Your Saved Favourites</h2>
-    <ul id="wishlist-items">
-    <?php
-if (!empty($wishlistItems)) {
-    foreach ($wishlistItems as $item) {
-        echo "
-        <li class='wishlist-item'>
-            <div class='product-card'>
-                <div class='product-image'>
-                    <img src='{$item->image}' alt='{$item->name}'>
-                    <p class='price'>\${$item->price}</p>
+<ul id="wishlist-items">
+<?php if (!empty($wishlistItems)): ?>
+    <?php foreach ($wishlistItems as $item): ?>
+        <li class="wishlist-item">
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="<?= htmlspecialchars($item->image) ?>" alt="<?= htmlspecialchars($item->name) ?>">
+                    <p class="price">$<?= htmlspecialchars($item->price) ?></p>
                 </div>
-                <div class='product-info'>
-                    <h3>{$item->name}</h3>
-                    
-                    <form method='post'>
-                        <input type='hidden' name='product_id' value='{$item->id}'>
-                        <button class='button remove-from-wishlist' name='remove'>Remove from Favourites</button>
-                    </form>
+                <div class="product-info">
+                    <h3><?= htmlspecialchars($item->name) ?></h3>
 
-                    <form method='post'>
-                        <input type='hidden' name='product_id' value='{$item->id}'>";
-                        
-        if (isset($_SESSION['cartItems'][$item->id])) {
-            echo "<button class='button remove-from-wishlist' name='remove_from_cart'>Remove from Cart</button>";
-        } else {
-            echo "<button class='button add-to-cart' name='add_to_cart'>Add to Cart</button>";
-        }
+                    <button class="remove-from-wishlist ajax-remove" data-id="<?= $item->id ?>">Remove from Favourites</button>
 
-        echo "</form>
+                    <?php if (isset($_SESSION['cartItems'][$item->id])): ?>
+    <button class="add-to-cart ajax-remove-cart" data-id="<?= $item->id ?>">Remove from Cart</button>
+<?php else: ?>
+    <button class="add-to-cart ajax-add-cart" data-id="<?= $item->id ?>">Add to Cart</button>
+<?php endif; ?>
                 </div>
             </div>
-        </li>";
-    }
-} else {
-    echo "<div class='no-favorites-message'><p>No items have been added to your Favourites yet.</p></div>";
-}
-?>
+        </li>
+    <?php endforeach; ?>
+<?php else: ?>
+    <div class="no-favorites-message"><p>No items have been added to your Favourites yet.</p></div>
+<?php endif; ?>
+</ul>
 
-    </ul>
 
 
  </main>  
@@ -317,7 +281,63 @@ if (!empty($wishlistItems)) {
                     }
                     
                 }, 2500);
-                </script>
+$(document).ready(function() {
+    // Add to cart
+    $(document).on("click", ".ajax-add-cart", function(e) {
+        e.preventDefault();
+        const button = $(this);
+        const id = button.data("id");
+
+        // Ndrysho butonin menjëherë në "Remove from Cart"
+        button.replaceWith(`<button class="add-to-cart ajax-remove-cart" data-id="${id}">Remove from Cart</button>`);
+
+        // Dërgo kërkesën AJAX për të shtuar produktin në karrocë
+        $.post("actions.php", { addToCartId: id }, function(data) {
+            const res = JSON.parse(data);
+            $("#cart-link span").text(res.cartCount);
+            showMessage(res.message);
+        });
+    });
+
+    // Remove from cart
+    $(document).on("click", ".ajax-remove-cart", function(e) {
+        e.preventDefault();
+        const button = $(this);
+        const id = button.data("id");
+
+        // Ndrysho butonin menjëherë në "Add to Cart"
+        button.replaceWith(`<button class="add-to-cart ajax-add-cart" data-id="${id}">Add to Cart</button>`);
+
+        // Dërgo kërkesën AJAX për të hequr produktin nga karroca
+        $.post("actions.php", { removeFromCartId: id }, function(data) {
+            const res = JSON.parse(data);
+            $("#cart-link span").text(res.cartCount);
+            showMessage(res.message);
+        });
+    });
+
+    // Remove from wishlist
+    $(document).on("click", ".ajax-remove", function(e) {
+        e.preventDefault();
+        const button = $(this);
+        const id = button.data("id");
+
+        $.post("actions.php", { removeFromWishlistId: id }, function(data) {
+            const res = JSON.parse(data);
+            button.closest(".wishlist-item").remove();
+            $("#wishlist-link span").text(res.wishlistCount);
+            showMessage(res.message);
+
+            // If wishlist is empty
+            if (res.wishlistCount == 0) {
+                $("#wishlist-items").html("<p>No items have been added to your Favourites yet.</p>");
+            }
+        });
+    });
+});
+
+    
+    </script>
 
 </body>
 
