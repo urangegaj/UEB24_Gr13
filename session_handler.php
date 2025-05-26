@@ -11,16 +11,30 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Initialize session variables if they don't exist
+if (!isset($_SESSION['visit_count'])) {
+    $_SESSION['visit_count'] = 1;
+}
+
 function setUserPreferences($bgColor, $theme) {
+    $_SESSION['preferences'] = [
+        'theme' => $theme,
+        'bg_color' => $bgColor
+    ];
+    
+    // Set cookies that expire in 30 days
     setcookie('bg_color', $bgColor, time() + (86400 * 30), '/');
     setcookie('theme', $theme, time() + (86400 * 30), '/');
 }
 
 function getUserPreferences() {
     if (!isset($_SESSION['preferences'])) {
+        $theme = isset($_COOKIE['theme']) ? $_COOKIE['theme'] : 'light';
+        $bgColor = isset($_COOKIE['bg_color']) ? $_COOKIE['bg_color'] : '#f8f9fa';
+        
         $_SESSION['preferences'] = [
-            'theme' => 'light',
-            'bg_color' => '#f8f9fa'
+            'theme' => $theme,
+            'bg_color' => $bgColor
         ];
     }
     return $_SESSION['preferences'];
@@ -33,14 +47,23 @@ function deleteUserPreferences() {
 
 function incrementVisitCount() {
     if (!isset($_SESSION['visit_count'])) {
-        $_SESSION['visit_count'] = 0;
+        $_SESSION['visit_count'] = 1;
+    } else {
+        $_SESSION['visit_count'] = intval($_SESSION['visit_count']) + 1;
     }
-    $_SESSION['visit_count']++;
+    return $_SESSION['visit_count'];
+}
+
+function resetVisitCount() {
+    $_SESSION['visit_count'] = 1;
     return $_SESSION['visit_count'];
 }
 
 function getVisitCount() {
-    return isset($_SESSION['visit_count']) ? $_SESSION['visit_count'] : 0;
+    if (!isset($_SESSION['visit_count'])) {
+        $_SESSION['visit_count'] = 1;
+    }
+    return $_SESSION['visit_count'];
 }
 
 function storeUserData($name, $email) {
@@ -115,6 +138,58 @@ if (isLoggedIn()) {
     echo "<script>window.isLoggedIn = true;</script>";
 } else {
     echo "<script>window.isLoggedIn = false;</script>";
+}
+
+// Handle theme switching via AJAX or form submission
+if (isset($_POST['action']) && $_POST['action'] === 'switch_theme') {
+    try {
+        $newTheme = $_POST['theme'] ?? 'light';
+        $newBgColor = $newTheme === 'dark' ? '#1a1a1a' : '#f8f9fa';
+        
+        // Update session preferences
+        $_SESSION['preferences'] = [
+            'theme' => $newTheme,
+            'bg_color' => $newBgColor
+        ];
+        
+        // Update cookies with proper path and domain
+        $cookiePath = '/';
+        $cookieDomain = '';
+        $secure = false;
+        $httponly = true;
+        
+        setcookie('theme', $newTheme, time() + (86400 * 30), $cookiePath, $cookieDomain, $secure, $httponly);
+        setcookie('bg_color', $newBgColor, time() + (86400 * 30), $cookiePath, $cookieDomain, $secure, $httponly);
+        
+        // Force session write
+        session_write_close();
+        
+        // If it's an AJAX request, return JSON
+        if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => true,
+                'theme' => $newTheme,
+                'bg_color' => $newBgColor,
+                'message' => 'Theme updated successfully'
+            ]);
+        } else {
+            // If it's a form submission, redirect back to contact page
+            header('Location: contact.php');
+        }
+    } catch (Exception $e) {
+        error_log('Theme switching error: ' . $e->getMessage());
+        if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => false,
+                'message' => 'Failed to switch theme: ' . $e->getMessage()
+            ]);
+        } else {
+            header('Location: contact.php?error=theme_switch_failed');
+        }
+    }
+    exit;
 }
 
 validateSession();

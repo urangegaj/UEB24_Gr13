@@ -4074,3 +4074,128 @@
 (
 )
 
+[26-May-2025 22:19:49 Europe/Berlin] Session started in includes/session.php with ID: uqlqaqi5g25aeeab9bebjgdv89
+[26-May-2025 22:19:49 Europe/Berlin] Session data: Array
+(
+)
+
+[26-May-2025 22:19:50 Europe/Berlin] Session started in includes/session.php with ID: uqlqaqi5g25aeeab9bebjgdv89
+[26-May-2025 22:19:50 Europe/Berlin] Session data: Array
+(
+)
+
+[26-May-2025 22:19:51 Europe/Berlin] Session started in includes/session.php with ID: uqlqaqi5g25aeeab9bebjgdv89
+[26-May-2025 22:19:51 Europe/Berlin] Session data: Array
+(
+)
+
+[26-May-2025 22:20:32 Europe/Berlin] Session started in includes/session.php with ID: uqlqaqi5g25aeeab9bebjgdv89
+[26-May-2025 22:20:32 Europe/Berlin] Session data: Array
+(
+)
+
+[26-May-2025 22:21:02 Europe/Berlin] Session started in includes/session.php with ID: k78oek2tjrt1e5v25ghs9iqfhs
+[26-May-2025 22:21:02 Europe/Berlin] Session data: Array
+(
+    [user_id] => 1
+    [username] => user
+    [first_name] => User
+    [last_name] => User
+    [email] => newuser@example.com
+    [birthdate] => 
+    [gender] => 
+    [profile_picture] => 
+    [logged_in] => 1
+    [last_activity] => 1748290859
+)
+
+[26-May-2025 22:21:02 Europe/Berlin] Profile page accessed. Session ID: k78oek2tjrt1e5v25ghs9iqfhs
+[26-May-2025 22:21:02 Europe/Berlin] Session data: Array
+(
+    [user_id] => 1
+    [username] => user
+    [first_name] => User
+    [last_name] => User
+    [email] => newuser@example.com
+    [birthdate] => 
+    [gender] => 
+    [profile_picture] => 
+    [logged_in] => 1
+    [last_activity] => 1748290859
+)
+
+[26-May-2025 22:21:02 Europe/Berlin] Checking login status in includes/session.php. Session ID: k78oek2tjrt1e5v25ghs9iqfhs
+[26-May-2025 22:21:02 Europe/Berlin] Session data: Array
+(
+    [user_id] => 1
+    [username] => user
+    [first_name] => User
+    [last_name] => User
+    [email] => newuser@example.com
+    [birthdate] => 
+    [gender] => 
+    [profile_picture] => 
+    [logged_in] => 1
+    [last_activity] => 1748290859
+)
+
+[26-May-2025 22:21:02 Europe/Berlin] User is logged in with ID: 1
+[26-May-2025 22:21:02 Europe/Berlin] Checking login status in includes/session.php. Session ID: k78oek2tjrt1e5v25ghs9iqfhs
+[26-May-2025 22:21:02 Europe/Berlin] Session data: Array
+(
+    [user_id] => 1
+    [username] => user
+    [first_name] => User
+    [last_name] => User
+    [email] => newuser@example.com
+    [birthdate] => 
+    [gender] => 
+    [profile_picture] => 
+    [logged_in] => 1
+    [last_activity] => 1748290859
+)
+
+[26-May-2025 22:21:02 Europe/Berlin] User is logged in with ID: 1
+[26-May-2025 22:21:02 Europe/Berlin] User successfully authenticated. User data: Array
+(
+    [user_id] => 1
+    [username] => user
+    [first_name] => User
+    [last_name] => User
+    [email] => newuser@example.com
+    [birthdate] => 
+    [gender] => 
+    [profile_picture] => 
+    [logged_in] => 1
+)
+
+[26-May-2025 22:21:08 Europe/Berlin] Session started in includes/session.php with ID: k78oek2tjrt1e5v25ghs9iqfhs
+[26-May-2025 22:21:08 Europe/Berlin] Session data: Array
+(
+    [user_id] => 1
+    [username] => user
+    [first_name] => User
+    [last_name] => User
+    [email] => newuser@example.com
+    [birthdate] => 
+    [gender] => 
+    [profile_picture] => 
+    [logged_in] => 1
+    [last_activity] => 1748290859
+)
+
+[26-May-2025 22:31:32 Europe/Berlin] Session started in includes/session.php with ID: k78oek2tjrt1e5v25ghs9iqfhs
+[26-May-2025 22:31:32 Europe/Berlin] Session data: Array
+(
+    [user_id] => 1
+    [username] => user
+    [first_name] => User
+    [last_name] => User
+    [email] => newuser@example.com
+    [birthdate] => 
+    [gender] => 
+    [profile_picture] => 
+    [logged_in] => 1
+    [last_activity] => 1748290859
+)
+

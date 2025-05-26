@@ -1,6 +1,11 @@
 <?php
 require_once 'session_handler.php';
 
+// Initialize and increment visit count
+$visitCount = incrementVisitCount();
+
+$preferences = getUserPreferences();
+$themeStyles = getThemeStyles();
 
 $config = [
     'smtp_host' => 'smtp.gmail.com',  
@@ -83,10 +88,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo json_encode($response);
     exit;
 }
-
-$visitCount = incrementVisitCount();
-$preferences = getUserPreferences();
-$themeStyles = getThemeStyles();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -110,32 +111,31 @@ $themeStyles = getThemeStyles();
         }
 
         .theme-switcher {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: <?php echo $themeStyles['accent-color']; ?>;
-            padding: 12px 24px;
-            border-radius: 8px;
-            color: white;
-            cursor: pointer;
-            z-index: 1001;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            white-space: nowrap;
-        }
-
-        .theme-switcher i {
-            font-size: 20px;
+            background: <?php echo $themeStyles['accent-color']; ?> !important;
+            padding: 12px 24px !important;
+            border-radius: 8px !important;
+            color: white !important;
+            cursor: pointer !important;
+            z-index: 1001 !important;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            font-size: 16px !important;
+            font-weight: bold !important;
+            white-space: nowrap !important;
+            transition: all 0.3s ease !important;
+            border: none !important;
         }
 
         .theme-switcher:hover {
             opacity: 0.9;
             transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3) !important;
+        }
+        
+        .theme-switcher:active {
+            transform: translateY(0);
         }
 
         .visit-counter {
@@ -148,6 +148,10 @@ $themeStyles = getThemeStyles();
             color: white;
             z-index: 1000;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .background-section {
@@ -431,13 +435,59 @@ $themeStyles = getThemeStyles();
         .header .container {
             position: relative;
         }
+
+        /* Add transition for all theme-dependent elements */
+        .contact-form,
+        input,
+        textarea,
+        label,
+        .footer,
+        .section-content h2,
+        .section-content p {
+            transition: all 0.3s ease;
+        }
+
+        /* Add dark mode specific styles */
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #ffffff;
+        }
+
+        body.dark-mode .contact-form {
+            background: #2a2a2a;
+            border-color: #444;
+        }
+
+        body.dark-mode input,
+        body.dark-mode textarea {
+            background: #333333;
+            color: #ffffff;
+            border-color: #444;
+        }
+
+        body.dark-mode label {
+            color: #ffffff;
+        }
+
+        body.dark-mode .footer {
+            background-color: #1a1a1a;
+            border-color: #333;
+        }
+
+        body.dark-mode .footer p {
+            color: #ffffff;
+        }
+
+        body.dark-mode .section-content h2 {
+            color: #ffffff;
+        }
+
+        body.dark-mode .section-content p {
+            color: #cccccc;
+        }
     </style>
 </head>
-<body>
-
-    <div class="visit-counter" onclick="resetCounter()" style="cursor: pointer;">
-        <i class="fa fa-eye"></i> Visit Count: <?php echo $visitCount; ?> <i class="fa fa-refresh" style="margin-left: 5px;"></i>
-    </div>
+<body class="<?php echo $preferences['theme'] === 'dark' ? 'dark-mode' : ''; ?>">
 
     <header class="header">
         <div class="container">
@@ -453,12 +503,25 @@ $themeStyles = getThemeStyles();
                     <li><a href="#contactForm" title="Contact Us">Contact</a></li>
                 </ul>
             </nav>
-            <div class="theme-switcher" onclick="toggleTheme()">
-                <i class="fa fa-<?php echo $preferences['theme'] === 'dark' ? 'sun-o' : 'moon-o'; ?>"></i>
-                <span>Switch to <?php echo $preferences['theme'] === 'dark' ? 'Light' : 'Dark'; ?> Mode</span>
-            </div>
         </div>
     </header>
+
+    <!-- Theme switcher button -->
+    <form id="theme-form" method="POST" action="session_handler.php" style="display: inline; position: fixed; top: 20px; right: 20px; z-index: 1001;">
+        <input type="hidden" name="action" value="switch_theme">
+        <input type="hidden" name="theme" value="<?php echo $preferences['theme'] === 'dark' ? 'light' : 'dark'; ?>">
+        <button type="submit" class="theme-switcher" style="background: <?php echo $themeStyles['accent-color']; ?>; padding: 12px 24px; border-radius: 8px; color: white; cursor: pointer; z-index: 1001; box-shadow: 0 4px 8px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: bold; white-space: nowrap; transition: all 0.3s ease; border: none; background: none; box-shadow: none;">
+            <i class="fa fa-<?php echo $preferences['theme'] === 'dark' ? 'sun-o' : 'moon-o'; ?>"></i>
+            <span>Switch to <?php echo $preferences['theme'] === 'dark' ? 'Light' : 'Dark'; ?> Mode</span>
+        </button>
+    </form>
+
+    <!-- Visit counter -->
+    <div class="visit-counter" style="position: fixed; bottom: 20px; right: 20px; background: <?php echo $themeStyles['accent-color']; ?>; padding: 10px 20px; border-radius: 5px; color: white; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: all 0.3s ease; display: flex; align-items: center; gap: 8px;">
+        <i class="fa fa-eye"></i>
+        <span id="visit-count">Visit Count: <?php echo $visitCount; ?></span>
+        <i class="fa fa-refresh" style="cursor: pointer;" onclick="resetCounter(event)"></i>
+    </div>
 
     <div class="background-section">
         <h1>Contact Us</h1>
@@ -489,42 +552,62 @@ $themeStyles = getThemeStyles();
      <?php require 'footer.php'; ?>
 
     <script>
-        function toggleTheme() {
-            const currentTheme = '<?php echo $preferences['theme']; ?>';
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        $(document).ready(function() {
+            // Theme switcher functionality
+            $('#theme-switcher').click(function(e) {
+                e.preventDefault(); // Prevent any default action
+                const currentTheme = '<?php echo $preferences['theme']; ?>';
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                
+                // Send the update to the server
+                $.ajax({
+                    url: 'session_handler.php',
+                    method: 'POST',
+                    data: { 
+                        action: 'switch_theme',
+                        theme: newTheme
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            // Force reload immediately
+                            location.reload();
+                        }
+                    }
+                });
+            });
+        });
+
+        // Reset counter functionality
+        function resetCounter(event) {
+            event.preventDefault();
+            event.stopPropagation();
             
-            fetch('set_preferences.php', {
+            const refreshIcon = event.target;
+            refreshIcon.style.pointerEvents = 'none'; // Prevent multiple clicks
+            
+            fetch('reset_counter.php', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ theme: newTheme })
+                    'Content-Type': 'application/json'
+                }
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-
-                    window.location.reload();
+                    // Update the counter display
+                    document.getElementById('visit-count').textContent = 'Visit Count: 1';
+                    // Force reload the page
+                    window.location.reload(true);
                 } else {
-                    console.error('Failed to update theme:', data.error);
+                    console.error('Failed to reset counter:', data.message);
+                    refreshIcon.style.pointerEvents = 'auto';
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
+                refreshIcon.style.pointerEvents = 'auto';
             });
-        }
-
-        function resetCounter() {
-            fetch('reset_counter.php')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        window.location.reload();
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
         }
 
         document.getElementById('contactForm').addEventListener('submit', function(event) {

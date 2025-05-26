@@ -5400,3 +5400,102 @@ Stack trace:
 Stack trace:
 #0 {main}
   thrown in C:\xampp\htdocs\UEB24_Gr13\models\login.php on line 9
+[26-May-2025 22:20:07 Europe/Berlin] Session started in includes/session.php with ID: uqlqaqi5g25aeeab9bebjgdv89
+[26-May-2025 22:20:07 Europe/Berlin] Session data: Array
+(
+)
+
+[26-May-2025 22:20:07 Europe/Berlin] Login attempt started
+[26-May-2025 22:20:07 Europe/Berlin] Received login data - Username: testuser
+[26-May-2025 22:20:07 Europe/Berlin] Attempting to connect to database
+[26-May-2025 22:20:07 Europe/Berlin] Database connection successful
+[26-May-2025 22:20:07 Europe/Berlin] User object created
+[26-May-2025 22:20:07 Europe/Berlin] Login attempt for user: testuser
+[26-May-2025 22:20:07 Europe/Berlin] No user found with username: testuser
+[26-May-2025 22:20:07 Europe/Berlin] Login attempt result: 
+[26-May-2025 22:20:07 Europe/Berlin] Login failed - invalid credentials
+[26-May-2025 22:20:59 Europe/Berlin] Session started in includes/session.php with ID: uqlqaqi5g25aeeab9bebjgdv89
+[26-May-2025 22:20:59 Europe/Berlin] Session data: Array
+(
+)
+
+[26-May-2025 22:20:59 Europe/Berlin] Login attempt started
+[26-May-2025 22:20:59 Europe/Berlin] Received login data - Username: user
+[26-May-2025 22:20:59 Europe/Berlin] Attempting to connect to database
+[26-May-2025 22:20:59 Europe/Berlin] Database connection successful
+[26-May-2025 22:20:59 Europe/Berlin] User object created
+[26-May-2025 22:20:59 Europe/Berlin] Login attempt for user: user
+[26-May-2025 22:20:59 Europe/Berlin] User found in database: Array
+(
+    [user_id] => 1
+    [username] => user
+    [first_name] => User
+    [last_name] => User
+    [email] => newuser@example.com
+    [password] => $2y$10$s1fN6aR9S2SOZzSrDUlry.cXKmMU1OBDVrkGbotiApk3jAT188oVa
+    [profile_picture] => 
+)
+
+[26-May-2025 22:20:59 Europe/Berlin] Attempting to verify password for user: user
+[26-May-2025 22:20:59 Europe/Berlin] Stored hash: $2y$10$s1fN6aR9S2SOZzSrDUlry.cXKmMU1OBDVrkGbotiApk3jAT188oVa
+[26-May-2025 22:20:59 Europe/Berlin] Provided password: user123
+[26-May-2025 22:20:59 Europe/Berlin] Password verified for user: user
+[26-May-2025 22:20:59 Europe/Berlin] Returning user data: Array
+(
+    [user_id] => 1
+    [username] => user
+    [first_name] => User
+    [last_name] => User
+    [email] => newuser@example.com
+    [profile_picture] => 
+)
+
+[26-May-2025 22:20:59 Europe/Berlin] Login attempt result: Array
+(
+    [user_id] => 1
+    [username] => user
+    [first_name] => User
+    [last_name] => User
+    [email] => newuser@example.com
+    [profile_picture] => 
+)
+
+[26-May-2025 22:20:59 Europe/Berlin] Login successful, setting session data
+[26-May-2025 22:20:59 Europe/Berlin] User data before setting session: Array
+(
+    [user_id] => 1
+    [username] => user
+    [first_name] => User
+    [last_name] => User
+    [email] => newuser@example.com
+    [profile_picture] => 
+)
+
+[26-May-2025 22:20:59 Europe/Berlin] Session data set: Array
+(
+    [user_id] => 1
+    [username] => user
+    [first_name] => User
+    [last_name] => User
+    [email] => newuser@example.com
+    [birthdate] => 
+    [gender] => 
+    [profile_picture] => 
+    [logged_in] => 1
+    [last_activity] => 1748290859
+)
+
+[26-May-2025 22:20:59 Europe/Berlin] Session data after login: Array
+(
+    [user_id] => 1
+    [username] => user
+    [first_name] => User
+    [last_name] => User
+    [email] => newuser@example.com
+    [birthdate] => 
+    [gender] => 
+    [profile_picture] => 
+    [logged_in] => 1
+    [last_activity] => 1748290859
+)
+

@@ -1,10 +1,43 @@
 <?php
-session_start();
+// Prevent any output before headers
+ob_start();
 
-// Reset the visit count to 0
-$_SESSION['visit_count'] = 0;
+require_once 'session_handler.php';
 
-// Return success response
+// Clear any previous output
+ob_clean();
+
+// Set JSON header
 header('Content-Type: application/json');
-echo json_encode(['success' => true]);
+
+try {
+    // Reset the visit count using the session handler function
+    $newCount = resetVisitCount();
+    
+    // Force session write
+    session_write_close();
+    
+    // Clear any output buffer
+    ob_clean();
+    
+    // Send JSON response
+    echo json_encode([
+        'success' => true,
+        'message' => 'Visit counter reset successfully',
+        'count' => $newCount
+    ]);
+} catch (Exception $e) {
+    // Clear any output buffer
+    ob_clean();
+    
+    error_log('Reset counter error: ' . $e->getMessage());
+    echo json_encode([
+        'success' => false,
+        'message' => 'Failed to reset visit counter: ' . $e->getMessage()
+    ]);
+}
+
+// End output buffering and send
+ob_end_flush();
+exit;
 ?> 
