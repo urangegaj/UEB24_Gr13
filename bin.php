@@ -236,7 +236,7 @@ body {
                     <nav>
                         <ul class="nav-links">
                             <li><a href="./index.php">Home</a></li>
-                            <li><a href="/Products.php">Products</a></li>
+                            <li><a href="./Products.php">Products</a></li>
                             <li><a href="./About.php">About</a></li>
                             <li><a href="./Contact.html">Contact</a></li>
                         </ul>
