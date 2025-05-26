@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Initial UI update based on window.isLoggedIn
     updateUI(window.isLoggedIn);
 
     loginButton.addEventListener('click', () => {
@@ -78,13 +79,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
             
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
             const data = await response.json();
-            console.log('Login response:', data); 
+            console.log('Login response:', data); // Debug log
             
             if (data.success) {
                 e.target.reset();
-                window.isLoggedIn = true; 
+                window.isLoggedIn = true; // Update the global variable
                 updateUI(true);
+                loginModal.classList.remove('show'); // Close the modal
+                
+                // Update user information in the UI if available
+                if (data.user) {
+                    const userDisplay = document.querySelector('.user-display');
+                    if (userDisplay) {
+                        userDisplay.textContent = `${data.user.first_name} ${data.user.last_name}`;
+                    }
+                }
             } else {
                 const errorMessage = document.createElement('div');
                 errorMessage.className = 'error-message';
@@ -164,20 +178,30 @@ document.addEventListener('DOMContentLoaded', function() {
         e.stopPropagation();
         
         try {
+            console.log('Initiating logout...');
             const response = await fetch('models/logout.php', {
-                credentials: 'same-origin'
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'Accept': 'application/json'
+                }
             });
             
+            console.log('Logout response received:', response);
             const data = await response.json();
+            console.log('Logout data:', data);
             
             if (data.success) {
+                console.log('Logout successful, updating UI...');
+                window.isLoggedIn = false;
                 updateUI(false);
-                
-                window.location.reload();
+                window.location.href = 'index.php';
             } else {
-                alert('Logout failed. Please try again.');
+                console.error('Logout failed:', data.message);
+                alert(data.message || 'Logout failed. Please try again.');
             }
         } catch (error) {
+            console.error('Logout error:', error);
             alert('An error occurred during logout. Please try again.');
         }
     });
@@ -205,10 +229,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    profileLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.location.href = 'profile.php';
-    });
+    // Only add event listener if profileLink exists
+    if (profileLink) {
+        profileLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = 'profile.php';
+        });
+    }
 });
 
 $(document).ready(function () {
