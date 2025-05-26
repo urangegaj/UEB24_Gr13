@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/session.php';
+require_once 'session_handler.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +12,6 @@ require_once 'includes/session.php';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="website icon" type="png" href="images/logo1.png">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <?php include 'includes/session_init.php'; ?>
 </head>
 <body>
     <header class="header">
@@ -36,7 +35,7 @@ require_once 'includes/session.php';
                         <i class="fa fa-user"></i> My Account 
                     </button>
                     <div id="account-dropdown" class="dropdown hidden">
-                        <a href="profile.php" id="profile-link" class="dropdown-item">Profile</a>
+                        <a href="profile.php" class="dropdown-item">Profile</a>
                         <a href="cart.html" class="dropdown-item">My Orders</a>
                         <button id="logout-button" class="dropdown-item">Logout</button>
                     </div>
