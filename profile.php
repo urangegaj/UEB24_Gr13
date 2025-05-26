@@ -37,7 +37,6 @@ if (!$currentUser) {
             --error-color: #e74c3c;
         }
 
-        /* Profile specific styles */
         .profile-container {
             display: flex;
             align-items: flex-start;
@@ -360,7 +359,6 @@ if (!$currentUser) {
                 return;
             }
 
-            // Handle file upload
             dragDropArea.addEventListener('click', () => fileInput.click());
 
             dragDropArea.addEventListener('dragover', (e) => {
@@ -396,7 +394,6 @@ if (!$currentUser) {
                 }
             }
 
-            // Handle profile form submission
             profileForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const formData = new FormData(profileForm);
@@ -420,7 +417,6 @@ if (!$currentUser) {
                 }
             });
 
-            // Handle logout
             const logoutButton = document.getElementById('logout-button');
             if (logoutButton) {
                 logoutButton.addEventListener('click', async (e) => {

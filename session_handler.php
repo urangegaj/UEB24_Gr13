@@ -6,7 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
     ini_set('session.cookie_samesite', 'Lax');
     ini_set('session.gc_maxlifetime', 3600); // 1 hour
     ini_set('session.cookie_lifetime', 3600); // 1 hour
-    ini_set('session.cookie_path', '/');
+    ini_set('session.cookie_path', '/ueb24__gr13/'); // Update this to match your project path
     
     session_start();
 }
@@ -66,34 +66,33 @@ function getThemeStyles() {
 }
 
 function isLoggedIn() {
-    return isset($_SESSION['user_id']) && isset($_SESSION['username']) && isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
+    return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']) && isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 }
 
 function getCurrentUser() {
-    if (isLoggedIn()) {
-        return [
-            'user_id' => $_SESSION['user_id'],
-            'username' => $_SESSION['username'],
-            'email' => $_SESSION['email'] ?? null,
-            'first_name' => $_SESSION['first_name'] ?? null,
-            'last_name' => $_SESSION['last_name'] ?? null
-        ];
+    if (!isLoggedIn()) {
+        return null;
     }
-    return null;
+    
+    return [
+        'user_id' => $_SESSION['user_id'] ?? null,
+        'username' => $_SESSION['username'] ?? null,
+        'first_name' => $_SESSION['first_name'] ?? null,
+        'last_name' => $_SESSION['last_name'] ?? null,
+        'email' => $_SESSION['email'] ?? null,
+        'logged_in' => true
+    ];
 }
 
 function requireLogin() {
     if (!isLoggedIn()) {
-        header('Location: index.html');
+        header('Location: index.php');
         exit();
     }
 }
 
 function clearSession() {
-    $_SESSION = array();
-    if (isset($_COOKIE[session_name()])) {
-        setcookie(session_name(), '', time() - 3600, '/');
-    }
+    session_unset();
     session_destroy();
 }
 
@@ -109,6 +108,13 @@ function validateSession() {
         return false;
     }
     return true;
+}
+
+// Check if user is logged in and set JavaScript variable
+if (isLoggedIn()) {
+    echo "<script>window.isLoggedIn = true;</script>";
+} else {
+    echo "<script>window.isLoggedIn = false;</script>";
 }
 
 validateSession();
