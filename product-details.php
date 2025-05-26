@@ -8,9 +8,9 @@ if (!isset($_GET['id'])) {
     exit;
 }
 
-$id = $_GET['id'];  // Merr ID si string
+$id = $_GET['id'];  
 $stmt = $con->prepare("SELECT * FROM products WHERE id = ?");
-$stmt->bind_param("s", $id);  // Trajtoje si string
+$stmt->bind_param("s", $id);  
 $stmt->execute();
 $product = $stmt->get_result()->fetch_assoc();
 
@@ -85,5 +85,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
 </div>
 
-3
+
 

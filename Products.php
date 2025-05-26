@@ -286,8 +286,7 @@ function getWishlistCount() {
 
     <!-- perdorimi i incude -->
      <?php include 'footer.php'; ?>
-<!-- 
-  <div id="product-details-container"></div> -->
+
 
 
   <div id="productModal" class="modal" style="display:none;">
@@ -318,11 +317,11 @@ function getWishlistCount() {
             success: function(response){
                 var data = JSON.parse(response);
                 
-                // Mesazhi
+         
                 $("#mesazhi").remove();
                 $(".products").prepend("<div id='mesazhi' class='cart-message'>" + data.message + "</div>");
 
-                // Ndrysho numrin në navbar
+               
                 if(type === 'cart'){
                     $("#cart-link span").text(data.cartCount);
                     button.toggleClass("in-cart");
@@ -345,47 +344,145 @@ function getWishlistCount() {
                         }, 500);
                     }
                     
+
                 }, 2500);
 
+                
 document.getElementById('searchInput').addEventListener('input', async function () {
-    const searchTerm = this.value;
+    const searchTerm = this.value.trim();
 
     try {
         const response = await fetch('search-products.php?query=' + encodeURIComponent(searchTerm));
+        if (!response.ok) throw new Error('Network error');
 
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+        const data = await response.json();
+        const container = document.querySelector('.products');
+        container.innerHTML = '';
+
+        if (data.products.length === 0) {
+            container.innerHTML = '<p>No matching products found.</p>';
+            return;
         }
 
-        const data = await response.text();
-        document.querySelector('.products').innerHTML = data;
+        data.products.forEach(product => {
+            const productHTML = `
+                <div class="product" data-id="${product.id}">
+                    <img src="${product.image}" alt="${product.name}">
+                    <div class="product-details">
+                        <h3>${product.name}</h3>
+                        <p class="price">$${product.price}</p>
+                    </div>
+                    <button class="heart-button ${product.inWishlist ? 'selected' : ''}" data-id="${product.id}">
+                        <svg viewBox='0 0 24 24' width='22px' height='22px' xmlns='http://www.w3.org/2000/svg'>
+                            <path fill-rule='evenodd' clip-rule='evenodd' d='M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z'/>
+                        </svg>
+                    </button>
+                    <button class="add-to-cart ${product.inCart ? 'in-cart' : ''}" data-id="${product.id}">
+                        ${product.inCart ? 'Remove from Cart' : 'Add to Cart'}
+                    </button>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', productHTML);
+        });
+
+        attachButtonListeners();
 
     } catch (error) {
         console.error('Error:', error);
     }
 });
 
+function attachButtonListeners() {
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', async function () {
+            const productId = this.getAttribute('data-id');
+            const formData = new FormData();
+            formData.append('cartId', productId); 
+
+            try {
+                const response = await fetch('actions.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                // Toggle class dhe tekstin
+                if (result.message.includes('removed')) {
+                    this.classList.remove('in-cart');
+                    this.textContent = 'Add to Cart';
+                } else {
+                    this.classList.add('in-cart');
+                    this.textContent = 'Remove from Cart';
+                }
+
+                if (result.cartCount !== undefined) {
+                    document.querySelector('#cartCount').textContent = result.cartCount;
+                }
+
+                showMessage(result.message); 
+
+            } catch (error) {
+                console.error('Cart toggle failed:', error);
+            }
+        });
+    });
+
+
+    document.querySelectorAll('.heart-button').forEach(button => {
+        button.addEventListener('click', async function () {
+            const productId = this.getAttribute('data-id');
+            const formData = new FormData();
+            formData.append('wishlistId', productId);
+            try {
+                const response = await fetch('actions.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                this.classList.toggle('selected');
+
+                if (result.wishlistCount !== undefined) {
+                    document.querySelector('#wishlistCount').textContent = result.wishlistCount;
+                }
+
+                showMessage(result.message);
+            } catch (error) {
+                console.error('Wishlist toggle failed:', error);
+            }
+        });
+    });
+}
+
+
+
+
+
+
+
 
 $(document).on('click', '.product img, .product h3, .product .price', function(e) {
-    e.stopPropagation(); // ndalon përhapjen e eventit te .product nëse ka ndonjë event aty
+    e.stopPropagation(); 
 
     const productId = $(this).closest('.product').data('id');
     console.log('Klikuar produkti me ID:', productId);
 
-    // Pastroni modalin para se të ngarkohet produkti tjetër
+   
     $('#modalBody').html('');
 
-    // Shto një parameter unik për të shmangur cache
-    const uniqueParam = new Date().getTime();  // përdorim kohën aktuale si parameter unik
+   
+    const uniqueParam = new Date().getTime(); 
 
     $.ajax({
         url: 'product-details.php',
         type: 'GET',
-        data: { id: productId, timestamp: uniqueParam },  // shto parameter të ri
-        cache: false,  // çaktivizo cache për AJAX
+        data: { id: productId, timestamp: uniqueParam }, 
+        cache: false, 
         success: function(data) {
-            $('#modalBody').html(data);  // Vendos përmbajtjen e re të produktit
-            $('#productModal').fadeIn(200);  // Hap modalin
+            $('#modalBody').html(data);  
+            $('#productModal').fadeIn(200); 
         },
         error: function() {
             alert('Nuk u mundësua ngarkimi i detajeve të produktit.');
@@ -411,6 +508,8 @@ $('#productModal').on('click', function(e) {
         });
     }
 });
+
+
 
 
 

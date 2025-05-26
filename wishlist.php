@@ -288,10 +288,9 @@ $(document).ready(function() {
         const button = $(this);
         const id = button.data("id");
 
-        // Ndrysho butonin menjëherë në "Remove from Cart"
+       
         button.replaceWith(`<button class="add-to-cart ajax-remove-cart" data-id="${id}">Remove from Cart</button>`);
 
-        // Dërgo kërkesën AJAX për të shtuar produktin në karrocë
         $.post("actions.php", { addToCartId: id }, function(data) {
             const res = JSON.parse(data);
             $("#cart-link span").text(res.cartCount);
@@ -299,16 +298,13 @@ $(document).ready(function() {
         });
     });
 
-    // Remove from cart
     $(document).on("click", ".ajax-remove-cart", function(e) {
         e.preventDefault();
         const button = $(this);
         const id = button.data("id");
 
-        // Ndrysho butonin menjëherë në "Add to Cart"
         button.replaceWith(`<button class="add-to-cart ajax-add-cart" data-id="${id}">Add to Cart</button>`);
 
-        // Dërgo kërkesën AJAX për të hequr produktin nga karroca
         $.post("actions.php", { removeFromCartId: id }, function(data) {
             const res = JSON.parse(data);
             $("#cart-link span").text(res.cartCount);
@@ -316,7 +312,7 @@ $(document).ready(function() {
         });
     });
 
-    // Remove from wishlist
+
     $(document).on("click", ".ajax-remove", function(e) {
         e.preventDefault();
         const button = $(this);
@@ -328,7 +324,6 @@ $(document).ready(function() {
             $("#wishlist-link span").text(res.wishlistCount);
             showMessage(res.message);
 
-            // If wishlist is empty
             if (res.wishlistCount == 0) {
                 $("#wishlist-items").html("<p>No items have been added to your Favourites yet.</p>");
             }

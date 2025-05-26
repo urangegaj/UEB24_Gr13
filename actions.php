@@ -3,7 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Toggle cart (add/remove)
+
 if (isset($_POST['cartId'])) {
     $id = $_POST['cartId'];
     if (isset($_SESSION['cartItems'][$id])) {
@@ -21,7 +21,7 @@ if (isset($_POST['cartId'])) {
     exit();
 }
 
-// Toggle wishlist (add/remove)
+
 if (isset($_POST['wishlistId'])) {
     $id = $_POST['wishlistId'];
     if (isset($_SESSION['wishlistItems'][$id])) {
@@ -39,7 +39,7 @@ if (isset($_POST['wishlistId'])) {
     exit();
 }
 
-// Add to cart (explicit)
+
 if (isset($_POST['addToCartId'])) {
     $id = $_POST['addToCartId'];
     $_SESSION['cartItems'][$id] = true;
@@ -51,7 +51,7 @@ if (isset($_POST['addToCartId'])) {
     exit;
 }
 
-// Remove from cart (explicit + total price)
+
 if (isset($_POST['removeFromCartId'])) {
     $id = $_POST['removeFromCartId'];
     $totalPrice = 0;
@@ -84,7 +84,6 @@ if (isset($_POST['removeFromCartId'])) {
     exit();
 }
 
-// Remove from wishlist (explicit)
 if (isset($_POST['removeFromWishlistId'])) {
     $id = $_POST['removeFromWishlistId'];
     unset($_SESSION['wishlistItems'][$id]);
