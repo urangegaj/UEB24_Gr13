@@ -1,6 +1,26 @@
 
+
 <?php
-session_start();
+require_once 'error_handling.php';
+/*
+//disa rraste testimi
+$emri = "";
+if (empty($emri)) {
+    trigger_error("Emri nuk është i plotësuar!", E_USER_NOTICE);
+}
+
+$pagesa = -50;
+
+if ($pagesa < 0) {
+    trigger_error("Shuma e pagesës nuk mund të jetë negative!", E_USER_ERROR);
+}*/
+?>
+
+
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 require 'db.php';
 
@@ -23,7 +43,7 @@ class Product {
 
     }
 
-   public function render() {
+public function render() {
     $inCart = isset($_SESSION['cartItems'][$this->id]);
     $inWishlist = isset($_SESSION['wishlistItems'][$this->id]);
 
@@ -33,9 +53,12 @@ class Product {
 
     return "
     <div class='product' data-id='{$this->id}'>
-    <a href='product-details.php?id={$this->id}'>
-            <img src='{$this->image}' alt='{$this->name}'>
-        </a>
+        <img src='{$this->image}' alt='{$this->name}'>
+           <div class='product-details'>
+            <h3>{$this->name}</h3>
+            <p class='price'>\${$this->price}</p>
+        </div>
+
         
         <form method='post' style='display:inline'>
             <input type='hidden' name='wishlistId' value='{$this->id}'>
@@ -47,11 +70,6 @@ class Product {
             </button>
         </form>
 
-        <div class='product-details'>
-            <h3>{$this->name}</h3>
-            <p class='price'>\${$this->price}</p>
-        </div>
-        
         <form method='post'>
             <input type='hidden' name='cartId' value='{$this->id}'>
             <input type='hidden' name='category' value='{$this->category}'>
@@ -59,15 +77,19 @@ class Product {
         </form>
     </div>";
 }
+
 }
 
    
  
 
-$products = [];
+
+
 
 $query = "SELECT * FROM products";
 $result = mysqli_query($con, $query);
+
+$products = [];
 
 if ($result && mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
@@ -122,6 +144,7 @@ function getCartCount() {
 function getWishlistCount() {
     return count($_SESSION['wishlistItems'] ?? []);
 }
+
 ?>
 
 
@@ -146,7 +169,7 @@ function getWishlistCount() {
         </div>
             <nav>
                 <ul class="nav-links">
-                    <li><a href="./index.html">Home</a></li>
+                    <li><a href="./index.php">Home</a></li>
                     <li><a href="#products">Products</a></li>
                     <li><a href="./About.php">About</a></li>
                     <li><a href="./Contact.html">Contact</a></li>
@@ -180,6 +203,9 @@ function getWishlistCount() {
         </div>
     
     </header>
+    </head>
+
+<body>
 
     <header class="product-header">
         <div class="product-container">
@@ -192,13 +218,8 @@ function getWishlistCount() {
             </nav>
         </div>  
          </header>
-</head>
 
-<body>
-
-
-        
-       
+ 
   
     <div class="products">
     <?php if (isset($_SESSION['message'])): ?>
@@ -268,11 +289,25 @@ function getWishlistCount() {
         }
         ?>
     </div>
-    <footer class="footer">
-        <div class="container">
-            <p>© 2024 Laced Lifestyle. All Rights Reserved.</p>
-        </div>
-    </footer>
+
+
+    <!-- perdorimi i incude -->
+     <?php include 'footer.php'; ?>
+<!-- 
+  <div id="product-details-container"></div> -->
+
+
+  <div id="productModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span id="modalClose" class="modal-close">&times;</span>
+    <div id="modalBody">
+      <!-- Detajet e produktit do ngarkohen këtu me AJAX -->
+    </div>
+  </div>
+</div>
+
+
+
 
     <script>
                 setTimeout(() => {
@@ -288,7 +323,7 @@ function getWishlistCount() {
                 }, 2500);
 
 
-                document.getElementById('searchInput').addEventListener('input', function () {
+document.getElementById('searchInput').addEventListener('input', function () {
     const searchTerm = this.value;
 
     const xhr = new XMLHttpRequest();
@@ -302,12 +337,57 @@ function getWishlistCount() {
 });
 
 
+$(document).on('click', '.product img, .product h3, .product .price', function(e) {
+    e.stopPropagation(); // ndalon përhapjen e eventit te .product nëse ka ndonjë event aty
+
+    const productId = $(this).closest('.product').data('id');
+    console.log('Klikuar produkti me ID:', productId);
+
+    // Pastroni modalin para se të ngarkohet produkti tjetër
+    $('#modalBody').html('');
+
+    // Shto një parameter unik për të shmangur cache
+    const uniqueParam = new Date().getTime();  // përdorim kohën aktuale si parameter unik
+
+    $.ajax({
+        url: 'product-details.php',
+        type: 'GET',
+        data: { id: productId, timestamp: uniqueParam },  // shto parameter të ri
+        cache: false,  // çaktivizo cache për AJAX
+        success: function(data) {
+            $('#modalBody').html(data);  // Vendos përmbajtjen e re të produktit
+            $('#productModal').fadeIn(200);  // Hap modalin
+        },
+        error: function() {
+            alert('Nuk u mundësua ngarkimi i detajeve të produktit.');
+        }
+    });
+});
+
+
+
+
+// Mbyll modal kur klikohet mbi 'x'
+$('#modalClose').on('click', function() {
+    $('#productModal').fadeOut(200, function() {
+        $('#modalBody').html('');
+    });
+});
+
+// Mbyll modal kur klikohet jashtë përmbajtjes së modalit
+$('#productModal').on('click', function(e) {
+    if (e.target.id === 'productModal') {
+        $('#productModal').fadeOut(200, function() {
+            $('#modalBody').html('');
+        });
+    }
+});
+
+
+
+
+
                 </script>
-
-
 
 </body>
 </html>
-
-
-

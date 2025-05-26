@@ -31,7 +31,8 @@ class Product {
     }
 
 
-   public function render() {
+
+public function render() {
     $inCart = isset($_SESSION['cartItems'][$this->id]);
     $inWishlist = isset($_SESSION['wishlistItems'][$this->id]);
 
@@ -41,10 +42,12 @@ class Product {
 
     return "
     <div class='product' data-id='{$this->id}'>
-    <a href='product-details.php?id={$this->id}'>
-            <img src='{$this->image}' alt='{$this->name}'>
-        </a>
-        
+        <img src='{$this->image}' alt='{$this->name}'>
+        <div class='product-details'>
+            <h3>{$this->name}</h3>
+            <p class='price'>\${$this->price}</p>
+        </div>
+
         <form method='post' style='display:inline'>
             <input type='hidden' name='wishlistId' value='{$this->id}'>
             <input type='hidden' name='category' value='{$this->category}'>
@@ -55,11 +58,6 @@ class Product {
             </button>
         </form>
 
-        <div class='product-details'>
-            <h3>{$this->name}</h3>
-            <p class='price'>\${$this->price}</p>
-        </div>
-        
         <form method='post'>
             <input type='hidden' name='cartId' value='{$this->id}'>
             <input type='hidden' name='category' value='{$this->category}'>
@@ -68,10 +66,20 @@ class Product {
     </div>";
 }
 
+
     
 
 
 }
+
+function getCartCount() {
+    return count($_SESSION['cartItems'] ?? []);
+}
+
+function getWishlistCount() {
+    return count($_SESSION['wishlistItems'] ?? []);
+}
+
 
 $products = [];
 

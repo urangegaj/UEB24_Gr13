@@ -114,6 +114,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     margin: 0;
     padding: 0;
 }
+#note-status {
+    opacity: 0;
+    transition: opacity 1s ease;
+    color: green;
+    margin-top: 10px;
+}
 
 .main-nav a {
     text-decoration: none;
@@ -243,16 +249,54 @@ body {
 
 <h2>Checkout</h2>
 <?php if (!empty($errors)): ?>
-    <div style="max-width: 600px; margin: 0 auto; background-color: #ffe5e5; color: #d8000c; border: 1px solid #d8000c; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-        <ul style="margin: 0; padding-left: 20px;">
+    <div style="
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        border-radius: 8px;
+        padding: 15px 20px;
+        margin: 20px 0;
+        font-family: Arial, sans-serif;
+    ">
+        <ul>
             <?php foreach ($errors as $error): ?>
                 <li><?= htmlspecialchars($error) ?></li>
             <?php endforeach; ?>
         </ul>
     </div>
 <?php endif; ?>
+   
 
 <form method="post">
+    <h3>Shënim për porosinë (opsionale):</h3>
+    <textarea id="note" placeholder="Shkruani një shënim..." style="width:100%; height:100px;"></textarea>
+    <button type="button" onclick="saveNote()">Ruaj Shënimin</button>
+    <div id="note-status" style="margin-top: 10px; color: green;"></div>
+
+    <script>
+        function saveNote() {
+            const note = document.getElementById("note").value;
+            fetch("save_note.php", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({ note })
+            })
+            .then(res => res.json())
+            .then(data => {
+    const messageBox = document.getElementById("note-status");
+    messageBox.textContent = "U ruajt: " + data.note;
+    messageBox.style.opacity = "1";
+
+    setTimeout(() => {
+        messageBox.style.transition = "opacity 1s ease";
+        messageBox.style.opacity = "0";
+    }, 3000);
+});
+
+        }
+    </script>
     <div class="form-field">
         <label for="billing_first_name">Name *</label>
         <input type="text" name="billing_first_name" required>

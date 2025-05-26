@@ -1,0 +1,7 @@
+2025-05-25 12:20:10 - [Njoftim] Emri nuk është i plotësuar! në C:\xampp1\htdocs\UEB24_Gr13\Products.php linja 8
+2025-05-25 12:20:10 - [Paralajmërim nga PHP] Undefined variable $cmimi në C:\xampp1\htdocs\UEB24_Gr13\Products.php linja 12
+2025-05-25 12:27:58 - [Njoftim] Emri nuk është i plotësuar! në C:\xampp1\htdocs\UEB24_Gr13\Products.php linja 7
+2025-05-25 12:27:58 - [Paralajmërim nga PHP] Undefined variable $mosha në C:\xampp1\htdocs\UEB24_Gr13\Products.php linja 11
+2025-05-25 12:31:20 - [Njoftim] Emri nuk është i plotësuar! në C:\xampp1\htdocs\UEB24_Gr13\Products.php linja 7
+2025-05-25 12:31:20 - [Paralajmërim nga PHP] Undefined variable $mosha në C:\xampp1\htdocs\UEB24_Gr13\Products.php linja 11
+2025-05-25 12:31:20 - [Gabim kritik] Shuma e pagesës nuk mund të jetë negative! në C:\xampp1\htdocs\UEB24_Gr13\Products.php linja 15

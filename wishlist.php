@@ -204,7 +204,6 @@ button.add-to-cart:hover {
             margin: 20px 0; 
         }
 
-}
             </style>
         </head>
         
@@ -217,7 +216,7 @@ button.add-to-cart:hover {
                 </div>
                     <nav>
                         <ul class="nav-links">
-                            <li><a href="./index.html">Home</a></li>
+                            <li><a href="./index.php">Home</a></li>
                             <li><a href="./Products.php">Products</a></li>
                             <li><a href="#about">About</a></li>
                             <li><a href="./Contact.html">Contact</a></li>
@@ -302,16 +301,9 @@ if (!empty($wishlistItems)) {
     </ul>
 
 
- </main>
-        
+ </main>  
 
-        
-            <footer class="footer">
-                <div class="container">
-                    <p>© 2024 Laced Lifestyle. All Rights Reserved.</p>
-                </div>
-            </footer>
-            
+        <?php include 'footer.php'; ?>
 
             <script>
                 setTimeout(() => {
