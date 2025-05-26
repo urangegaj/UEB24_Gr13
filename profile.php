@@ -1,18 +1,31 @@
 <?php
-ini_set('session.cookie_path', '/');
-session_start();
-require_once 'session_handler.php';
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('log_errors', 1);
+ini_set('error_log', 'php_errors.log');
 
+require_once __DIR__ . '/includes/session.php';
+
+error_log("Profile page accessed. Session ID: " . session_id());
+error_log("Session data: " . print_r($_SESSION, true));
+
+// Check if user is logged in
 if (!isLoggedIn()) {
-    header('Location: index.html');
+    error_log("User not logged in, redirecting to index.php");
+    error_log("Session data at redirect: " . print_r($_SESSION, true));
+    header('Location: index.php');
     exit();
 }
 
 $currentUser = getCurrentUser();
 if (!$currentUser) {
-    header('Location: index.html');
+    error_log("Could not get current user data, redirecting to index.php");
+    error_log("Session data at redirect: " . print_r($_SESSION, true));
+    header('Location: index.php');
     exit();
 }
+
+error_log("User successfully authenticated. User data: " . print_r($currentUser, true));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,6 +37,7 @@ if (!$currentUser) {
     <link rel="website icon" type="png" href="images/logo1.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <?php include 'includes/session_init.php'; ?>
     <title>Profile - Laced Lifestyle</title>
     <style>
         :root {
@@ -294,10 +308,15 @@ if (!$currentUser) {
         <h1>Your Profile</h1>
         <div class="profile-container">
             <div class="profile-pic-container">
-                <img src="default-profile.png" alt="Profile Picture" class="profile-pic" id="profile-pic">
+                <?php
+                $profilePicPath = isset($currentUser['profile_picture']) && !empty($currentUser['profile_picture']) 
+                    ? $currentUser['profile_picture'] 
+                    : 'images/default-profile.png';
+                ?>
+                <img src="<?php echo htmlspecialchars($profilePicPath); ?>" alt="Profile Picture" class="profile-pic" id="profile-pic">
                 <div class="drag-drop-area" id="drag-drop-area">
                     <p>Drag & Drop your profile picture here</p>
-                    <input type="file" id="file-input" style="display: none;">
+                    <input type="file" id="profile_picture" name="profile_picture" accept="image/jpeg,image/png,image/gif" style="display: none;">
                 </div>
             </div>
             <div class="user-info" id="user-info">
@@ -321,7 +340,7 @@ if (!$currentUser) {
             </div>
         </div>
 
-        <form id="profile-form" method="POST" action="update_profile.php">
+        <form id="profile-form" method="POST" action="models/update_profile.php" enctype="multipart/form-data">
             <h2>Update Profile</h2>
             <div>
                 <label for="name">Name:</label>
@@ -342,6 +361,7 @@ if (!$currentUser) {
             <div>
                 <label for="password">New Password:</label>
                 <input type="password" id="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, and one number.">
+                <small>Leave blank to keep current password</small>
             </div>
             <button type="submit">Update Profile</button>
         </form>
@@ -350,17 +370,23 @@ if (!$currentUser) {
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const dragDropArea = document.getElementById('drag-drop-area');
-            const fileInput = document.getElementById('file-input');
+            const fileInput = document.getElementById('profile_picture');
             const profilePic = document.getElementById('profile-pic');
             const profileForm = document.getElementById('profile-form');
-            const userInfo = document.getElementById('user-info');
 
-            if (!dragDropArea || !fileInput || !profilePic || !profileForm || !userInfo) {
+            if (!dragDropArea || !fileInput || !profilePic || !profileForm) {
                 console.error('Required DOM elements not found');
                 return;
             }
 
-            // Handle file upload
+            // Display current profile picture if exists
+            <?php if (isset($currentUser['profile_picture']) && !empty($currentUser['profile_picture'])): ?>
+            profilePic.src = '<?php echo htmlspecialchars($currentUser['profile_picture']); ?>';
+            <?php else: ?>
+            profilePic.src = 'images/default-profile.png';
+            <?php endif; ?>
+
+            // Handle file upload through drag and drop area
             dragDropArea.addEventListener('click', () => fileInput.click());
 
             dragDropArea.addEventListener('dragover', (e) => {
@@ -386,27 +412,40 @@ if (!$currentUser) {
 
             function handleFile(file) {
                 if (file && file.type.startsWith('image/')) {
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('File size too large. Maximum size is 5MB.');
+                        fileInput.value = '';
+                        return;
+                    }
                     const reader = new FileReader();
                     reader.onload = (e) => {
                         profilePic.src = e.target.result;
                     };
                     reader.readAsDataURL(file);
                 } else {
-                    alert('Please upload a valid image file.');
+                    alert('Please upload a valid image file (JPG, PNG, or GIF).');
+                    fileInput.value = '';
                 }
             }
 
-            // Handle profile form submission
+            // Handle form submission
             profileForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const formData = new FormData(profileForm);
                 
+                // Add the profile picture to the form data if it exists
+                if (fileInput.files.length > 0) {
+                    formData.append('profile_picture', fileInput.files[0]);
+                }
+                
                 try {
-                    const response = await fetch('update_profile.php', {
+                    const response = await fetch('models/update_profile.php', {
                         method: 'POST',
                         body: formData
                     });
+                    
                     const data = await response.json();
+                    console.log('Update response:', data);
                     
                     if (data.success) {
                         alert('Profile updated successfully!');
@@ -430,7 +469,7 @@ if (!$currentUser) {
                         const data = await response.json();
                         
                         if (data.success) {
-                            window.location.href = 'index.html';
+                            window.location.href = 'index.php';
                         } else {
                             alert('Logout failed. Please try again.');
                         }

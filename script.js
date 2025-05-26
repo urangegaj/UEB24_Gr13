@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const profileButton = document.getElementById('profile-button');
     const accountDropdown = document.getElementById('account-dropdown');
     const logoutButton = document.getElementById('logout-button');
+    const profileLink = document.getElementById('profile-link');
 
     function updateUI(loggedIn) {
         if (loggedIn) {
@@ -23,19 +24,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    async function checkLoginStatus() {
-        try {
-            const response = await fetch('models/login.php', {
-                credentials: 'same-origin'
-            });
-            const data = await response.json();
-            updateUI(data.logged_in);
-        } catch (error) {
-            updateUI(false);
-        }
-    }
-
-    checkLoginStatus();
+    // Initial UI update based on window.isLoggedIn
+    updateUI(window.isLoggedIn);
 
     loginButton.addEventListener('click', () => {
         loginModal.classList.add('show');
@@ -89,16 +79,30 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
             
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
             const data = await response.json();
+            console.log('Login response:', data); // Debug log
             
             if (data.success) {
                 e.target.reset();
+                window.isLoggedIn = true; // Update the global variable
                 updateUI(true);
-                window.location.reload();
+                loginModal.classList.remove('show'); // Close the modal
+                
+                // Update user information in the UI if available
+                if (data.user) {
+                    const userDisplay = document.querySelector('.user-display');
+                    if (userDisplay) {
+                        userDisplay.textContent = `${data.user.first_name} ${data.user.last_name}`;
+                    }
+                }
             } else {
                 const errorMessage = document.createElement('div');
                 errorMessage.className = 'error-message';
-                errorMessage.textContent = data.message;
+                errorMessage.textContent = data.message || 'Invalid username or password';
                 e.target.appendChild(errorMessage);
                 
                 setTimeout(() => {
@@ -106,6 +110,52 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 3000);
             }
         } catch (error) {
+            console.error('Login error:', error); // Debug log
+            const errorMessage = document.createElement('div');
+            errorMessage.className = 'error-message';
+            errorMessage.textContent = 'An error occurred. Please try again.';
+            e.target.appendChild(errorMessage);
+            
+            setTimeout(() => {
+                errorMessage.remove();
+            }, 3000);
+        }
+    });
+
+    document.getElementById('sign-up-form-element').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        
+        try {
+            const response = await fetch('models/signup.php', {
+                method: 'POST',
+                body: formData,
+                credentials: 'same-origin',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            
+            const data = await response.json();
+            console.log('Signup response:', data);
+            
+            if (data.success) {
+                e.target.reset();
+                alert('Registration successful! Please login.');
+                loginForm.classList.remove('hidden');
+                signUpForm.classList.add('hidden');
+            } else {
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'error-message';
+                errorMessage.textContent = data.message || 'Registration failed';
+                e.target.appendChild(errorMessage);
+                
+                setTimeout(() => {
+                    errorMessage.remove();
+                }, 3000);
+            }
+        } catch (error) {
+            console.error('Signup error:', error);
             const errorMessage = document.createElement('div');
             errorMessage.className = 'error-message';
             errorMessage.textContent = 'An error occurred. Please try again.';
@@ -128,20 +178,30 @@ document.addEventListener('DOMContentLoaded', function() {
         e.stopPropagation();
         
         try {
+            console.log('Initiating logout...');
             const response = await fetch('models/logout.php', {
-                credentials: 'same-origin'
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'Accept': 'application/json'
+                }
             });
             
+            console.log('Logout response received:', response);
             const data = await response.json();
+            console.log('Logout data:', data);
             
             if (data.success) {
+                console.log('Logout successful, updating UI...');
+                window.isLoggedIn = false;
                 updateUI(false);
-                
-                window.location.reload();
+                window.location.href = 'index.php';
             } else {
-                alert('Logout failed. Please try again.');
+                console.error('Logout failed:', data.message);
+                alert(data.message || 'Logout failed. Please try again.');
             }
         } catch (error) {
+            console.error('Logout error:', error);
             alert('An error occurred during logout. Please try again.');
         }
     });
@@ -168,6 +228,14 @@ document.addEventListener('DOMContentLoaded', function() {
             behavior: 'smooth'
         });
     });
+
+    // Only add event listener if profileLink exists
+    if (profileLink) {
+        profileLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = 'profile.php';
+        });
+    }
 });
 
 $(document).ready(function () {

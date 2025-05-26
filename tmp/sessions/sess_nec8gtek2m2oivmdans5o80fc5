@@ -1,0 +1,1 @@
+user_id|i:2;username|s:8:"testuser";first_name|s:4:"Test";last_name|s:4:"User";email|s:16:"test@example.com";birthdate|N;gender|N;profile_picture|s:50:"uploads/profile_pictures/profile_2_1748265448.jpeg";logged_in|b:1;last_activity|i:1748265845;
